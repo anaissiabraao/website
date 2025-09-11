@@ -213,6 +213,78 @@ body {
     background: var(--bg-primary);
 }
 
+/* Dark Mode - Header Elements */
+::root[data-theme="dark"] .nav-container {
+    background: transparent;
+}
+
+::root[data-theme="dark"] .logo-text {
+    color: var(--text-primary);
+}
+
+::root[data-theme="dark"] .nav-link {
+    color: var(--text-primary);
+}
+
+::root[data-theme="dark"] .nav-link:hover {
+    color: var(--primary-color);
+}
+
+::root[data-theme="dark"] .lang-btn {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+::root[data-theme="dark"] .lang-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+::root[data-theme="dark"] .theme-toggle {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+::root[data-theme="dark"] .theme-toggle:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+::root[data-theme="dark"] .hamburger span {
+    background: var(--text-primary);
+}
+
+/* Dark Mode - Hero Section */
+::root[data-theme="dark"] .hero-container {
+    background: var(--bg-primary);
+}
+
+::root[data-theme="dark"] .hero-title {
+    color: var(--text-primary);
+}
+
+::root[data-theme="dark"] .hero-description {
+    color: var(--text-secondary);
+}
+
+::root[data-theme="dark"] .benefit-item {
+    color: var(--text-primary);
+}
+
+::root[data-theme="dark"] .benefit-item i {
+    color: var(--primary-color);
+}
+
+::root[data-theme="dark"] .hero-urgency {
+    color: var(--text-secondary);
+}
+
+::root[data-theme="dark"] .hero-urgency strong {
+    color: var(--accent-color);
+}
+
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
