@@ -485,7 +485,7 @@ statNumbers.forEach(stat => {
 
 // Initialize EmailJS
 (function() {
-    emailjs.init("YOUR_PUBLIC_KEY"); // Substitua pela sua chave pública do EmailJS
+    emailjs.init("uVsyH-pcT942zyaDH");
 })();
 
 // Form submission handling with EmailJS
@@ -529,8 +529,8 @@ contactForm.addEventListener('submit', async (e) => {
         };
         
         const response = await emailjs.send(
-            'YOUR_SERVICE_ID', // Substitua pelo seu Service ID
-            'YOUR_TEMPLATE_ID', // Substitua pelo seu Template ID
+            'service_us0gycu',
+            'template_fddaqoi',
             templateParams
         );
         
