@@ -4,10 +4,8 @@
   "description": "Website da ANAISSI DATA STRATEGY - Especialistas em automação RPA e análise de SLA",
   "main": "index.html",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "dev": "python -m http.server 8000",
-    "build": "echo 'Static website - no build required'",
-    "deploy": "echo 'Ready for Render deployment'"
+    "start": "echo 'Static website - use a web server'",
+    "build": "echo 'Static website - no build required'"
   },
   "keywords": [
     "RPA",
@@ -21,12 +19,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anaissidata/website"
+    "url": "https://github.com/anaissiabraao/website.git"
   },
-  "homepage": "https://anaissidata.onrender.com",
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "devDependencies": {},
-  "dependencies": {}
+  "homepage": "https://anaissidata.onrender.com"
 }
