@@ -32,11 +32,24 @@
                     <span class="logo-text">ANAISSI DATA STRATEGY</span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="#home" class="nav-link">Início</a></li>
-                    <li><a href="#services" class="nav-link">Serviços</a></li>
-                    <li><a href="#about" class="nav-link">Sobre</a></li>
-                    <li><a href="#contact" class="nav-link">Contato</a></li>
+                    <li><a href="#home" class="nav-link" data-translate="nav.home">Início</a></li>
+                    <li><a href="#services" class="nav-link" data-translate="nav.services">Serviços</a></li>
+                    <li><a href="#about" class="nav-link" data-translate="nav.about">Sobre</a></li>
+                    <li><a href="#contact" class="nav-link" data-translate="nav.contact">Contato</a></li>
                 </ul>
+                
+                <div class="nav-controls">
+                    <div class="language-selector">
+                        <button class="lang-btn active" data-lang="pt">🇧🇷 PT</button>
+                        <button class="lang-btn" data-lang="en">🇺🇸 EN</button>
+                        <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
+                        <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+                    </div>
+                    
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
                 <div class="hamburger">
                     <span></span>
                     <span></span>
@@ -50,40 +63,40 @@
     <section id="home" class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1 class="hero-title">
+                <h1 class="hero-title" data-translate="hero.title">
                     Aumente sua produtividade em
-                    <span class="highlight">95% com RPA</span>
+                    <span class="highlight" data-translate="hero.highlight">95% com RPA</span>
                 </h1>
-                <p class="hero-description">
-                    <strong>Economize até R$ 50.000/mês</strong> automatizando processos repetitivos. 
+                <p class="hero-description" data-translate="hero.description">
+                    <strong data-translate="hero.savings">Economize até R$ 50.000/mês</strong> automatizando processos repetitivos. 
                     Nossos clientes reduzem custos operacionais e aumentam lucros em apenas 30 dias.
                 </p>
                 <div class="hero-benefits">
                     <div class="benefit-item">
                         <i class="fas fa-check-circle"></i>
-                        <span>ROI garantido em 90 dias</span>
+                        <span data-translate="hero.benefit1">ROI garantido em 90 dias</span>
                     </div>
                     <div class="benefit-item">
                         <i class="fas fa-check-circle"></i>
-                        <span>Implementação em 15 dias</span>
+                        <span data-translate="hero.benefit2">Implementação em 15 dias</span>
                     </div>
                     <div class="benefit-item">
                         <i class="fas fa-check-circle"></i>
-                        <span>Suporte 24/7 incluído</span>
+                        <span data-translate="hero.benefit3">Suporte 24/7 incluído</span>
                     </div>
                 </div>
                 <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">
+                    <a href="#contact" class="btn btn-primary" data-translate="hero.cta1">
                         <i class="fas fa-rocket"></i>
                         QUERO ECONOMIZAR AGORA
                     </a>
-                    <a href="#services" class="btn btn-secondary">
+                    <a href="#services" class="btn btn-secondary" data-translate="hero.cta2">
                         <i class="fas fa-play"></i>
                         Ver Demonstração
                     </a>
                 </div>
                 <div class="hero-urgency">
-                    <p><i class="fas fa-clock"></i> <strong>Oferta limitada:</strong> Consultoria gratuita para os primeiros 10 clientes</p>
+                    <p><i class="fas fa-clock"></i> <strong data-translate="hero.urgency">Oferta limitada:</strong> <span data-translate="hero.urgencyText">Consultoria gratuita para os primeiros 10 clientes</span></p>
                 </div>
             </div>
             <div class="hero-image">
@@ -304,29 +317,33 @@
                         <i class="fas fa-envelope"></i>
                         <div>
                             <h4>Email</h4>
-                            <p>contato@anaissidata.com</p>
+                            <p>contato@anaissidata.com.br</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
                         <div>
                             <h4>Telefone</h4>
-                            <p>+55 (11) 99999-9999</p>
+                            <p>+55 (47) 98839-5126</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h4>Localização</h4>
-                            <p>São Paulo, SP - Brasil</p>
+                            <p>Itajaí, SC - Brasil</p>
                         </div>
                     </div>
                 </div>
                 
-                <form class="contact-form">
+                <form class="contact-form" action="https://formspree.io/f/xpwnqkqz" method="POST">
+                    <input type="hidden" name="_to" value="anaissiabraao@gmail.com">
+                    <input type="hidden" name="_subject" value="Nova Consultoria Solicitada - ANAISSI DATA STRATEGY">
+                    <input type="hidden" name="_replyto" value="">
+                    
                     <div class="form-header">
-                        <h3>🚀 Solicite sua Consultoria Gratuita</h3>
-                        <p>Descubra como economizar até R$ 50.000/mês com automação</p>
+                        <h3 data-translate="form.title">🚀 Solicite sua Consultoria Gratuita</h3>
+                        <p data-translate="form.subtitle">Descubra como economizar até R$ 50.000/mês com automação</p>
                     </div>
                     
                     <div class="form-group">
@@ -402,9 +419,15 @@
                     <a href="#contact">Contato</a>
                 </div>
                 <div class="footer-social">
-                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/abra%C3%A3o-anaissi-928735179/" target="_blank" class="social-link" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://linktr.ee/anaissiabraao" target="_blank" class="social-link" title="Linktree">
+                        <i class="fas fa-link"></i>
+                    </a>
+                    <a href="https://www.instagram.com/anaissids" target="_blank" class="social-link" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
                 </div>
             </div>
             <div class="footer-bottom">

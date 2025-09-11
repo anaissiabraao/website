@@ -1,3 +1,86 @@
+// Translation system
+const translations = {
+    pt: {
+        'nav.home': 'Início',
+        'nav.services': 'Serviços',
+        'nav.about': 'Sobre',
+        'nav.contact': 'Contato',
+        'hero.title': 'Aumente sua produtividade em',
+        'hero.highlight': '95% com RPA',
+        'hero.description': 'Economize até R$ 50.000/mês automatizando processos repetitivos. Nossos clientes reduzem custos operacionais e aumentam lucros em apenas 30 dias.',
+        'hero.savings': 'Economize até R$ 50.000/mês',
+        'hero.benefit1': 'ROI garantido em 90 dias',
+        'hero.benefit2': 'Implementação em 15 dias',
+        'hero.benefit3': 'Suporte 24/7 incluído',
+        'hero.cta1': 'QUERO ECONOMIZAR AGORA',
+        'hero.cta2': 'Ver Demonstração',
+        'hero.urgency': 'Oferta limitada:',
+        'hero.urgencyText': 'Consultoria gratuita para os primeiros 10 clientes',
+        'form.title': '🚀 Solicite sua Consultoria Gratuita',
+        'form.subtitle': 'Descubra como economizar até R$ 50.000/mês com automação'
+    },
+    en: {
+        'nav.home': 'Home',
+        'nav.services': 'Services',
+        'nav.about': 'About',
+        'nav.contact': 'Contact',
+        'hero.title': 'Increase your productivity by',
+        'hero.highlight': '95% with RPA',
+        'hero.description': 'Save up to $50,000/month by automating repetitive processes. Our clients reduce operational costs and increase profits in just 30 days.',
+        'hero.savings': 'Save up to $50,000/month',
+        'hero.benefit1': 'ROI guaranteed in 90 days',
+        'hero.benefit2': 'Implementation in 15 days',
+        'hero.benefit3': '24/7 support included',
+        'hero.cta1': 'I WANT TO SAVE NOW',
+        'hero.cta2': 'Watch Demo',
+        'hero.urgency': 'Limited offer:',
+        'hero.urgencyText': 'Free consultation for the first 10 clients',
+        'form.title': '🚀 Request Your Free Consultation',
+        'form.subtitle': 'Discover how to save up to $50,000/month with automation'
+    },
+    es: {
+        'nav.home': 'Inicio',
+        'nav.services': 'Servicios',
+        'nav.about': 'Acerca',
+        'nav.contact': 'Contacto',
+        'hero.title': 'Aumenta tu productividad en',
+        'hero.highlight': '95% con RPA',
+        'hero.description': 'Ahorra hasta $50,000/mes automatizando procesos repetitivos. Nuestros clientes reducen costos operacionales y aumentan ganancias en solo 30 días.',
+        'hero.savings': 'Ahorra hasta $50,000/mes',
+        'hero.benefit1': 'ROI garantizado en 90 días',
+        'hero.benefit2': 'Implementación en 15 días',
+        'hero.benefit3': 'Soporte 24/7 incluido',
+        'hero.cta1': 'QUIERO AHORRAR AHORA',
+        'hero.cta2': 'Ver Demostración',
+        'hero.urgency': 'Oferta limitada:',
+        'hero.urgencyText': 'Consulta gratuita para los primeros 10 clientes',
+        'form.title': '🚀 Solicita tu Consulta Gratuita',
+        'form.subtitle': 'Descubre cómo ahorrar hasta $50,000/mes con automatización'
+    },
+    de: {
+        'nav.home': 'Startseite',
+        'nav.services': 'Dienstleistungen',
+        'nav.about': 'Über uns',
+        'nav.contact': 'Kontakt',
+        'hero.title': 'Steigern Sie Ihre Produktivität um',
+        'hero.highlight': '95% mit RPA',
+        'hero.description': 'Sparen Sie bis zu 50.000€/Monat durch Automatisierung repetitiver Prozesse. Unsere Kunden reduzieren Betriebskosten und steigern Gewinne in nur 30 Tagen.',
+        'hero.savings': 'Sparen Sie bis zu 50.000€/Monat',
+        'hero.benefit1': 'ROI garantiert in 90 Tagen',
+        'hero.benefit2': 'Implementierung in 15 Tagen',
+        'hero.benefit3': '24/7 Support inklusive',
+        'hero.cta1': 'ICH WILL JETZT SPAREN',
+        'hero.cta2': 'Demo ansehen',
+        'hero.urgency': 'Begrenztes Angebot:',
+        'hero.urgencyText': 'Kostenlose Beratung für die ersten 10 Kunden',
+        'form.title': '🚀 Fordern Sie Ihre Kostenlose Beratung an',
+        'form.subtitle': 'Entdecken Sie, wie Sie bis zu 50.000€/Monat mit Automatisierung sparen können'
+    }
+};
+
+// Current language
+let currentLang = localStorage.getItem('language') || 'pt';
+
 // DOM Elements
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
@@ -6,6 +89,68 @@ const header = document.querySelector('.header');
 const statNumbers = document.querySelectorAll('.stat-number');
 const contactForm = document.querySelector('.contact-form');
 const loadingScreen = document.getElementById('loading-screen');
+const themeToggle = document.getElementById('theme-toggle');
+const langButtons = document.querySelectorAll('.lang-btn');
+
+// Translation functions
+const translateElement = (element, lang) => {
+    const key = element.getAttribute('data-translate');
+    if (key && translations[lang] && translations[lang][key]) {
+        element.textContent = translations[lang][key];
+    }
+};
+
+const translatePage = (lang) => {
+    const elements = document.querySelectorAll('[data-translate]');
+    elements.forEach(element => translateElement(element, lang));
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+};
+
+// Language switching
+langButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-lang');
+        langButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        translatePage(lang);
+    });
+});
+
+// Theme toggle functionality
+const toggleTheme = () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    const icon = themeToggle.querySelector('i');
+    icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+};
+
+themeToggle.addEventListener('click', toggleTheme);
+
+// Initialize theme
+const initializeTheme = () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    const icon = themeToggle.querySelector('i');
+    icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+};
+
+// Initialize language
+const initializeLanguage = () => {
+    const savedLang = localStorage.getItem('language') || 'pt';
+    langButtons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === savedLang) {
+            btn.classList.add('active');
+        }
+    });
+    translatePage(savedLang);
+};
 
 // Mobile Navigation Toggle
 hamburger.addEventListener('click', () => {
@@ -82,8 +227,8 @@ statNumbers.forEach(stat => {
     statsObserver.observe(stat);
 });
 
-// Form submission handling with improved validation
-contactForm.addEventListener('submit', (e) => {
+// Form submission handling with Formspree integration
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     // Get form data
@@ -109,22 +254,29 @@ contactForm.addEventListener('submit', (e) => {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
     submitBtn.disabled = true;
     
-    // Simulate form submission (replace with actual API call)
-    setTimeout(() => {
-        // Show success message
-        showNotification('🎉 Consultoria solicitada com sucesso! Entraremos em contato em até 2 horas úteis.', 'success');
+    try {
+        // Submit to Formspree
+        const response = await fetch('https://formspree.io/f/xpwnqkqz', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
         
-        // Reset form
-        contactForm.reset();
-        
-        // Reset button
+        if (response.ok) {
+            showNotification('🎉 Consultoria solicitada com sucesso! Entraremos em contato em até 2 horas úteis.', 'success');
+            contactForm.reset();
+            trackConversion('consultoria_solicitada');
+        } else {
+            throw new Error('Erro no envio');
+        }
+    } catch (error) {
+        showNotification('❌ Erro ao enviar formulário. Tente novamente ou entre em contato diretamente.', 'error');
+    } finally {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-        
-        // Track conversion (you can integrate with Google Analytics here)
-        trackConversion('consultoria_solicitada');
-        
-    }, 2000);
+    }
 });
 
 // Form validation
@@ -360,9 +512,11 @@ window.addEventListener('load', () => {
     }, 2000); // Show loading for 2 seconds
 });
 
-// Show loading screen immediately
+// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     loadingScreen.style.display = 'flex';
+    initializeTheme();
+    initializeLanguage();
 });
 
 // Add CSS for loading animation
