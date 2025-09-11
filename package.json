@@ -1,0 +1,32 @@
+{
+  "name": "anaissi-data-strategy",
+  "version": "1.0.0",
+  "description": "Website da ANAISSI DATA STRATEGY - Especialistas em automação RPA e análise de SLA",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Static website - no build required'",
+    "deploy": "echo 'Ready for Render deployment'"
+  },
+  "keywords": [
+    "RPA",
+    "automação",
+    "SLA",
+    "análise de dados",
+    "melhoria contínua",
+    "processos"
+  ],
+  "author": "ANAISSI DATA STRATEGY",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anaissidata/website"
+  },
+  "homepage": "https://anaissidata.onrender.com",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

@@ -1,0 +1,25 @@
+# ANAISSI DATA STRATEGY Website
+# Static website for RPA automation and SLA analysis services
+
+# Build configuration
+build:
+  commands:
+    - echo "Building static website..."
+
+# Deploy configuration
+deploy:
+  static:
+    root: .
+    index: index.html
+    error_page: index.html
+
+# Environment variables (if needed)
+env:
+  NODE_ENV: production
+
+# Health check
+health_check:
+  path: /
+  interval: 30s
+  timeout: 10s
+  retries: 3
