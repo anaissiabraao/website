@@ -1,0 +1,16 @@
+# Render Static Site Configuration
+# This file tells Render this is a static site
+
+# Static site configuration
+static_site: true
+
+# Build command (empty for static sites)
+build_command: ""
+
+# Publish directory (root)
+publish_directory: "."
+
+# Routes configuration
+routes:
+  - path: "/*"
+    destination: "/index.html"
