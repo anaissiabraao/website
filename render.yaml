@@ -1,10 +1,10 @@
-services:
-  - type: web
-    name: anaissi-data-strategy
-    env: static
-    buildCommand: echo "Static site - no build needed"
-    staticPublishPath: .
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+version: 0.1.0
+name: anaissi-data-strategy
+builds:
+  - src: .
+    use: static
+    config:
+      publish: .
+      routes:
+        - src: /*
+          dest: /index.html

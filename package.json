@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "Website da ANAISSI DATA STRATEGY - Especialistas em automação RPA e análise de SLA",
   "main": "index.html",
-  "scripts": {
-    "start": "echo 'Static website - use a web server'",
-    "build": "echo 'Static website - no build required'"
-  },
+  "scripts": {},
   "keywords": [
     "RPA",
     "automação",

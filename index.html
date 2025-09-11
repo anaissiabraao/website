@@ -9,6 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <!-- Loading Animation -->
     <div id="loading-screen" class="loading-screen">
         <div class="loading-container">
@@ -200,7 +203,7 @@
                     </div>
                 </div>
                 <div class="about-image">
-                    <img src="static/photo face.jpg" alt="Equipe ANAISSI DATA STRATEGY" class="about-img">
+                    <img src="static/logo.png" alt="Equipe ANAISSI DATA STRATEGY" class="about-img">
                 </div>
             </div>
         </div>
@@ -336,11 +339,7 @@
                     </div>
                 </div>
                 
-                <form class="contact-form" action="https://formspree.io/f/xpwnqkqz" method="POST">
-                    <input type="hidden" name="_to" value="anaissiabraao@gmail.com">
-                    <input type="hidden" name="_subject" value="Nova Consultoria Solicitada - ANAISSI DATA STRATEGY">
-                    <input type="hidden" name="_replyto" value="">
-                    
+                <form class="contact-form" id="contact-form">
                     <div class="form-header">
                         <h3 data-translate="form.title">🚀 Solicite sua Consultoria Gratuita</h3>
                         <p data-translate="form.subtitle">Descubra como economizar até R$ 50.000/mês com automação</p>

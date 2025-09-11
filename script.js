@@ -483,7 +483,12 @@ statNumbers.forEach(stat => {
     statsObserver.observe(stat);
 });
 
-// Form submission handling with Formspree integration
+// Initialize EmailJS
+(function() {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Substitua pela sua chave pública do EmailJS
+})();
+
+// Form submission handling with EmailJS
 contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -511,16 +516,25 @@ contactForm.addEventListener('submit', async (e) => {
     submitBtn.disabled = true;
     
     try {
-        // Submit to Formspree
-        const response = await fetch('https://formspree.io/f/xpwnqkqz', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
+        // Send email using EmailJS
+        const templateParams = {
+            from_name: data.name,
+            from_email: data.email,
+            phone: data.phone,
+            company: data.company,
+            employees: data.employees,
+            interest: data.interest,
+            message: data.message,
+            to_email: 'anaissiabraao@gmail.com'
+        };
         
-        if (response.ok) {
+        const response = await emailjs.send(
+            'YOUR_SERVICE_ID', // Substitua pelo seu Service ID
+            'YOUR_TEMPLATE_ID', // Substitua pelo seu Template ID
+            templateParams
+        );
+        
+        if (response.status === 200) {
             showNotification('🎉 Consultoria solicitada com sucesso! Entraremos em contato em até 2 horas úteis.', 'success');
             contactForm.reset();
             trackConversion('consultoria_solicitada');
@@ -528,6 +542,7 @@ contactForm.addEventListener('submit', async (e) => {
             throw new Error('Erro no envio');
         }
     } catch (error) {
+        console.error('Erro ao enviar email:', error);
         showNotification('❌ Erro ao enviar formulário. Tente novamente ou entre em contato diretamente.', 'error');
     } finally {
         submitBtn.innerHTML = originalText;
