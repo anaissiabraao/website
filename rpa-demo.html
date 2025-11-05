@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstração RPA - ANAISSI DATA STRATEGY</title>
+    <link rel="icon" type="image/png" href="static/logo-marca.png">
+    <link rel="shortcut icon" type="image/png" href="static/logo-marca.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .demo-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg-secondary); padding: 2rem; }
+        .demo-card { width: 100%; max-width: 1080px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: var(--shadow-xl); padding: 1.5rem; }
+        .demo-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+        .demo-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); }
+        .demo-actions { display: flex; gap: .5rem; }
+        .video-frame { position: relative; background: #000; border-radius: 12px; overflow: hidden; }
+        .video-frame video { display: block; width: 100%; height: auto; background: #000; }
+        .demo-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; gap: 1rem; }
+        .hint { color: var(--text-secondary); font-size: .9rem; }
+        .rate { display: inline-flex; align-items: center; gap: .375rem; color: var(--text-secondary); font-weight: 600; }
+        .btn-icon { display: inline-flex; align-items: center; gap: .5rem; }
+        @media (max-width: 768px) { .demo-title { font-size: 1.25rem; } .hint { font-size: .85rem; } }
+    </style>
+</head>
+<body>
+    <div class="demo-wrapper">
+        <div class="demo-card">
+            <div class="demo-header">
+                <div class="demo-title"><i class="fas fa-robot"></i> Demonstração de RPA</div>
+                <div class="demo-actions">
+                    <a href="index.html#services" class="btn btn-secondary btn-icon"><i class="fas fa-arrow-left"></i> Voltar</a>
+                </div>
+            </div>
+            <div class="video-frame">
+                <video id="demoVideo" autoplay muted playsinline preload="auto"></video>
+            </div>
+            <div class="demo-footer">
+                <div class="hint"><i class="fas fa-info-circle"></i> Os vídeos serão reproduzidos automaticamente em sequência.</div>
+                <div class="rate"><i class="fas fa-bolt"></i> 2.5x</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const playlist = [
+            'videos/RPA1.mp4',
+            'videos/RPA3.mp4'
+        ];
+        const video = document.getElementById('demoVideo');
+        let current = 0;
+        let advancing = false;
+        let fallbackTimeout = null;
+        let stallGuard = null;
+        const clearGuards = () => {
+            if (fallbackTimeout) { clearTimeout(fallbackTimeout); fallbackTimeout = null; }
+            if (stallGuard) { clearInterval(stallGuard); stallGuard = null; }
+        };
+        const scheduleFallback = () => {
+            // Clear previous
+            if (fallbackTimeout) { clearTimeout(fallbackTimeout); fallbackTimeout = null; }
+            // Compute remaining time with safety margin
+            const rate = video.playbackRate || 2.5;
+            let ms = 30000; // default 30s fallback
+            if (isFinite(video.duration) && video.duration > 0) {
+                const remaining = Math.max(0, (video.duration - video.currentTime));
+                ms = Math.max(1000, (remaining * 1000) / rate + 1200);
+            }
+            fallbackTimeout = setTimeout(() => advance(), ms);
+        };
+        function playCurrent() {
+            advancing = false;
+            clearGuards();
+            video.loop = false;
+            video.src = playlist[current];
+            video.currentTime = 0;
+            video.playbackRate = 2.5;
+            video.muted = true;
+            video.load();
+            const tryPlay = () => {
+                const p = video.play();
+                if (p && typeof p.catch === 'function') p.catch(() => {});
+            };
+            if (video.readyState >= 2) {
+                tryPlay();
+            } else {
+                video.addEventListener('canplay', tryPlay, { once: true });
+            }
+            video.addEventListener('loadedmetadata', () => {
+                scheduleFallback();
+                // Stall guard: if no progress for 6s while playing, advance
+                let lastTime = video.currentTime;
+                stallGuard = setInterval(() => {
+                    if (!video.paused) {
+                        if (Math.abs(video.currentTime - lastTime) < 0.05) {
+                            advance();
+                        }
+                        lastTime = video.currentTime;
+                    }
+                }, 6000);
+            }, { once: true });
+        }
+        const advance = () => {
+            if (advancing) return;
+            advancing = true;
+            if (fallbackTimeout) { clearTimeout(fallbackTimeout); fallbackTimeout = null; }
+            if (stallGuard) { clearInterval(stallGuard); stallGuard = null; }
+            current = (current + 1) % playlist.length;
+            playCurrent();
+        };
+        video.addEventListener('ended', advance);
+        video.addEventListener('error', advance);
+        // Enforce 2.5x and robust advance
+        video.addEventListener('loadedmetadata', () => { video.playbackRate = 2.5; scheduleFallback(); });
+        video.addEventListener('playing', () => { video.playbackRate = 2.5; scheduleFallback(); });
+        video.addEventListener('ratechange', () => { if (video.playbackRate !== 2.5) video.playbackRate = 2.5; });
+        let lastProgressAt = Date.now();
+        video.addEventListener('timeupdate', () => {
+            lastProgressAt = Date.now();
+            if (!isNaN(video.duration) && isFinite(video.duration) && (video.duration - video.currentTime) <= 0.35) {
+                advance();
+            }
+        });
+        setInterval(() => {
+            if (!advancing && !video.paused && (Date.now() - lastProgressAt) > 5000) {
+                advance();
+            }
+        }, 2000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                video.playbackRate = 2.5;
+                video.muted = true;
+                const p = video.play();
+                if (p && typeof p.catch === 'function') p.catch(() => {});
+            }
+        });
+        document.addEventListener('DOMContentLoaded', playCurrent);
+        // Immediate start fallback in case DOMContentLoaded already fired
+        playCurrent();
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaissi DS - Automação RPA</title>
+    <title>Anaissi DS</title>
     <link rel="icon" type="image/png" href="static/logo-marca.png">
     <link rel="shortcut icon" type="image/png" href="static/logo-marca.png">
     <meta name="description" content="Especialistas em automação de processos com RPA e análise de indicadores de SLA para melhoria contínua dos seus negócios.">
@@ -34,7 +34,7 @@
             <div class="nav-container">
                 <div class="logo">
                     <img src="static/logo.png" alt="ANAISSI DATA STRATEGY" class="logo-img">
-                    <span class="logo-text">ADS</span>
+                    <span class="logo-text">IA SOLUTION</span>
                 </div>
                 <ul class="nav-menu">
                     <li><a href="#home" class="nav-link" data-translate="nav.home">Início</a></li>
@@ -54,6 +54,9 @@
                     <button class="theme-toggle" id="theme-toggle">
                         <i class="fas fa-moon"></i>
                     </button>
+                    <button class="chatgpt-btn" id="openChatGPTHeader" title="ChatGPT">
+                        <i class="fas fa-robot"></i>
+                    </button>
                 </div>
                 <div class="hamburger">
                     <span></span>
@@ -68,13 +71,14 @@
     <section id="home" class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1 class="hero-title" data-translate="hero.title">
-                    Aumente sua produtividade em
-                    <span class="highlight" data-translate="hero.highlight">95% com RPA</span>
+                <h1 class="hero-title">
+                    <span data-translate="hero.title">Transforme seus processos com IA</span>
+                    <span class="highlight" data-translate="hero.highlight">economize até 40% da sua operação</span>
                 </h1>
-                <p class="hero-description" data-translate="hero.description">
-                    <strong data-translate="hero.savings">Economize até R$ 50.000/mês</strong> automatizando processos repetitivos. 
-                    Nossos clientes reduzem custos operacionais e aumentam lucros em apenas 30 dias.
+                <p class="hero-description">
+                    <span data-translate="hero.preSavings">Economize até</span>
+                    <strong data-translate="hero.savings">R$ 50.000/mês</strong>
+                    <span data-translate="hero.postSavings">automatizando processos repetitivos. Nossos clientes reduzem custos operacionais e aumentam lucros em apenas 30 dias.</span>
                 </p>
                 <div class="hero-benefits">
                     <div class="benefit-item">
@@ -95,9 +99,9 @@
                         <i class="fas fa-rocket"></i>
                          QUERO ECONOMIZAR AGORA
                     </a>
-                    <a href="#services" class="btn btn-secondary" data-translate="hero.cta2">
+                    <a href="rpa-demo.html" class="btn btn-secondary" data-translate="hero.cta2">
                         <i class="fas fa-play"></i>
-                         Ver Demonstração
+                          Ver Demonstração
                     </a>
                 </div>
                 <div class="hero-urgency">
@@ -105,7 +109,9 @@
                 </div>
             </div>
             <div class="hero-image">
-                <img src="static/implementações.jpg" alt="Automação de Processos" class="hero-img">
+                <div class="hero-video">
+                    <video id="heroVideo" autoplay muted playsinline preload="auto"></video>
+                </div>
             </div>
         </div>
     </section>
@@ -121,7 +127,7 @@
             </div>
             
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card" onclick="window.location.href='rpa-demo.html'" style="cursor: pointer;">
                     <div class="service-icon">
                         <i class="fas fa-robot"></i>
                     </div>
@@ -306,6 +312,19 @@
         </div>
     </section>
 
+    <!-- AI Impact Section -->
+    <section class="ai-impact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="impact.title">Impacto da IA nos Resultados</h2>
+                <p class="section-description" data-translate="impact.subtitle">Empresas que adotam IA aceleram ganhos de eficiência e reduzem custos consistentemente.</p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="aiImpactChart"></canvas>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
@@ -338,6 +357,9 @@
                             <h4 data-translate="contact.locationLabel">Localização</h4>
                             <p data-translate="contact.location">Itajaí, SC - Brasil</p>
                         </div>
+                    </div>
+                    <div class="contact-image">
+                        <img src="static/implementações.jpg" alt="Processos automatizados" class="contact-img">
                     </div>
                 </div>
                 
@@ -437,6 +459,12 @@
         </div>
     </footer>
 
+    <button id="openChatGPT" class="chatgpt-tab" aria-label="Abrir ChatGPT">
+        <i class="fas fa-robot"></i>
+        <span>ChatGPT</span>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
     --primary-color: #2563eb;
     --primary-dark: #1d4ed8;
     --secondary-color: #64748b;
-    --accent-color: #f59e0b;
+    --accent-color: #0ea5e9;
     --text-primary: #1e293b;
     --text-secondary: #64748b;
     --text-light: #94a3b8;
@@ -21,8 +21,8 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    --gradient-secondary: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
     --border-radius: 12px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -133,6 +133,23 @@ body {
     gap: 1rem;
 }
 
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: clamp(195px, 35vh, 560px);
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+}
+
+.chart-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
 .language-selector {
     display: flex;
     gap: 0.25rem;
@@ -182,9 +199,43 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
 }
-
 .theme-toggle i {
     font-size: 1.125rem;
+}
+
+.chatgpt-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatgpt-btn:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Dark mode variant for ChatGPT button */
+:root[data-theme="dark"] .chatgpt-btn {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+:root[data-theme="dark"] .chatgpt-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.theme-toggle:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 /* Header */
@@ -200,9 +251,19 @@ body {
     transition: var(--transition);
 }
 
+.header.scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
 :root[data-theme="dark"] .header {
     background: rgba(15, 23, 42, 0.95);
     border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .header.scrolled {
+    background: rgba(15, 23, 42, 0.98);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4);
 }
 
 :root[data-theme="dark"] .nav-menu {
@@ -214,74 +275,74 @@ body {
 }
 
 /* Dark Mode - Header Elements */
-::root[data-theme="dark"] .nav-container {
+:root[data-theme="dark"] .nav-container {
     background: transparent;
 }
 
-::root[data-theme="dark"] .logo-text {
+:root[data-theme="dark"] .logo-text {
     color: var(--text-primary);
 }
 
-::root[data-theme="dark"] .nav-link {
+:root[data-theme="dark"] .nav-link {
     color: var(--text-primary);
 }
 
-::root[data-theme="dark"] .nav-link:hover {
+:root[data-theme="dark"] .nav-link:hover {
     color: var(--primary-color);
 }
 
-::root[data-theme="dark"] .lang-btn {
+:root[data-theme="dark"] .lang-btn {
     color: var(--text-primary);
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
 }
 
-::root[data-theme="dark"] .lang-btn.active {
+:root[data-theme="dark"] .lang-btn.active {
     background: var(--primary-color);
     color: white;
 }
 
-::root[data-theme="dark"] .theme-toggle {
+:root[data-theme="dark"] .theme-toggle {
     color: var(--text-primary);
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
 }
 
-::root[data-theme="dark"] .theme-toggle:hover {
+:root[data-theme="dark"] .theme-toggle:hover {
     background: var(--primary-color);
     color: white;
 }
 
-::root[data-theme="dark"] .hamburger span {
+:root[data-theme="dark"] .hamburger span {
     background: var(--text-primary);
 }
 
 /* Dark Mode - Hero Section */
-::root[data-theme="dark"] .hero-container {
-    background: var(--bg-primary);
+:root[data-theme="dark"] .hero {
+    background: linear-gradient(135deg, #0b1220 0%, #111827 100%);
 }
 
-::root[data-theme="dark"] .hero-title {
+:root[data-theme="dark"] .hero-title {
     color: var(--text-primary);
 }
 
-::root[data-theme="dark"] .hero-description {
+:root[data-theme="dark"] .hero-description {
     color: var(--text-secondary);
 }
 
-::root[data-theme="dark"] .benefit-item {
+:root[data-theme="dark"] .benefit-item {
     color: var(--text-primary);
 }
 
-::root[data-theme="dark"] .benefit-item i {
+:root[data-theme="dark"] .benefit-item i {
     color: var(--primary-color);
 }
 
-::root[data-theme="dark"] .hero-urgency {
+:root[data-theme="dark"] .hero-urgency {
     color: var(--text-secondary);
 }
 
-::root[data-theme="dark"] .hero-urgency strong {
+:root[data-theme="dark"] .hero-urgency strong {
     color: var(--accent-color);
 }
 
@@ -494,16 +555,47 @@ body {
     animation: fadeInRight 0.8s ease-out 0.2s both;
 }
 
-.hero-img {
+.hero-video {
+    position: relative;
     width: 100%;
-    height: auto;
+    aspect-ratio: 16/9;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    background: #000;
+}
+
+.hero-video video {
+width: 100%;
+height: 100%;
+display: block;
+object-fit: cover;
+}
+
+.hero-img {
+width: 100%;
+height: auto;
+border-radius: var(--border-radius);
+box-shadow: var(--shadow-xl);
+}
+
+.contact-image {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.contact-img {
+width: 100%;
+max-width: 200px;
+height: auto;
+border-radius: var(--border-radius);
+box-shadow: var(--shadow-md);
 }
 
 /* Services Section */
 .services {
-    padding: 80px 0;
+padding: 80px 0;
+background: var(--bg-primary);
     background: var(--bg-primary);
 }
 
@@ -759,22 +851,6 @@ body {
     flex-direction: column;
     gap: 2rem;
 }
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: var(--bg-secondary);
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-}
-
-.contact-item:hover {
-    transform: translateX(10px);
-    box-shadow: var(--shadow-md);
-}
-
 .contact-item i {
     font-size: 1.5rem;
     color: var(--primary-color);

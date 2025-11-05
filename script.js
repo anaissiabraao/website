@@ -5,10 +5,12 @@ const translations = {
         'nav.services': 'Serviços',
         'nav.about': 'Sobre',
         'nav.contact': 'Contato',
-        'hero.title': 'Aumente sua produtividade em',
-        'hero.highlight': '95% com RPA',
-        'hero.description': 'Economize até R$ 50.000/mês automatizando processos repetitivos. Nossos clientes reduzem custos operacionais e aumentam lucros em apenas 30 dias.',
-        'hero.savings': 'Economize até R$ 50.000/mês',
+        'hero.title': 'Transforme seus processos com IA',
+        'hero.highlight': 'Economize até 40% da sua operação',
+        'hero.description': 'Automatize tarefas repetitivas com IA e RPA e escale sua eficiência operacional com segurança e governança.',
+        'hero.preSavings': 'Economize até',
+        'hero.savings': 'R$ 50.000/mês',
+        'hero.postSavings': 'automatizando processos repetitivos. Nossos clientes reduzem custos operacionais e aumentam lucros em apenas 30 dias.',
         'hero.benefit1': 'ROI garantido em 90 dias',
         'hero.benefit2': 'Implementação em 15 dias',
         'hero.benefit3': 'Suporte 24/7 incluído',
@@ -36,12 +38,12 @@ const translations = {
         'services.improvement.feature2': 'Implementação de melhorias',
         'services.improvement.feature3': 'Treinamento de equipes',
         'services.improvement.feature4': 'Acompanhamento de resultados',
-        'about.title': 'Sobre a ANAISSI DATA STRATEGY',
-        'about.description': 'Somos especialistas em transformação digital, focados em automação de processos e análise de dados para impulsionar o crescimento dos nossos clientes.',
-        'about.feature1': 'Experiência comprovada em RPA',
-        'about.feature2': 'Metodologias ágeis e eficientes',
-        'about.feature3': 'Suporte técnico especializado',
-        'about.feature4': 'Resultados mensuráveis',
+        'about.title': 'Sobre a IA SOLUTION',
+        'about.description': 'Especialistas em IA aplicada a processos. Combinamos RPA, análise de dados e automação inteligente para escalar eficiência e qualidade com governança.',
+        'about.feature1': 'Casos reais com ROI em até 90 dias',
+        'about.feature2': 'Framework ágil de implementação (15 dias)',
+        'about.feature3': 'Suporte sênior 24/7',
+        'about.feature4': 'Resultados monitorados e mensuráveis',
         'testimonials.title': 'O que nossos clientes dizem',
         'testimonials.subtitle': 'Resultados reais de empresas que transformaram seus processos',
         'testimonials.testimonial1': '"A ANAISSI automatizou nossos processos financeiros e economizamos R$ 30.000/mês. ROI em apenas 2 meses!"',
@@ -60,6 +62,10 @@ const translations = {
         'contact.phoneLabel': 'Telefone',
         'contact.locationLabel': 'Localização',
         'contact.location': 'Itajaí, SC - Brasil',
+        'impact.title': 'Impacto da IA nos Resultados',
+        'impact.subtitle': 'Empresas que adotam IA aceleram ganhos de eficiência e reduzem custos consistentemente.',
+        'impact.efficiency': 'Eficiência Operacional (%)',
+        'impact.costReduction': 'Redução de Custos (%)',
         'form.title': '🚀 Solicite sua Consultoria Gratuita',
         'form.subtitle': 'Descubra como economizar até R$ 50.000/mês com automação',
         'form.employeesPlaceholder': 'Quantos funcionários sua empresa tem?',
@@ -86,10 +92,12 @@ const translations = {
         'nav.services': 'Services',
         'nav.about': 'About',
         'nav.contact': 'Contact',
-        'hero.title': 'Increase your productivity by',
-        'hero.highlight': '95% with RPA',
-        'hero.description': 'Save up to $50,000/month by automating repetitive processes. Our clients reduce operational costs and increase profits in just 30 days.',
-        'hero.savings': 'Save up to $50,000/month',
+        'hero.title': 'Transform your processes with AI',
+        'hero.highlight': 'Save up to 40% of operational costs',
+        'hero.description': 'Automate repetitive work with AI and RPA to scale efficiency with governance and security.',
+        'hero.preSavings': 'Save up to',
+        'hero.savings': '$50,000/month',
+        'hero.postSavings': 'by automating repetitive processes. Our clients reduce operational costs and boost profits in just 30 days.',
         'hero.benefit1': 'ROI guaranteed in 90 days',
         'hero.benefit2': 'Implementation in 15 days',
         'hero.benefit3': '24/7 support included',
@@ -117,12 +125,12 @@ const translations = {
         'services.improvement.feature2': 'Improvement implementation',
         'services.improvement.feature3': 'Team training',
         'services.improvement.feature4': 'Results monitoring',
-        'about.title': 'About ANAISSI DATA STRATEGY',
-        'about.description': 'We are digital transformation specialists, focused on process automation and data analysis to drive our clients\' growth.',
-        'about.feature1': 'Proven RPA experience',
-        'about.feature2': 'Agile and efficient methodologies',
-        'about.feature3': 'Specialized technical support',
-        'about.feature4': 'Measurable results',
+        'about.title': 'About IA SOLUTION',
+        'about.description': 'We specialize in applied AI for processes. We combine RPA, data analysis and intelligent automation to scale efficiency with governance.',
+        'about.feature1': 'Proven cases with ROI in under 90 days',
+        'about.feature2': 'Agile implementation framework (15 days)',
+        'about.feature3': 'Senior 24/7 support',
+        'about.feature4': 'Monitored and measurable results',
         'testimonials.title': 'What our clients say',
         'testimonials.subtitle': 'Real results from companies that transformed their processes',
         'testimonials.testimonial1': '"ANAISSI automated our financial processes and we saved $30,000/month. ROI in just 2 months!"',
@@ -141,6 +149,10 @@ const translations = {
         'contact.phoneLabel': 'Phone',
         'contact.locationLabel': 'Location',
         'contact.location': 'Itajaí, SC - Brazil',
+        'impact.title': 'AI Impact on Results',
+        'impact.subtitle': 'Companies that adopt AI accelerate efficiency gains and consistently reduce costs.',
+        'impact.efficiency': 'Operational Efficiency (%)',
+        'impact.costReduction': 'Cost Reduction (%)',
         'form.title': '🚀 Request Your Free Consultation',
         'form.subtitle': 'Discover how to save up to $50,000/month with automation',
         'form.employeesPlaceholder': 'How many employees does your company have?',
@@ -167,10 +179,12 @@ const translations = {
         'nav.services': 'Servicios',
         'nav.about': 'Acerca',
         'nav.contact': 'Contacto',
-        'hero.title': 'Aumenta tu productividad en',
-        'hero.highlight': '95% con RPA',
-        'hero.description': 'Ahorra hasta $50,000/mes automatizando procesos repetitivos. Nuestros clientes reducen costos operacionales y aumentan ganancias en solo 30 días.',
-        'hero.savings': 'Ahorra hasta $50,000/mes',
+        'hero.title': 'Transforma tus procesos con IA',
+        'hero.highlight': 'Ahorra hasta 40% de los costos operativos',
+        'hero.description': 'Automatiza trabajo repetitivo con IA y RPA para escalar eficiencia con gobernanza y seguridad.',
+        'hero.preSavings': 'Ahorra hasta',
+        'hero.savings': '$50,000/mes',
+        'hero.postSavings': 'automatizando procesos repetitivos. Nuestros clientes reducen costos y aumentan ganancias en solo 30 días.',
         'hero.benefit1': 'ROI garantizado en 90 días',
         'hero.benefit2': 'Implementación en 15 días',
         'hero.benefit3': 'Soporte 24/7 incluido',
@@ -198,12 +212,12 @@ const translations = {
         'services.improvement.feature2': 'Implementación de mejoras',
         'services.improvement.feature3': 'Capacitación de equipos',
         'services.improvement.feature4': 'Seguimiento de resultados',
-        'about.title': 'Acerca de ANAISSI DATA STRATEGY',
-        'about.description': 'Somos especialistas en transformación digital, enfocados en automatización de procesos y análisis de datos para impulsar el crecimiento de nuestros clientes.',
-        'about.feature1': 'Experiencia comprobada en RPA',
-        'about.feature2': 'Metodologías ágiles y eficientes',
-        'about.feature3': 'Soporte técnico especializado',
-        'about.feature4': 'Resultados medibles',
+        'about.title': 'Acerca de IA SOLUTION',
+        'about.description': 'Expertos en IA aplicada a procesos. Combinamos RPA, análisis de datos y automatización inteligente para escalar eficiencia con gobernanza.',
+        'about.feature1': 'Casos reales con ROI en menos de 90 días',
+        'about.feature2': 'Marco ágil de implementación (15 días)',
+        'about.feature3': 'Soporte senior 24/7',
+        'about.feature4': 'Resultados monitoreados y medibles',
         'testimonials.title': 'Lo que dicen nuestros clientes',
         'testimonials.subtitle': 'Resultados reales de empresas que transformaron sus procesos',
         'testimonials.testimonial1': '"ANAISSI automatizó nuestros procesos financieros y ahorramos $30,000/mes. ROI en solo 2 meses!"',
@@ -222,6 +236,10 @@ const translations = {
         'contact.phoneLabel': 'Teléfono',
         'contact.locationLabel': 'Ubicación',
         'contact.location': 'Itajaí, SC - Brasil',
+        'impact.title': 'Impacto de la IA en los Resultados',
+        'impact.subtitle': 'Las empresas que adoptan IA aceleran la eficiencia y reducen costos de manera consistente.',
+        'impact.efficiency': 'Eficiencia Operativa (%)',
+        'impact.costReduction': 'Reducción de Costos (%)',
         'form.title': '🚀 Solicita tu Consulta Gratuita',
         'form.subtitle': 'Descubre cómo ahorrar hasta $50,000/mes con automatización',
         'form.employeesPlaceholder': '¿Cuántos empleados tiene tu empresa?',
@@ -248,10 +266,12 @@ const translations = {
         'nav.services': 'Dienstleistungen',
         'nav.about': 'Über uns',
         'nav.contact': 'Kontakt',
-        'hero.title': 'Steigern Sie Ihre Produktivität um',
-        'hero.highlight': '95% mit RPA',
-        'hero.description': 'Sparen Sie bis zu 50.000€/Monat durch Automatisierung repetitiver Prozesse. Unsere Kunden reduzieren Betriebskosten und steigern Gewinne in nur 30 Tagen.',
-        'hero.savings': 'Sparen Sie bis zu 50.000€/Monat',
+        'hero.title': 'Transformieren Sie Ihre Prozesse mit KI',
+        'hero.highlight': 'Sparen Sie bis zu 40% der Betriebskosten',
+        'hero.description': 'Automatisieren Sie repetitive Aufgaben mit KI und RPA, um Effizienz mit Governance und Sicherheit zu skalieren.',
+        'hero.preSavings': 'Sparen Sie bis zu',
+        'hero.savings': '50.000€/Monat',
+        'hero.postSavings': 'durch Automatisierung repetitiver Prozesse. Unsere Kunden senken Kosten und steigern Gewinne in nur 30 Tagen.',
         'hero.benefit1': 'ROI garantiert in 90 Tagen',
         'hero.benefit2': 'Implementierung in 15 Tagen',
         'hero.benefit3': '24/7 Support inklusive',
@@ -279,12 +299,12 @@ const translations = {
         'services.improvement.feature2': 'Verbesserungsimplementierung',
         'services.improvement.feature3': 'Teamschulung',
         'services.improvement.feature4': 'Ergebnisverfolgung',
-        'about.title': 'Über ANAISSI DATA STRATEGY',
-        'about.description': 'Wir sind Spezialisten für digitale Transformation, fokussiert auf Prozessautomatisierung und Datenanalyse zur Förderung des Wachstums unserer Kunden.',
-        'about.feature1': 'Bewährte RPA-Erfahrung',
-        'about.feature2': 'Agile und effiziente Methoden',
-        'about.feature3': 'Spezialisierter technischer Support',
-        'about.feature4': 'Messbare Ergebnisse',
+        'about.title': 'Über IA SOLUTION',
+        'about.description': 'Spezialisten für angewandte KI in Prozessen. Wir kombinieren RPA, Datenanalyse und intelligente Automatisierung, um Effizienz mit Governance zu skalieren.',
+        'about.feature1': 'Erprobte Fälle mit ROI unter 90 Tagen',
+        'about.feature2': 'Agiles Implementierungsframework (15 Tage)',
+        'about.feature3': 'Senior 24/7 Support',
+        'about.feature4': 'Überwachte und messbare Ergebnisse',
         'testimonials.title': 'Was unsere Kunden sagen',
         'testimonials.subtitle': 'Echte Ergebnisse von Unternehmen, die ihre Prozesse transformiert haben',
         'testimonials.testimonial1': '"ANAISSI hat unsere Finanzprozesse automatisiert und wir sparen 30.000€/Monat. ROI in nur 2 Monaten!"',
@@ -303,6 +323,10 @@ const translations = {
         'contact.phoneLabel': 'Telefon',
         'contact.locationLabel': 'Standort',
         'contact.location': 'Itajaí, SC - Brasilien',
+        'impact.title': 'KI-Impact auf Ergebnisse',
+        'impact.subtitle': 'Unternehmen mit KI beschleunigen Effizienzgewinne und senken Kosten nachhaltig.',
+        'impact.efficiency': 'Operative Effizienz (%)',
+        'impact.costReduction': 'Kostenreduzierung (%)',
         'form.title': '🚀 Fordern Sie Ihre Kostenlose Beratung an',
         'form.subtitle': 'Entdecken Sie, wie Sie bis zu 50.000€/Monat mit Automatisierung sparen können',
         'form.employeesPlaceholder': 'Wie viele Mitarbeiter hat Ihr Unternehmen?',
@@ -361,6 +385,9 @@ const translatePage = (lang) => {
     elements.forEach(element => translateElement(element, lang));
     currentLang = lang;
     localStorage.setItem('language', lang);
+    if (typeof updateAiImpactChartLang === 'function') {
+        updateAiImpactChartLang(lang);
+    }
 };
 
 // Language switching
@@ -372,6 +399,121 @@ langButtons.forEach(btn => {
         translatePage(lang);
     });
 });
+// Hero video carousel (processos/marlon.mp4, processos/murilo.mp4) at 2x loop
+const initHeroVideoCarousel = () => {
+    const video = document.getElementById('heroVideo');
+    if (!video) return;
+    const playlist = ['processos/marlon.mp4', 'processos/murilo.mp4'];
+    let current = 0;
+    const playCurrent = () => {
+        video.src = playlist[current];
+        video.currentTime = 0;
+        video.playbackRate = 2.0;
+        video.muted = true;
+        const p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+    };
+    video.addEventListener('ended', () => {
+        current = (current + 1) % playlist.length;
+        playCurrent();
+    });
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            video.playbackRate = 2.0;
+            video.muted = true;
+            const p = video.play();
+            if (p && typeof p.catch === 'function') p.catch(() => {});
+        }
+    });
+    playCurrent();
+};
+
+// AI Impact Chart (Chart.js)
+let aiImpactChart = null;
+const monthsByLang = {
+    pt: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+    en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    es: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    de: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez']
+};
+
+const initAiImpactChart = () => {
+    const canvas = document.getElementById('aiImpactChart');
+    if (!canvas || typeof Chart === 'undefined') return;
+    const lang = currentLang || localStorage.getItem('language') || 'pt';
+    const t = (k) => (translations[lang] && translations[lang][k]) || k;
+    const labels = monthsByLang[lang] || monthsByLang['pt'];
+    const efficiency = [5, 12, 18, 25, 32, 38, 45, 52, 58, 63, 68, 72];
+    const costRed = [3, 8, 12, 18, 24, 30, 35, 40, 45, 50, 54, 58];
+    aiImpactChart = new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: t('impact.efficiency'),
+                    data: efficiency,
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                    fill: true,
+                    tension: 0.35,
+                    pointRadius: 0
+                },
+                {
+                    label: t('impact.costReduction'),
+                    data: costRed,
+                    borderColor: '#0ea5e9',
+                    backgroundColor: 'rgba(14, 165, 233, 0.15)',
+                    fill: true,
+                    tension: 0.35,
+                    pointRadius: 0
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-primary') } }
+            },
+            scales: {
+                x: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') } },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: (v) => v + '%',
+                        color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary')
+                    },
+                    grid: { color: 'rgba(148, 163, 184, 0.2)' }
+                }
+            }
+        }
+    });
+    updateAiImpactChartTheme();
+};
+
+const updateAiImpactChartLang = (lang) => {
+    if (!aiImpactChart) return;
+    const labels = monthsByLang[lang] || monthsByLang['pt'];
+    const t = (k) => (translations[lang] && translations[lang][k]) || k;
+    aiImpactChart.data.labels = labels;
+    aiImpactChart.data.datasets[0].label = t('impact.efficiency');
+    aiImpactChart.data.datasets[1].label = t('impact.costReduction');
+    aiImpactChart.update();
+};
+
+const updateAiImpactChartTheme = () => {
+    if (!aiImpactChart) return;
+    const cs = getComputedStyle(document.documentElement);
+    const textPrimary = cs.getPropertyValue('--text-primary');
+    const textSecondary = cs.getPropertyValue('--text-secondary');
+    aiImpactChart.options.plugins.legend.labels.color = textPrimary;
+    aiImpactChart.options.scales.x.ticks.color = textSecondary;
+    aiImpactChart.options.scales.y.ticks.color = textSecondary;
+    aiImpactChart.options.scales.y.grid.color = 'rgba(148, 163, 184, 0.2)';
+    aiImpactChart.update();
+};
 
 // Theme toggle functionality
 const toggleTheme = () => {
@@ -383,6 +525,9 @@ const toggleTheme = () => {
     
     const icon = themeToggle.querySelector('i');
     icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    if (typeof updateAiImpactChartTheme === 'function') {
+        updateAiImpactChartTheme();
+    }
 };
 
 themeToggle.addEventListener('click', toggleTheme);
@@ -422,16 +567,16 @@ navLinks.forEach(link => {
     });
 });
 
-// Header scroll effect
+// Header scroll effect (use class to respect theme)
 window.addEventListener('scroll', () => {
     if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = '0 4px 6px -1px rgb(0 0 0 / 0.1)';
+        header.classList.add('scrolled');
     } else {
-        header.style.background = 'rgba(255, 255, 255, 0.95)';
-        header.style.boxShadow = 'none';
+        header.classList.remove('scrolled');
     }
 });
+// Initialize header state
+if (window.scrollY > 100) header.classList.add('scrolled');
 
 // Smooth scrolling for navigation links
 navLinks.forEach(link => {
@@ -723,32 +868,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add typing effect to hero title
-const typeWriter = (element, text, speed = 100) => {
-    let i = 0;
-    element.innerHTML = '';
-    
-    const timer = setInterval(() => {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-        } else {
-            clearInterval(timer);
-        }
-    }, speed);
-};
-
-// Initialize typing effect when page loads
-document.addEventListener('DOMContentLoaded', () => {
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const originalText = heroTitle.textContent;
-        setTimeout(() => {
-            typeWriter(heroTitle, originalText, 50);
-        }, 500);
-    }
-});
-
 // Add scroll progress indicator
 const createScrollProgress = () => {
     const progressBar = document.createElement('div');
@@ -788,6 +907,12 @@ document.addEventListener('DOMContentLoaded', () => {
     loadingScreen.style.display = 'flex';
     initializeTheme();
     initializeLanguage();
+    initHeroVideoCarousel();
+    initAiImpactChart();
+    const header = document.querySelector('header');
+    if (window.pageYOffset > 0) {
+        header.classList.add('scrolled');
+    }
 });
 
 // Add CSS for loading animation
@@ -822,3 +947,18 @@ loadingStyles.textContent = `
     }
 `;
 document.head.appendChild(loadingStyles);
+
+// ChatGPT button click handler
+document.addEventListener('DOMContentLoaded', () => {
+    const openChat = () => {
+        const w = 480;
+        const h = 700;
+        const left = window.screenX + window.innerWidth - w - 20;
+        const top = window.screenY + window.innerHeight - h - 40;
+        window.open('https://chatgpt.com/', 'chatgpt_window', `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`);
+    };
+    const chatGptButton = document.getElementById('openChatGPT');
+    if (chatGptButton) chatGptButton.addEventListener('click', openChat);
+    const chatGptHeaderButton = document.getElementById('openChatGPTHeader');
+    if (chatGptHeaderButton) chatGptHeaderButton.addEventListener('click', openChat);
+});
