@@ -56,24 +56,54 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      // Enviar e-mail usando EmailJS
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        employees: formData.employees,
+        interest: formData.interest,
+        message: formData.message,
+        to_email: 'anaissiabraao@gmail.com'
+      };
 
-    toast({
-      title: "Mensagem enviada com sucesso!",
-      description: "Entraremos em contato em até 24 horas.",
-    });
+      // @ts-ignore - EmailJS is loaded via CDN
+      const response = await emailjs.send(
+        'service_us0gycu',
+        'template_fddaqoi',
+        templateParams
+      );
 
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      employees: "",
-      interest: "",
-      message: "",
-    });
-    setIsSubmitting(false);
+      if (response.status === 200) {
+        toast({
+          title: "✅ Mensagem enviada com sucesso!",
+          description: "Entraremos em contato em até 2 horas úteis.",
+        });
+
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          company: "",
+          employees: "",
+          interest: "",
+          message: "",
+        });
+      } else {
+        throw new Error('Erro no envio');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar email:', error);
+      toast({
+        title: "❌ Erro ao enviar formulário",
+        description: "Tente novamente ou entre em contato diretamente pelo e-mail.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
