@@ -1,13 +1,11 @@
 services:
   - type: web
     name: anaissi-data-strategy
-    env: static
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: NODE_VERSION
         value: 20
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+      - key: NODE_ENV
+        value: production
