@@ -1,4 +1,4 @@
-import { CheckCircle, Award, Users, Zap } from "lucide-react";
+import { CheckCircle, Award, Users, Zap, Sparkles } from "lucide-react";
 import logo from "@/assets/logo.png";
 import teamImage from "@/assets/team-working.jpg";
 import { useTranslation } from "@/i18n/LanguageProvider";
@@ -62,7 +62,7 @@ const About = () => {
           <div className="relative order-1 lg:order-2">
             <div className="absolute -inset-4 md:-inset-8 bg-gradient-primary opacity-10 blur-3xl rounded-full" />
             
-            {/* Team image */}
+            {/* Team Image */}
             <div className="relative rounded-2xl overflow-hidden mb-6 card-shadow">
               <img
                 src={teamImage}
@@ -70,6 +70,46 @@ const About = () => {
                 className="w-full h-48 sm:h-56 md:h-64 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+            </div>
+            
+            {/* AI Animation */}
+            <div className="relative rounded-2xl overflow-hidden mb-6 card-shadow">
+              <div className="relative aspect-video bg-gradient-hero flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  {/* Animated rings */}
+                  <div className="absolute w-32 h-32 md:w-48 md:h-48 rounded-full border-2 border-primary/30 animate-ping" style={{ animationDuration: "3s" }} />
+                  <div className="absolute w-48 h-48 md:w-64 md:h-64 rounded-full border border-primary/20 animate-ping" style={{ animationDuration: "4s" }} />
+                  <div className="absolute w-64 h-64 md:w-80 md:h-80 rounded-full border border-primary/10 animate-ping" style={{ animationDuration: "5s" }} />
+                  
+                  {/* Center logo */}
+                  <div className="relative z-10 flex flex-col items-center gap-4">
+                    <img src={logo} alt="Anaissi" className="w-24 md:w-32 h-auto animate-float" />
+                    <div className="flex items-center gap-2 text-white">
+                      <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+                      <span className="text-sm md:text-base font-medium">IA em Ação</span>
+                      <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Floating data particles */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {["01", "10", "AI", "RPA", "SLA", "DATA", "→", "◆"].map((text, i) => (
+                    <div
+                      key={i}
+                      className="absolute text-primary/60 text-xs font-mono animate-float"
+                      style={{
+                        left: `${10 + i * 12}%`,
+                        top: `${20 + (i % 3) * 25}%`,
+                        animationDelay: `${i * 0.5}s`,
+                        animationDuration: `${3 + i * 0.5}s`,
+                      }}
+                    >
+                      {text}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
             
             <div className="relative bg-card rounded-2xl md:rounded-3xl p-6 md:p-10 lg:p-12 card-shadow border border-border">
