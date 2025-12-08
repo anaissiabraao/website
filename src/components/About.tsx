@@ -1,0 +1,111 @@
+import { CheckCircle, Award, Users, Zap } from "lucide-react";
+import logo from "@/assets/logo.png";
+import teamImage from "@/assets/team-working.jpg";
+import { useTranslation } from "@/i18n/LanguageProvider";
+
+const About = () => {
+  const { t } = useTranslation();
+
+  const features = [
+    {
+      icon: Award,
+      text: t("about.feature1"),
+    },
+    {
+      icon: Zap,
+      text: t("about.feature2"),
+    },
+    {
+      icon: Users,
+      text: t("about.feature3"),
+    },
+    {
+      icon: CheckCircle,
+      text: t("about.feature4"),
+    },
+  ];
+
+  return (
+    <section id="about" className="py-16 md:py-24 bg-muted/30">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="space-y-6 md:space-y-8 order-2 lg:order-1">
+            <div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 text-foreground">
+                {t("about.title")}
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground">
+                {t("about.description")}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 md:gap-4 p-3 md:p-4 rounded-xl bg-background card-shadow hover:card-shadow-hover transition-all duration-300 group cursor-pointer"
+                  >
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <Icon className="h-5 w-5 md:h-6 md:w-6 text-primary-foreground" />
+                    </div>
+                    <p className="text-xs sm:text-sm font-medium text-foreground/80 pt-1 md:pt-2">
+                      {feature.text}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="relative order-1 lg:order-2">
+            <div className="absolute -inset-4 md:-inset-8 bg-gradient-primary opacity-10 blur-3xl rounded-full" />
+            
+            {/* Team image */}
+            <div className="relative rounded-2xl overflow-hidden mb-6 card-shadow">
+              <img
+                src={teamImage}
+                alt="Nossa equipe trabalhando"
+                className="w-full h-48 sm:h-56 md:h-64 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+            </div>
+            
+            <div className="relative bg-card rounded-2xl md:rounded-3xl p-6 md:p-10 lg:p-12 card-shadow border border-border">
+              <div className="flex flex-col items-center text-center space-y-4 md:space-y-6">
+                <img
+                  src={logo}
+                  alt="Anaissi Data Strategy"
+                  className="w-32 sm:w-40 md:w-48 h-auto animate-float"
+                />
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold mb-2 text-foreground">Data Strategy</h3>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    Transformando dados em decisões inteligentes
+                  </p>
+                </div>
+                <div className="grid grid-cols-3 gap-4 md:gap-8 pt-4 md:pt-6 border-t border-border w-full">
+                  <div className="text-center">
+                    <div className="text-xl md:text-2xl font-bold text-gradient">5+</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">{t("about.stats.experience")}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl md:text-2xl font-bold text-gradient">50+</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">{t("about.stats.clients")}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl md:text-2xl font-bold text-gradient">100%</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground">{t("about.stats.commitment")}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default About;

@@ -2,8 +2,11 @@ services:
   - type: web
     name: anaissi-data-strategy
     env: static
-    buildCommand: echo "Static site - no build needed"
-    staticPublishPath: .
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: 20
     routes:
       - type: rewrite
         source: /*

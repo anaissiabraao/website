@@ -1,130 +1,39 @@
-# ANAISSI DATA STRATEGY Website
+# ANAISSI DATA STRATEGY — App (Vite + React + TS + shadcn-ui)
 
-Website profissional da ANAISSI DATA STRATEGY, especializada em automação de processos com RPA e análise de indicadores de SLA.
+Código atualizado do site com i18n (pt/en/es/de) e modal de vídeo de RPA.
 
-## 🚀 Características
+## Requisitos
+- Node.js 18+ (ou 20)
+- npm (ou pnpm/yarn se preferir, ajustando os comandos)
 
-- **Design Moderno**: Interface clean e responsiva usando CSS Grid e Flexbox
-- **Performance Otimizada**: Carregamento rápido com otimizações de imagem e CSS
-- **Responsivo**: Funciona perfeitamente em desktop, tablet e mobile
-- **SEO Friendly**: Estrutura otimizada para mecanismos de busca
-- **Acessível**: Seguindo padrões de acessibilidade web
+## Scripts
+- `npm install` — instala dependências
+- `npm run dev` — modo desenvolvimento (Vite)
+- `npm run build` — build de produção (saída em `dist`)
+- `npm run preview` — pré-visualiza o build
+- `npm run lint` — lint do projeto
 
-## 🛠️ Tecnologias Utilizadas
+## Estrutura
+- `src/` — código React/TS, componentes, hooks, i18n (`src/i18n`)
+- `public/` — estáticos. Inclui `_redirects` (SPA no Render) e `videos/RPA1.mp4`
+- `tailwind.config.ts` — tema e tokens
+- `tsconfig.app.json` — inclui `types: ["vite/client"]` para resolver assets
 
-- **HTML5**: Estrutura semântica moderna
-- **CSS3**: Grid Layout, Flexbox, Custom Properties, Animações
-- **JavaScript**: Interatividade, animações e funcionalidades dinâmicas
-- **Font Awesome**: Ícones profissionais
-- **Google Fonts**: Tipografia Inter para melhor legibilidade
+## Padrão de commits (Conventional Commits)
+- `feat: …` nova funcionalidade
+- `fix: …` correção
+- `chore: …` rotina (deps, lint, config)
+- `docs: …` documentação
+- `refactor: …` refatoração sem mudança de comportamento
 
-## 📁 Estrutura do Projeto
+## Deploy no Render (Static Site)
+- **Service type**: Static Site
+- **Root Directory**: `project update`
+- **Build Command**: `npm install && npm run build`
+- **Publish Directory**: `project update/dist`
+- **Node version**: 18 ou 20 (definir env `NODE_VERSION=20` opcional)
+- `_redirects` já presente em `public` (`/* /index.html 200`)
 
-```
-website/
-├── index.html          # Página principal
-├── styles.css          # Estilos CSS
-├── script.js           # JavaScript
-├── static/             # Imagens e assets
-│   ├── logo.png
-│   ├── logo-marca.png
-│   ├── implementações.jpg
-│   ├── photo face.jpg
-│   └── crachá.jpg
-├── render.yaml         # Configuração para Render
-├── nginx.conf          # Configuração do servidor
-├── package.json        # Metadados do projeto
-└── README.md           # Este arquivo
-```
-
-## 🚀 Deploy no Render
-
-### Pré-requisitos
-- Conta no [Render](https://render.com)
-- Repositório Git (GitHub, GitLab, etc.)
-
-### Passos para Deploy
-
-1. **Conecte seu repositório ao Render**
-   - Faça login no Render
-   - Clique em "New +" e selecione "Static Site"
-   - Conecte seu repositório Git
-
-2. **Configure o projeto**
-   - **Name**: `anaissi-data-strategy`
-   - **Branch**: `main` (ou sua branch principal)
-   - **Root Directory**: Deixe vazio (raiz do projeto)
-   - **Build Command**: Deixe vazio (site estático)
-   - **Publish Directory**: Deixe vazio (raiz do projeto)
-
-3. **Deploy**
-   - Clique em "Create Static Site"
-   - O Render irá automaticamente fazer o deploy
-   - Aguarde alguns minutos para o processo completar
-
-### Configurações Avançadas
-
-O projeto inclui arquivos de configuração otimizados:
-
-- **render.yaml**: Configuração específica para Render
-- **nginx.conf**: Configuração do servidor web com otimizações
-
-## 🎨 Personalização
-
-### Cores e Tema
-As cores principais estão definidas como CSS Custom Properties no arquivo `styles.css`:
-
-```css
-:root {
-    --primary-color: #2563eb;
-    --secondary-color: #64748b;
-    --accent-color: #f59e0b;
-    /* ... outras variáveis */
-}
-```
-
-### Conteúdo
-- **Serviços**: Edite a seção `#services` no `index.html`
-- **Informações de contato**: Atualize a seção `#contact`
-- **Imagens**: Substitua as imagens na pasta `static/`
-
-## 📱 Responsividade
-
-O website é totalmente responsivo e funciona em:
-- **Desktop**: 1200px+
-- **Tablet**: 768px - 1199px
-- **Mobile**: 320px - 767px
-
-## 🔧 Desenvolvimento Local
-
-Para executar localmente:
-
-```bash
-# Usando Python (recomendado)
-python -m http.server 8000
-
-# Ou usando Node.js
-npx serve .
-
-# Acesse: http://localhost:8000
-```
-
-## 📊 Performance
-
-O website foi otimizado para:
-- **Carregamento rápido**: Imagens otimizadas e CSS minificado
-- **SEO**: Meta tags e estrutura semântica
-- **Acessibilidade**: Contraste adequado e navegação por teclado
-- **Mobile-first**: Design responsivo otimizado
-
-## 📞 Suporte
-
-Para dúvidas sobre o website ou serviços da ANAISSI DATA STRATEGY:
-
-- **Email**: contato@anaissidata.com
-- **Telefone**: +55 (11) 99999-9999
-- **Localização**: São Paulo, SP - Brasil
-
-## 📄 Licença
-
-© 2024 ANAISSI DATA STRATEGY. Todos os direitos reservados.
+## Notas
+- Vídeo RPA: servido em `/videos/RPA1.mp4` a partir de `public/videos`.
+- Toggle de idioma no Header (pt/en/es/de) com persistência em `localStorage`.

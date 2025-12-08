@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anaissi DS</title>
+    <link rel="icon" type="image/png" href="static/logo-marca.png">
+    <link rel="shortcut icon" type="image/png" href="static/logo-marca.png">
+    <meta name="description" content="Especialistas em automação de processos com RPA e análise de indicadores de SLA para melhoria contínua dos seus negócios.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <!-- Loading Animation -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <img src="static/logo.png" alt="ANAISSI DATA STRATEGY" class="loading-logo-img">
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <div class="loading-text">Carregando soluções inteligentes...</div>
+        </div>
+    </div>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="static/logo.png" alt="ANAISSI DATA STRATEGY" class="logo-img">
+                    <span class="logo-text">IA SOLUTION</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link" data-translate="nav.home">Início</a></li>
+                    <li><a href="#services" class="nav-link" data-translate="nav.services">Serviços</a></li>
+                    <li><a href="#about" class="nav-link" data-translate="nav.about">Sobre</a></li>
+                    <li><a href="#contact" class="nav-link" data-translate="nav.contact">Contato</a></li>
+                </ul>
+                
+                <div class="nav-controls">
+                    <div class="language-selector">
+                        <button class="lang-btn active" data-lang="pt">🇧🇷 PT</button>
+                        <button class="lang-btn" data-lang="en">🇺🇸 EN</button>
+                        <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
+                        <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+                    </div>
+                    
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="chatgpt-btn" id="openChatGPTHeader" title="ChatGPT">
+                        <i class="fas fa-robot"></i>
+                    </button>
+                </div>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span data-translate="hero.title">Transforme seus processos com IA</span>
+                    <span class="highlight" data-translate="hero.highlight">economize até 40% da sua operação</span>
+                </h1>
+                <p class="hero-description">
+                    <span data-translate="hero.preSavings">Economize até</span>
+                    <strong data-translate="hero.savings">R$ 50.000/mês</strong>
+                    <span data-translate="hero.postSavings">automatizando processos repetitivos. Nossos clientes reduzem custos operacionais e aumentam lucros em apenas 30 dias.</span>
+                </p>
+                <div class="hero-benefits">
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span data-translate="hero.benefit1">ROI garantido em 90 dias</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span data-translate="hero.benefit2">Implementação em 15 dias</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span data-translate="hero.benefit3">Suporte 24/7 incluído</span>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary" data-translate="hero.cta1">
+                        <i class="fas fa-rocket"></i>
+                         QUERO ECONOMIZAR AGORA
+                    </a>
+                    <a href="rpa-demo.html" class="btn btn-secondary" data-translate="hero.cta2">
+                        <i class="fas fa-play"></i>
+                          Ver Demonstração
+                    </a>
+                </div>
+                <div class="hero-urgency">
+                    <p><i class="fas fa-clock"></i> <strong data-translate="hero.urgency">Oferta limitada:</strong> <span data-translate="hero.urgencyText">Consultoria gratuita para os primeiros 10 clientes</span></p>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-video">
+                    <video id="heroVideo" autoplay muted playsinline preload="auto"></video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="services.title">Nossos Serviços</h2>
+                <p class="section-description" data-translate="services.subtitle">
+                    Soluções completas para automação e otimização de processos
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card" onclick="window.location.href='rpa-demo.html'" style="cursor: pointer;">
+                    <div class="service-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="service-title" data-translate="services.rpa.title">Automação RPA</h3>
+                    <p class="service-description" data-translate="services.rpa.description">
+                        Implementamos soluções de Robotic Process Automation para automatizar 
+                        tarefas repetitivas e aumentar a produtividade da sua empresa.
+                    </p>
+                    <ul class="service-features">
+                        <li data-translate="services.rpa.feature1">Automação de processos administrativos</li>
+                        <li data-translate="services.rpa.feature2">Integração entre sistemas</li>
+                        <li data-translate="services.rpa.feature3">Redução de erros manuais</li>
+                        <li data-translate="services.rpa.feature4">Economia de tempo e recursos</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="service-title" data-translate="services.sla.title">Análise de SLA</h3>
+                    <p class="service-description" data-translate="services.sla.description">
+                        Desenvolvemos dashboards e relatórios para monitoramento de indicadores 
+                        de SLA e identificação de oportunidades de melhoria.
+                    </p>
+                    <ul class="service-features">
+                        <li data-translate="services.sla.feature1">Monitoramento em tempo real</li>
+                        <li data-translate="services.sla.feature2">Relatórios personalizados</li>
+                        <li data-translate="services.sla.feature3">Alertas automáticos</li>
+                        <li data-translate="services.sla.feature4">Análise preditiva</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="service-title" data-translate="services.improvement.title">Melhoria Contínua</h3>
+                    <p class="service-description" data-translate="services.improvement.description">
+                        Implementamos metodologias de melhoria contínua para otimizar 
+                        processos e alcançar melhores resultados operacionais.
+                    </p>
+                    <ul class="service-features">
+                        <li data-translate="services.improvement.feature1">Análise de processos</li>
+                        <li data-translate="services.improvement.feature2">Implementação de melhorias</li>
+                        <li data-translate="services.improvement.feature3">Treinamento de equipes</li>
+                        <li data-translate="services.improvement.feature4">Acompanhamento de resultados</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title" data-translate="about.title">Sobre a ANAISSI DATA STRATEGY</h2>
+                    <p class="about-description" data-translate="about.description">
+                        Somos especialistas em transformação digital, focados em automação de processos 
+                        e análise de dados para impulsionar o crescimento dos nossos clientes.
+                    </p>
+                    <div class="about-features">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="about.feature1">Experiência comprovada em RPA</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="about.feature2">Metodologias ágeis e eficientes</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="about.feature3">Suporte técnico especializado</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="about.feature4">Resultados mensuráveis</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="static/veo.gif" alt="Equipe ANAISSI DATA STRATEGY" class="about-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="testimonials.title">O que nossos clientes dizem</h2>
+                <p class="section-description" data-translate="testimonials.subtitle">
+                    Resultados reais de empresas que transformaram seus processos
+                </p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p data-translate="testimonials.testimonial1">"A ANAISSI automatizou nossos processos financeiros e economizamos R$ 30.000/mês. ROI em apenas 2 meses!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Maria Silva</h4>
+                            <span data-translate="testimonials.author1">CFO - TechCorp</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p data-translate="testimonials.testimonial2">"Reduzimos 80% do tempo em processos administrativos. A equipe agora foca no que realmente importa."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Kevin Burrell</h4>
+                            <span data-translate="testimonials.author2">Area Managing Director - Mekong at A.P. Moller - Maersk</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p data-translate="testimonials.testimonial3">"Implementação rápida e suporte excepcional. Nossos SLAs melhoraram 95% em 30 dias."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Marlon Marques</h4>
+                            <span data-translate="testimonials.author3">CEO - PortoEx</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="95">0</div>
+                    <div class="stat-label" data-translate="stats.timeReduction">% Redução de Tempo</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="114">0</div>
+                    <div class="stat-label" data-translate="stats.projectsCompleted">Projetos Concluídos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="99">0</div>
+                    <div class="stat-label" data-translate="stats.accuracy">% Precisão</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="24">0</div>
+                    <div class="stat-label" data-translate="stats.support">Suporte 24/7</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Impact Section -->
+    <section class="ai-impact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="impact.title">Impacto da IA nos Resultados</h2>
+                <p class="section-description" data-translate="impact.subtitle">Empresas que adotam IA aceleram ganhos de eficiência e reduzem custos consistentemente.</p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="aiImpactChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="contact.title">Entre em Contato</h2>
+                <p class="section-description" data-translate="contact.subtitle">
+                    Pronto para transformar seus processos? Vamos conversar sobre sua necessidade.
+                </p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4 data-translate="contact.emailLabel">Email</h4>
+                            <p>anaissiabraao@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4 data-translate="contact.phoneLabel">Telefone</h4>
+                            <p>+55 (47) 98839-5126</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4 data-translate="contact.locationLabel">Localização</h4>
+                            <p data-translate="contact.location">Itajaí, SC - Brasil</p>
+                        </div>
+                    </div>
+                    <div class="contact-image">
+                        <img src="static/implementações.jpg" alt="Processos automatizados" class="contact-img">
+                    </div>
+                </div>
+                
+                <form class="contact-form" id="contact-form">
+                    <div class="form-header">
+                        <h3 data-translate="form.title">🚀 Solicite sua Consultoria Gratuita</h3>
+                        <p data-translate="form.subtitle">Descubra como economizar até R$ 50.000/mês com automação</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="Seu Nome Completo" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Seu Email Corporativo" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" name="phone" placeholder="WhatsApp (11) 99999-9999" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="company" name="company" placeholder="Nome da Empresa" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="employees" name="employees" required>
+                            <option value="" data-translate="form.employeesPlaceholder">Quantos funcionários sua empresa tem?</option>
+                            <option value="1-10" data-translate="form.employees1">1-10 funcionários</option>
+                            <option value="11-50" data-translate="form.employees2">11-50 funcionários</option>
+                            <option value="51-200" data-translate="form.employees3">51-200 funcionários</option>
+                            <option value="200+" data-translate="form.employees4">Mais de 200 funcionários</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="interest" name="interest" required>
+                            <option value="" data-translate="form.interestPlaceholder">Qual serviço te interessa mais?</option>
+                            <option value="rpa" data-translate="form.interestRpa">Automação RPA</option>
+                            <option value="sla" data-translate="form.interestSla">Análise de SLA</option>
+                            <option value="melhoria" data-translate="form.interestImprovement">Melhoria Contínua</option>
+                            <option value="todos" data-translate="form.interestAll">Todos os serviços</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" placeholder="Descreva brevemente seus principais desafios operacionais..." rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-benefits">
+                        <h4 data-translate="form.benefitsTitle">🎁 O que você recebe na consultoria:</h4>
+                        <ul>
+                            <li data-translate="form.benefit1">Análise gratuita dos seus processos</li>
+                            <li data-translate="form.benefit2">Proposta personalizada de economia</li>
+                            <li data-translate="form.benefit3">ROI estimado em 30 dias</li>
+                            <li data-translate="form.benefit4">Plano de implementação detalhado</li>
+                        </ul>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large" data-translate="form.submitButton">
+                        <i class="fas fa-rocket"></i>
+                        QUERO MINHA CONSULTORIA GRATUITA
+                    </button>
+                    
+                    <p class="form-disclaimer" data-translate="form.disclaimer">
+                        <i class="fas fa-shield-alt"></i>
+                        Seus dados estão seguros. Não enviamos spam.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="static/logo-marca.png" alt="ANAISSI DATA STRATEGY" class="footer-logo-img">
+                    <span class="footer-logo-text">ANAISSI DATA STRATEGY</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#home" data-translate="nav.home">Início</a>
+                    <a href="#services" data-translate="nav.services">Serviços</a>
+                    <a href="#about" data-translate="nav.about">Sobre</a>
+                    <a href="#contact" data-translate="nav.contact">Contato</a>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/in/abra%C3%A3o-anaissi-928735179/" target="_blank" class="social-link" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://linktr.ee/anaissiabraao" target="_blank" class="social-link" title="Linktree">
+                        <i class="fas fa-link"></i>
+                    </a>
+                    <a href="https://www.instagram.com/anaissids" target="_blank" class="social-link" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-translate="footer.copyright">&copy; 2024 ANAISSI DATA STRATEGY. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="openChatGPT" class="chatgpt-tab" aria-label="Abrir ChatGPT">
+        <i class="fas fa-robot"></i>
+        <span>ChatGPT</span>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

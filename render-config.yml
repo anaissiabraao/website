@@ -4,11 +4,14 @@
 # Static site configuration
 static_site: true
 
-# Build command (empty for static sites)
-build_command: ""
+# Build command for Vite
+build_command: "npm install && npm run build"
 
-# Publish directory (root)
-publish_directory: "."
+# Publish directory (Vite output)
+publish_directory: "dist"
+
+# Node version
+node_version: "20"
 
 # Routes configuration
 routes:
