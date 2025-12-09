@@ -8,6 +8,10 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProposalGenerator from "./pages/ProposalGenerator";
 import QuickQuote from "./pages/QuickQuote";
+import ServicesPage from "./pages/ServicesPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Confidentiality from "./pages/Confidentiality";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
@@ -20,11 +24,15 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/servicos" element={<ServicesPage />} />
             <Route path="/propostas" element={<ProposalGenerator />} />
             <Route path="/orcamento" element={<QuickQuote />} />
+            <Route path="/privacidade" element={<PrivacyPolicy />} />
+            <Route path="/confidencialidade" element={<Confidentiality />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <WhatsAppButton />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

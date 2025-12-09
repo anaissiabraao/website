@@ -7,9 +7,14 @@ const Footer = () => {
 
   const links = [
     { href: "#home", label: t("nav.home") },
-    { href: "#services", label: t("nav.services") },
+    { href: "/servicos", label: t("nav.services") },
     { href: "#about", label: t("nav.about") },
     { href: "#contact", label: t("nav.contact") },
+  ];
+
+  const legalLinks = [
+    { href: "/privacidade", label: t("privacy.title") },
+    { href: "/confidencialidade", label: t("confidentiality.title") },
   ];
 
   return (
@@ -61,10 +66,24 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border mt-6 md:mt-8 pt-6 md:pt-8 text-center">
-          <p className="text-xs md:text-sm text-muted-foreground">
-            {t("footer.copyright").replace("2024", String(currentYear))}
-          </p>
+        <div className="border-t border-border mt-6 md:mt-8 pt-6 md:pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-xs md:text-sm text-muted-foreground text-center md:text-left">
+              {t("footer.copyright").replace("2024", String(currentYear))}
+            </p>
+            <ul className="flex flex-wrap justify-center gap-4">
+              {legalLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </footer>
