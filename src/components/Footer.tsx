@@ -44,7 +44,7 @@ const Footer = () => {
 
           <div className="flex items-center gap-3 md:gap-4">
             <a
-              href="https://www.linkedin.com/in/abra%C3%A3o-anaissi-928735179/"
+              href="https://linkedin.com/company/anaissi-data-strategy/"
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"

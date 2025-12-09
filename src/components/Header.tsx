@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Menu, X, Moon, Sun, ShoppingBag, Shield, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true); // Dark mode como padrão
   const { t, lang, setLang, languages } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,11 @@ const Header = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Inicializa dark mode
+    document.documentElement.classList.add("dark");
   }, []);
 
   useEffect(() => {
@@ -82,8 +89,43 @@ const Header = () => {
             ))}
           </ul>
 
-          <div className="hidden lg:flex items-center gap-3 xl:gap-4">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
             <LanguageSwitcher />
+            
+            {/* Botão Catálogo */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/servicos')}
+              className="gap-2"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              {t("nav.catalog")}
+            </Button>
+            
+            {/* Botão Privacidade */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/privacidade')}
+              className="gap-2"
+            >
+              <Shield className="h-4 w-4" />
+              {t("nav.privacy")}
+            </Button>
+            
+            {/* Botão ChatGPT */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => window.open('https://chatgpt.com/', '_blank', 'width=800,height=600')}
+              className="gap-2"
+              title={t("nav.chatgptTooltip")}
+            >
+              <MessageSquare className="h-4 w-4" />
+              {t("nav.chatgpt")}
+            </Button>
+            
             <Button
               variant="ghost"
               size="icon"
@@ -92,6 +134,7 @@ const Header = () => {
             >
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
+            
             <Button asChild>
               <a href="#contact">{t("nav.cta")}</a>
             </Button>
@@ -139,6 +182,45 @@ const Header = () => {
                 </a>
               </li>
             ))}
+            <li>
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  navigate('/servicos');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <ShoppingBag className="h-4 w-4" />
+                {t("nav.catalog")}
+              </Button>
+            </li>
+            <li>
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  navigate('/privacidade');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <Shield className="h-4 w-4" />
+                {t("nav.privacy")}
+              </Button>
+            </li>
+            <li>
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  window.open('https://chatgpt.com/', '_blank', 'width=800,height=600');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <MessageSquare className="h-4 w-4" />
+                {t("nav.chatgpt")}
+              </Button>
+            </li>
             <li>
               <Button asChild className="w-full mt-2">
                 <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
