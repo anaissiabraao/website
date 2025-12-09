@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingBag, Shield, MessageSquare, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const { t, lang, setLang, languages } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +24,14 @@ const Header = () => {
     // Inicializa dark mode como padrão
     document.documentElement.classList.add("dark");
   }, []);
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
 
   useEffect(() => {
     // Fecha o menu ao clicar fora
@@ -65,17 +76,80 @@ const Header = () => {
               />
             </a>
 
-            {/* Menu Hamburguer Button */}
+            {/* Links de Atalho - Desktop */}
+            <div className="hidden lg:flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/servicos')}
+                className="gap-2 text-foreground hover:text-primary"
+              >
+                <ShoppingBag className="h-4 w-4" />
+                {t("nav.catalog")}
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/privacidade')}
+                className="gap-2 text-foreground hover:text-primary"
+              >
+                <Shield className="h-4 w-4" />
+                {t("nav.privacy")}
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.open('https://chatgpt.com/', '_blank', 'width=800,height=600')}
+                className="gap-2 text-foreground hover:text-primary"
+                title={t("nav.chatgptTooltip")}
+              >
+                <MessageSquare className="h-4 w-4" />
+                {t("nav.chatgpt")}
+              </Button>
+
+              {/* Botão Dark/Light Mode */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsDark(!isDark)}
+                className="h-10 w-10 rounded-full"
+                title={isDark ? "Modo Claro" : "Modo Escuro"}
+              >
+                {isDark ? (
+                  <Sun className="h-5 w-5 text-foreground" />
+                ) : (
+                  <Moon className="h-5 w-5 text-foreground" />
+                )}
+              </Button>
+
+              {/* Menu Hamburguer Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="h-10 w-10 rounded-full menu-container"
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6 text-foreground" />
+                ) : (
+                  <Menu className="h-6 w-6 text-foreground" />
+                )}
+              </Button>
+            </div>
+
+            {/* Menu Hamburguer Button - Mobile */}
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="h-10 w-10 md:h-12 md:w-12 rounded-full menu-container"
+              className="lg:hidden h-10 w-10 rounded-full menu-container"
             >
               {isMenuOpen ? (
-                <X className="h-6 w-6 md:h-7 md:w-7 text-foreground" />
+                <X className="h-6 w-6 text-foreground" />
               ) : (
-                <Menu className="h-6 w-6 md:h-7 md:w-7 text-foreground" />
+                <Menu className="h-6 w-6 text-foreground" />
               )}
             </Button>
           </div>

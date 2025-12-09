@@ -91,11 +91,11 @@ const Hero = () => {
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              <span className="text-white">{t("hero.title")}</span>
+              <span className="text-foreground">{t("hero.title")}</span>
               <span className="block text-gradient mt-2">{t("hero.highlight")}</span>
             </h1>
 
-            <p className="text-base md:text-lg lg:text-xl text-white/90 max-w-xl mx-auto lg:mx-0">
+            <p className="text-base md:text-lg lg:text-xl text-foreground/90 max-w-xl mx-auto lg:mx-0">
               {t("hero.preSavings")}{" "}
               <span className="font-bold text-primary">{t("hero.savings")}</span>{" "}
               {t("hero.postSavings")}
@@ -105,7 +105,7 @@ const Hero = () => {
               {benefits.map((benefit, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 text-white"
+                  className="flex items-center gap-2 text-foreground"
                 >
                   <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-primary flex-shrink-0" />
                   <span className="text-xs md:text-sm font-medium">{benefit}</span>
@@ -129,10 +129,10 @@ const Hero = () => {
               </Button>
             </div>
 
-            <div className="flex items-center justify-center lg:justify-start gap-2 text-white/80 text-xs md:text-sm">
+            <div className="flex items-center justify-center lg:justify-start gap-2 text-foreground/80 text-xs md:text-sm">
               <Clock className="h-3 w-3 md:h-4 md:w-4 text-primary flex-shrink-0" />
               <span>
-                <strong className="text-white">{t("hero.urgency")}</strong>{" "}
+                <strong className="text-foreground">{t("hero.urgency")}</strong>{" "}
                 {t("hero.urgencyText")}
               </span>
             </div>

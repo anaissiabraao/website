@@ -84,7 +84,7 @@ const About = () => {
                   {/* Center logo */}
                   <div className="relative z-10 flex flex-col items-center gap-4">
                     <img src={logo} alt="Anaissi" className="w-24 md:w-32 h-auto animate-float" />
-                    <div className="flex items-center gap-2 text-white">
+                    <div className="flex items-center gap-2 text-foreground">
                       <Sparkles className="h-5 w-5 text-primary animate-pulse" />
                       <span className="text-sm md:text-base font-medium">IA em Ação</span>
                       <Sparkles className="h-5 w-5 text-primary animate-pulse" />
