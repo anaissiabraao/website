@@ -7,7 +7,7 @@ import { LanguageProvider } from "@/i18n/LanguageProvider";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProposalGenerator from "./pages/ProposalGenerator";
-import QuoteGenerator from "./pages/QuoteGenerator";
+import QuickQuote from "./pages/QuickQuote";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +21,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/propostas" element={<ProposalGenerator />} />
-            <Route path="/orcamentos" element={<QuoteGenerator />} />
+            <Route path="/orcamento" element={<QuickQuote />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

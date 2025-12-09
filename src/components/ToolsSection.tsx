@@ -2,24 +2,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { FileText, MessageSquare, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from '@/i18n/LanguageProvider';
 
 const ToolsSection = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const tools = [
     {
-      title: 'Gerador de Propostas',
-      description: 'Crie propostas comerciais completas em PDF com identidade visual profissional',
+      title: t('tools.proposals.title'),
+      description: t('tools.proposals.description'),
       icon: FileText,
       path: '/propostas',
       color: 'text-primary',
       bgColor: 'bg-primary/10',
     },
     {
-      title: 'Orçamentos para WhatsApp',
-      description: 'Gere orçamentos rápidos e profissionais prontos para enviar no WhatsApp',
+      title: t('tools.quotes.title'),
+      description: t('tools.quotes.description'),
       icon: MessageSquare,
-      path: '/orcamentos',
+      path: '/orcamento',
       color: 'text-accent',
       bgColor: 'bg-accent/10',
     },
@@ -30,10 +32,10 @@ const ToolsSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ferramentas <span className="text-gradient">Comerciais</span>
+            {t('tools.title').split(' ')[0]} <span className="text-gradient">{t('tools.title').split(' ').slice(1).join(' ')}</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Utilize nossas ferramentas para criar propostas e orçamentos profissionais de forma rápida e eficiente
+            {t('tools.subtitle')}
           </p>
         </div>
 
@@ -60,7 +62,7 @@ const ToolsSection = () => {
                     className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
                     variant="outline"
                   >
-                    Acessar Ferramenta
+                    {t('tools.access')}
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </CardContent>
