@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Moon, Sun, ShoppingBag, Shield, MessageSquare } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
-import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState(true); // Dark mode como padrão
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t, lang, setLang, languages } = useTranslation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,17 +18,21 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    // Inicializa dark mode
+    // Inicializa dark mode como padrão
     document.documentElement.classList.add("dark");
   }, []);
 
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDark]);
+    // Fecha o menu ao clicar fora
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (isMenuOpen && !target.closest('.menu-container')) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
 
   const navLinks = [
     { href: "#home", label: t("nav.home") },
@@ -41,197 +42,118 @@ const Header = () => {
     { href: "#contact", label: t("nav.contact") },
   ];
 
-  const LanguageSwitcher = ({ className }: { className?: string }) => (
-    <div className={`flex items-center gap-2 ${className ?? ""}`}>
-      {languages.map((language) => (
-        <Button
-          key={language.code}
-          variant={language.code === lang ? "secondary" : "ghost"}
-          size="sm"
-          className="h-8 px-3 text-xs font-semibold"
-          onClick={() => setLang(language.code)}
-        >
-          {language.label}
-        </Button>
-      ))}
-    </div>
-  );
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-md"
-          : "bg-transparent"
-      }`}
-    >
-      <nav className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          <a href="#home" className="flex items-center gap-2 md:gap-3 group">
-            <img
-              src={logo}
-              alt="Anaissi Data Strategy"
-              className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
-            />
-          </a>
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-background/95 backdrop-blur-md shadow-md"
+            : "bg-transparent"
+        }`}
+      >
+        <nav className="container mx-auto px-4 lg:px-8">
+          <div className="flex items-center justify-between h-16 md:h-20">
+            <a href="#home" className="flex items-center gap-2 md:gap-3 group">
+              <img
+                src={logo}
+                alt="Anaissi Data Strategy"
+                className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
+              />
+            </a>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden lg:flex items-center gap-6 xl:gap-8">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="relative text-white hover:text-primary font-medium transition-colors duration-300 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
-            <LanguageSwitcher />
-            
-            {/* Botão Catálogo */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/servicos')}
-              className="gap-2"
-            >
-              <ShoppingBag className="h-4 w-4" />
-              {t("nav.catalog")}
-            </Button>
-            
-            {/* Botão Privacidade */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/privacidade')}
-              className="gap-2"
-            >
-              <Shield className="h-4 w-4" />
-              {t("nav.privacy")}
-            </Button>
-            
-            {/* Botão ChatGPT */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => window.open('https://chatgpt.com/', '_blank', 'width=800,height=600')}
-              className="gap-2"
-              title={t("nav.chatgptTooltip")}
-            >
-              <MessageSquare className="h-4 w-4" />
-              {t("nav.chatgpt")}
-            </Button>
-            
+            {/* Menu Hamburguer Button */}
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setIsDark(!isDark)}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="h-10 w-10 md:h-12 md:w-12 rounded-full menu-container"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6 md:h-7 md:w-7 text-foreground" />
+              ) : (
+                <Menu className="h-6 w-6 md:h-7 md:w-7 text-foreground" />
+              )}
+            </Button>
+          </div>
+        </nav>
+      </header>
+
+      {/* Menu Lateral */}
+      <div
+        className={`fixed top-0 right-0 h-full w-80 md:w-96 bg-background border-l border-border shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out menu-container ${
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Header do Menu */}
+          <div className="flex items-center justify-between p-6 border-b border-border">
+            <h2 className="text-xl font-bold text-foreground">Menu</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(false)}
               className="rounded-full"
             >
-              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-            
-            <Button asChild>
-              <a href="#contact">{t("nav.cta")}</a>
+              <X className="h-5 w-5 text-foreground" />
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsDark(!isDark)}
-              className="rounded-full h-9 w-9"
-            >
-              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="h-9 w-9"
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+          {/* Conteúdo do Menu */}
+          <div className="flex-1 overflow-y-auto p-6">
+            <nav className="space-y-6">
+              {/* Links de Navegação */}
+              <div className="space-y-2">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={handleLinkClick}
+                    className="block py-3 px-4 text-foreground hover:bg-primary/10 hover:text-primary rounded-lg font-medium transition-all duration-200"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+
+              {/* Divisor */}
+              <div className="border-t border-border" />
+
+              {/* Seletor de Idioma */}
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground mb-3">
+                  {t("nav.services")}
+                </h3>
+                <div className="grid grid-cols-4 gap-2">
+                  {languages.map((language) => (
+                    <Button
+                      key={language.code}
+                      variant={language.code === lang ? "default" : "outline"}
+                      size="sm"
+                      className="font-semibold"
+                      onClick={() => setLang(language.code)}
+                    >
+                      {language.label}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </nav>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
+      {/* Overlay */}
+      {isMenuOpen && (
         <div
-          className={`lg:hidden overflow-hidden transition-all duration-300 ${
-            isMobileMenuOpen ? "max-h-[400px] pb-6" : "max-h-0"
-          }`}
-        >
-          <ul className="flex flex-col gap-3 pt-4 bg-background/95 backdrop-blur-md rounded-xl p-4 mt-2">
-            <li className="flex justify-end">
-              <LanguageSwitcher />
-            </li>
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-2 text-white hover:text-primary font-medium transition-colors duration-300"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-            <li>
-              <Button
-                variant="outline"
-                className="w-full justify-start gap-2"
-                onClick={() => {
-                  navigate('/servicos');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <ShoppingBag className="h-4 w-4" />
-                {t("nav.catalog")}
-              </Button>
-            </li>
-            <li>
-              <Button
-                variant="outline"
-                className="w-full justify-start gap-2"
-                onClick={() => {
-                  navigate('/privacidade');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <Shield className="h-4 w-4" />
-                {t("nav.privacy")}
-              </Button>
-            </li>
-            <li>
-              <Button
-                variant="outline"
-                className="w-full justify-start gap-2"
-                onClick={() => {
-                  window.open('https://chatgpt.com/', '_blank', 'width=800,height=600');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <MessageSquare className="h-4 w-4" />
-                {t("nav.chatgpt")}
-              </Button>
-            </li>
-            <li>
-              <Button asChild className="w-full mt-2">
-                <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
-                  {t("nav.cta")}
-                </a>
-              </Button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+          className="fixed inset-0 bg-black/50 z-[55] transition-opacity duration-300"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+    </>
   );
 };
 
