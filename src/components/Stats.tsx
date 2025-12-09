@@ -96,7 +96,7 @@ const Stats = () => {
                   isVisible={isVisible}
                 />
               </div>
-              <div className="text-primary-foreground/70 text-xs sm:text-sm md:text-base">
+              <div className="text-white/80 text-xs sm:text-sm md:text-base">
                 {stat.label}
               </div>
             </div>

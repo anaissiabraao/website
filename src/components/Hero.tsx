@@ -158,7 +158,7 @@ const Hero = () => {
                 
                 {/* Stats below video */}
                 <div className="p-6 md:p-8 space-y-4">
-                  <h3 className="text-lg md:text-xl font-bold text-primary-foreground text-center">
+                  <h3 className="text-lg md:text-xl font-bold text-white text-center">
                     {t("hero.resultsTitle")}
                   </h3>
                   <div className="grid grid-cols-2 gap-3 md:gap-4">
@@ -173,7 +173,7 @@ const Hero = () => {
                         className="text-center p-3 md:p-4 rounded-xl bg-primary/5 border border-primary/10"
                       >
                         <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gradient">{stat.value}</div>
-                        <div className="text-xs md:text-sm text-primary-foreground/70">{stat.label}</div>
+                        <div className="text-xs md:text-sm text-white/70">{stat.label}</div>
                       </div>
                     ))}
                   </div>
@@ -196,7 +196,7 @@ const Hero = () => {
                   className="text-center p-4 rounded-xl bg-card/10 backdrop-blur-sm border border-primary/20"
                 >
                   <div className="text-2xl font-bold text-gradient">{stat.value}</div>
-                  <div className="text-xs text-primary-foreground/70">{stat.label}</div>
+                  <div className="text-xs text-white/70">{stat.label}</div>
                 </div>
               ))}
             </div>
