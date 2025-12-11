@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
 import { ArrowRight, BarChart3, PieChart, TrendingUp, Workflow } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
-import { services as catalogServices } from "@/data/services";
-import { SERVICES as legacyServices } from "@/types/services";
+import { SERVICES } from "@/types/services";
 
 const iconMap: Record<string, ReactNode> = {
   chart: <BarChart3 className="h-6 w-6" />,
@@ -28,33 +27,16 @@ const formatPriceRange = (
 };
 
 const Services = () => {
-  const catalogIds = new Set(catalogServices.map((s) => s.id));
-
-  const primaryCards = catalogServices.map((service, index) => ({
-    id: service.id,
-    title: service.title,
-    description: service.description,
-    features: service.features,
-    image: service.image,
-    icon: iconMap[service.icon],
-    price: service.price,
-    delay: index * 100,
-  }));
-
-  const legacyOnly = legacyServices.filter((service) => !catalogIds.has(service.id));
-
-  const legacyCards = legacyOnly.map((service, index) => ({
+  const previewCards = SERVICES.map((service, index) => ({
     id: service.id,
     title: service.name,
     description: service.description,
     features: [] as string[],
-    image: placeholderImage,
-    icon: <TrendingUp className="h-6 w-6" />,
+    image: (service as any).image || placeholderImage,
+    icon: iconMap[(service as any).icon] || <TrendingUp className="h-6 w-6" />,
     price: formatPriceRange(service.priceMin, service.priceMax, service.unit),
     delay: index * 100,
-  }));
-
-  const previewCards = [...primaryCards, ...legacyCards].slice(0, 6);
+  })).slice(0, 6);
 
   return (
     <section id="services" className="py-16 sm:py-20 lg:py-24">

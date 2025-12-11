@@ -2,8 +2,7 @@ import { ReactNode } from "react";
 import { BarChart3, PieChart, TrendingUp, Workflow } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
 import Header from "@/components/Header";
-import { services as catalogServices } from "@/data/services";
-import { SERVICES as legacyServices } from "@/types/services";
+import { SERVICES } from "@/types/services";
 
 const iconMap: Record<string, ReactNode> = {
   chart: <BarChart3 className="h-6 w-6" />,
@@ -29,28 +28,13 @@ const formatPriceRange = (
 };
 
 const ServicesPage = () => {
-  const catalogIds = new Set(catalogServices.map((s) => s.id));
-
-  const primaryCards = catalogServices.map((service, index) => ({
-    id: service.id,
-    title: service.title,
-    description: service.description,
-    features: service.features,
-    image: service.image,
-    icon: iconMap[service.icon],
-    price: service.price,
-    delay: index * 100,
-  }));
-
-  const legacyOnly = legacyServices.filter((service) => !catalogIds.has(service.id));
-
-  const legacyCards = legacyOnly.map((service, index) => ({
+  const allCards = SERVICES.map((service, index) => ({
     id: service.id,
     title: service.name,
     description: service.description,
     features: [] as string[],
-    image: placeholderImage,
-    icon: <TrendingUp className="h-6 w-6" />,
+    image: (service as any).image || placeholderImage,
+    icon: iconMap[(service as any).icon] || <TrendingUp className="h-6 w-6" />,
     price: formatPriceRange(service.priceMin, service.priceMax, service.unit),
     delay: index * 100,
   }));
@@ -78,36 +62,18 @@ const ServicesPage = () => {
           <div className="space-y-6">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-2xl sm:text-3xl font-bold font-display mb-2">
-                Catálogo principal
+                Catálogo Principal
               </h2>
               <p className="text-muted-foreground">
-                Serviços novos com os visuais atualizados.
+                Todos os serviços disponíveis em um só lugar.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
-              {primaryCards.map((service) => (
+              {allCards.map((service) => (
                 <ServiceCard key={service.id} {...service} />
               ))}
             </div>
           </div>
-
-          {legacyCards.length > 0 && (
-            <div className="space-y-6 border-t border-border/50 pt-10">
-              <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-2xl sm:text-3xl font-bold font-display mb-2">
-                  Serviços legados
-                </h2>
-                <p className="text-muted-foreground">
-                  Itens anteriores ainda ativos, usando layout atualizado.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
-                {legacyCards.map((service) => (
-                  <ServiceCard key={service.id} {...service} />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </section>
 
@@ -117,7 +83,7 @@ const ServicesPage = () => {
             <h2 className="text-2xl sm:text-3xl font-bold font-display mb-4">
               Pronto para transformar seus dados?
             </h2>
-            <p className="text-muted-foreground mb-8">
+          <p className="text-muted-foreground mb-8">
               Entre em contato e descubra como podemos ajudar sua empresa a alcançar resultados extraordinários.
             </p>
             <a
