@@ -8,6 +8,7 @@ interface ProposalPayload {
   projectTitle: string;
   projectDescription: string;
   selectedServices: string[];
+  selectedServicesDetail?: string[];
 }
 
 const requiredEnv = [
@@ -44,7 +45,9 @@ export default async function handler(req: any, res: any) {
     });
 
     const servicesList =
-      data.selectedServices?.length > 0
+      data.selectedServicesDetail?.length
+        ? data.selectedServicesDetail.map((s) => `- ${s}`).join("\n")
+        : data.selectedServices?.length > 0
         ? data.selectedServices.map((s) => `- ${s}`).join("\n")
         : "Nenhum serviço selecionado";
 

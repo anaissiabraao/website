@@ -1,8 +1,8 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, Send } from "lucide-react";
 import Header from "@/components/Header";
-import { services } from "@/data/services";
+import { SERVICES } from "@/types/services";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,10 +10,31 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
+const formatPriceRange = (min: number, max: number, unit?: string) => {
+  if (!min && !max) return undefined;
+  const formattedMin = `R$ ${min.toLocaleString("pt-BR")}`;
+  const formattedMax = `R$ ${max.toLocaleString("pt-BR")}`;
+  const unitText = unit ? ` ${unit}` : "";
+  return min === max
+    ? `${formattedMax}${unitText}`
+    : `${formattedMin} - ${formattedMax}${unitText}`;
+};
+
 const ProposalGenerator = () => {
   const [searchParams] = useSearchParams();
   const preSelectedService = searchParams.get("servico");
   const { toast } = useToast();
+
+  const serviceOptions = useMemo(
+    () =>
+      SERVICES.map((service) => ({
+        id: service.id,
+        title: service.name,
+        description: service.description,
+        price: formatPriceRange(service.priceMin, service.priceMax, service.unit),
+      })),
+    []
+  );
 
   const [formData, setFormData] = useState({
     name: "",
@@ -23,6 +44,7 @@ const ProposalGenerator = () => {
     projectTitle: "",
     projectDescription: "",
     selectedServices: (preSelectedService ? [preSelectedService] : []) as string[],
+    selectedServicesDetail: [] as string[],
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,11 +58,19 @@ const ProposalGenerator = () => {
   };
 
   const handleServiceToggle = (serviceId: string) => {
+    const option = serviceOptions.find((s) => s.id === serviceId);
+    const label = option
+      ? `${option.title}${option.price ? ` — ${option.price}` : ""}`
+      : serviceId;
+
     setFormData((prev) => ({
       ...prev,
       selectedServices: prev.selectedServices.includes(serviceId)
         ? prev.selectedServices.filter((id) => id !== serviceId)
         : [...prev.selectedServices, serviceId],
+      selectedServicesDetail: prev.selectedServices.includes(serviceId)
+        ? prev.selectedServicesDetail.filter((item) => item !== label)
+        : [...prev.selectedServicesDetail, label],
     }));
   };
 
@@ -241,7 +271,7 @@ const ProposalGenerator = () => {
                 Selecione os serviços que deseja incluir na proposta
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
-                {services.map((service) => (
+                {serviceOptions.map((service) => (
                   <label
                     key={service.id}
                     className={cn(
@@ -257,9 +287,7 @@ const ProposalGenerator = () => {
                       className="mt-1"
                     />
                     <div className="flex-1">
-                      <h3 className="font-medium text-foreground">
-                        {service.title}
-                      </h3>
+                      <h3 className="font-medium text-foreground">{service.title}</h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">
                         {service.description}
                       </p>
