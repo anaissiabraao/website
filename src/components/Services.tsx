@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { ArrowRight, BarChart3, PieChart, TrendingUp, Workflow } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
-import { services } from "@/data/services";
+import { services as catalogServices } from "@/data/services";
+import { SERVICES as legacyServices } from "@/types/services";
 
 const iconMap: Record<string, ReactNode> = {
   chart: <BarChart3 className="h-6 w-6" />,
@@ -10,7 +11,51 @@ const iconMap: Record<string, ReactNode> = {
   bi: <PieChart className="h-6 w-6" />,
 };
 
+const placeholderImage = "/placeholder.svg";
+
+const formatPriceRange = (
+  min: number,
+  max: number,
+  unit?: string
+): string | undefined => {
+  if (!min && !max) return undefined;
+  const formattedMin = `R$ ${min.toLocaleString("pt-BR")}`;
+  const formattedMax = `R$ ${max.toLocaleString("pt-BR")}`;
+  const unitText = unit ? ` ${unit}` : "";
+  return min === max
+    ? `${formattedMax}${unitText}`
+    : `${formattedMin} - ${formattedMax}${unitText}`;
+};
+
 const Services = () => {
+  const catalogIds = new Set(catalogServices.map((s) => s.id));
+
+  const primaryCards = catalogServices.map((service, index) => ({
+    id: service.id,
+    title: service.title,
+    description: service.description,
+    features: service.features,
+    image: service.image,
+    icon: iconMap[service.icon],
+    price: service.price,
+    delay: index * 100,
+  }));
+
+  const legacyOnly = legacyServices.filter((service) => !catalogIds.has(service.id));
+
+  const legacyCards = legacyOnly.map((service, index) => ({
+    id: service.id,
+    title: service.name,
+    description: service.description,
+    features: [] as string[],
+    image: placeholderImage,
+    icon: <TrendingUp className="h-6 w-6" />,
+    price: formatPriceRange(service.priceMin, service.priceMax, service.unit),
+    delay: index * 100,
+  }));
+
+  const previewCards = [...primaryCards, ...legacyCards].slice(0, 6);
+
   return (
     <section id="services" className="py-16 sm:py-20 lg:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,18 +69,8 @@ const Services = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
-          {services.slice(0, 4).map((service, index) => (
-            <ServiceCard
-              key={service.id}
-              id={service.id}
-              title={service.title}
-              description={service.description}
-              features={service.features}
-              image={service.image}
-              icon={iconMap[service.icon]}
-              price={service.price}
-              delay={index * 100}
-            />
+          {previewCards.map((service) => (
+            <ServiceCard key={service.id} {...service} />
           ))}
         </div>
 

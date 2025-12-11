@@ -48,14 +48,31 @@ const ProposalGenerator = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch("/api/send-proposal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Proposta enviada!",
-      description: "Entraremos em contato em breve.",
-    });
+      if (!response.ok) {
+        throw new Error("Falha no envio");
+      }
+
+      setIsSubmitted(true);
+      toast({
+        title: "Proposta enviada!",
+        description: "Entraremos em contato em breve.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro ao enviar",
+        description: "Não foi possível enviar a proposta. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
