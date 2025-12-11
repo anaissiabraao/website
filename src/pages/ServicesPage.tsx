@@ -1,142 +1,73 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { SERVICES, CATEGORY_LABELS, Service } from '@/types/services';
-import { ArrowLeft, Clock, DollarSign } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from '@/i18n/LanguageProvider';
+import { ReactNode } from "react";
+import { BarChart3, PieChart, TrendingUp, Workflow } from "lucide-react";
+import ServiceCard from "@/components/ServiceCard";
+import Header from "@/components/Header";
+import { services } from "@/data/services";
+
+const iconMap: Record<string, ReactNode> = {
+  chart: <BarChart3 className="h-6 w-6" />,
+  trending: <TrendingUp className="h-6 w-6" />,
+  automation: <Workflow className="h-6 w-6" />,
+  bi: <PieChart className="h-6 w-6" />,
+};
 
 const ServicesPage = () => {
-  const navigate = useNavigate();
-  const { t, lang } = useTranslation();
-
-  const formatCurrency = (value: number) => {
-    if (lang === 'en') return `$${value.toLocaleString('en-US')}`;
-    if (lang === 'es') return `$${value.toLocaleString('es-ES')}`;
-    if (lang === 'de') return `€${value.toLocaleString('de-DE')}`;
-    return `R$ ${value.toLocaleString('pt-BR')}`;
-  };
-
-  const groupedServices = SERVICES.reduce((acc, service) => {
-    if (!acc[service.category]) {
-      acc[service.category] = [];
-    }
-    acc[service.category].push(service);
-    return acc;
-  }, {} as Record<string, Service[]>);
-
   return (
-    <div className="min-h-screen bg-gradient-hero">
-      {/* Header */}
-      <header className="bg-background/95 backdrop-blur-md shadow-md">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-gradient">{t('servicesPage.title')}</h1>
-              <p className="text-sm text-muted-foreground">Anaissi Data Strategy</p>
-            </div>
+    <div className="min-h-screen bg-background">
+      <Header />
+
+      <section className="pt-24 sm:pt-32 pb-12 sm:pb-16 bg-gradient-hero">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center animate-slide-up">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display mb-4 sm:mb-6">
+              Nossos <span className="text-gradient">Serviços</span>
+            </h1>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
+              Soluções completas para automação e otimização de processos.
+              Transforme dados em decisões estratégicas.
+            </p>
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            {t('servicesPage.subtitle')}
-          </p>
+      <section className="py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+            {services.map((service, index) => (
+              <ServiceCard
+                key={service.id}
+                id={service.id}
+                title={service.title}
+                description={service.description}
+                features={service.features}
+                image={service.image}
+                icon={iconMap[service.icon]}
+                price={service.price}
+                delay={index * 100}
+              />
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* Services by Category */}
-        <div className="space-y-12">
-          {Object.entries(groupedServices).map(([category, services]) => (
-            <div key={category}>
-              <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-                <span className="text-gradient">{t(`services.${category}`)}</span>
-                <Badge variant="outline" className="text-sm">
-                  {services.length} {services.length === 1 ? t('nav.services').slice(0, -1) : t('nav.services')}
-                </Badge>
-              </h2>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {services.map((service) => (
-                  <Card
-                    key={service.id}
-                    className="group hover:shadow-card-hover transition-all duration-300 hover:border-primary/50"
-                  >
-                    <CardHeader>
-                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                        {service.name}
-                      </CardTitle>
-                      <CardDescription className="line-clamp-2">
-                        {service.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {/* Price */}
-                      <div className="flex items-start gap-2">
-                        <DollarSign className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm font-semibold text-muted-foreground">
-                            {t('quote.priceRange')}
-                          </p>
-                          <p className="text-lg font-bold text-primary">
-                            {formatCurrency(service.priceMin)} - {formatCurrency(service.priceMax)}
-                            {service.unit && (
-                              <span className="text-sm text-muted-foreground">{service.unit}</span>
-                            )}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Delivery Time */}
-                      <div className="flex items-start gap-2">
-                        <Clock className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm font-semibold text-muted-foreground">
-                            {t('quote.deliveryTime')}
-                          </p>
-                          <p className="text-sm font-medium">
-                            {service.deliveryDays.min === service.deliveryDays.max
-                              ? `${service.deliveryDays.min} ${t('quote.days')}`
-                              : `${service.deliveryDays.min} - ${service.deliveryDays.max} ${t('quote.days')}`}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* CTA Button */}
-                      <Button
-                        className="w-full mt-4"
-                        onClick={() => navigate('/orcamento')}
-                      >
-                        {t('servicesPage.getQuote')}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          ))}
+      <section className="py-12 sm:py-16 lg:py-20 border-t border-border/50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold font-display mb-4">
+              Pronto para transformar seus dados?
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              Entre em contato e descubra como podemos ajudar sua empresa a alcançar resultados extraordinários.
+            </p>
+            <a
+              href="/propostas"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-glow"
+            >
+              Solicitar Proposta
+            </a>
+          </div>
         </div>
-
-        {/* Call to Action */}
-        <div className="mt-16 text-center">
-          <Card className="bg-primary/5 border-primary/20 max-w-2xl mx-auto">
-            <CardContent className="pt-6">
-              <h3 className="text-2xl font-bold mb-4">{t('whatsapp.help')}</h3>
-              <p className="text-muted-foreground mb-6">
-                {t('contact.subtitle')}
-              </p>
-              <Button size="lg" onClick={() => navigate('/orcamento')}>
-                {t('servicesPage.getQuote')}
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
+      </section>
     </div>
   );
 };

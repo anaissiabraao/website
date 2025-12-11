@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import ProposalGenerator from "./pages/ProposalGenerator";
 import QuickQuote from "./pages/QuickQuote";
 import ServicesPage from "./pages/ServicesPage";
+import ServiceDetail from "./pages/ServiceDetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Confidentiality from "./pages/Confidentiality";
 import WhatsAppButton from "./components/WhatsAppButton";
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/servicos" element={<ServicesPage />} />
+            <Route path="/servicos/:id" element={<ServiceDetail />} />
             <Route path="/propostas" element={<ProposalGenerator />} />
             <Route path="/orcamento" element={<QuickQuote />} />
             <Route path="/privacidade" element={<PrivacyPolicy />} />

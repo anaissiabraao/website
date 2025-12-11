@@ -1,253 +1,282 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { ServiceSelector } from '@/components/ServiceSelector';
-import { SelectedService, ProposalData } from '@/types/services';
-import { generateProposalPDF } from '@/utils/pdfGenerator';
-import { FileText, Download, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useSearchParams, Link } from "react-router-dom";
+import { ArrowLeft, CheckCircle2, Send } from "lucide-react";
+import Header from "@/components/Header";
+import { services } from "@/data/services";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 const ProposalGenerator = () => {
-  const navigate = useNavigate();
-  const [selectedServices, setSelectedServices] = useState<SelectedService[]>([]);
+  const [searchParams] = useSearchParams();
+  const preSelectedService = searchParams.get("servico");
+  const { toast } = useToast();
+
   const [formData, setFormData] = useState({
-    clientName: '',
-    clientEmail: '',
-    clientPhone: '',
-    clientCompany: '',
-    projectTitle: '',
-    projectDescription: '',
-    paymentTerms: '50% no início do projeto e 50% na entrega final',
-    deliveryDate: '',
-    observations: '',
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    projectTitle: "",
+    projectDescription: "",
+    selectedServices: (preSelectedService ? [preSelectedService] : []) as string[],
   });
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleGeneratePDF = () => {
-    // Validações
-    if (!formData.clientName.trim()) {
-      toast.error('Por favor, preencha o nome do cliente');
-      return;
-    }
-    if (!formData.clientEmail.trim()) {
-      toast.error('Por favor, preencha o e-mail do cliente');
-      return;
-    }
-    if (!formData.projectTitle.trim()) {
-      toast.error('Por favor, preencha o título do projeto');
-      return;
-    }
-    if (!formData.projectDescription.trim()) {
-      toast.error('Por favor, preencha a descrição do projeto');
-      return;
-    }
-    if (selectedServices.length === 0) {
-      toast.error('Por favor, selecione pelo menos um serviço');
-      return;
-    }
-    if (!formData.deliveryDate.trim()) {
-      toast.error('Por favor, preencha o prazo de entrega');
-      return;
-    }
-
-    const proposalData: ProposalData = {
-      ...formData,
-      services: selectedServices,
-    };
-
-    try {
-      generateProposalPDF(proposalData);
-      toast.success('Proposta gerada com sucesso! 🎉');
-    } catch (error) {
-      console.error('Erro ao gerar PDF:', error);
-      toast.error('Erro ao gerar a proposta. Tente novamente.');
-    }
+  const handleServiceToggle = (serviceId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      selectedServices: prev.selectedServices.includes(serviceId)
+        ? prev.selectedServices.filter((id) => id !== serviceId)
+        : [...prev.selectedServices, serviceId],
+    }));
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-hero">
-      {/* Header */}
-      <header className="bg-background/95 backdrop-blur-md shadow-md">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate('/')}
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <div>
-                <h1 className="text-2xl font-bold text-gradient">Gerador de Propostas</h1>
-                <p className="text-sm text-muted-foreground">Anaissi Data Strategy</p>
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    toast({
+      title: "Proposta enviada!",
+      description: "Entraremos em contato em breve.",
+    });
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-32 pb-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-lg mx-auto text-center animate-slide-up">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-accent/20 flex items-center justify-center">
+                <CheckCircle2 className="h-10 w-10 text-accent" />
+              </div>
+              <h1 className="text-3xl font-bold font-display mb-4">
+                Proposta Enviada!
+              </h1>
+              <p className="text-muted-foreground mb-8">
+                Obrigado pelo interesse! Nossa equipe analisará seu projeto e
+                entrará em contato em até 24 horas úteis.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild variant="outline">
+                  <Link to="/servicos">Ver mais serviços</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/">Voltar ao início</Link>
+                </Button>
               </div>
             </div>
-            <FileText className="h-8 w-8 text-primary" />
           </div>
         </div>
-      </header>
+      </div>
+    );
+  }
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 space-y-8">
-        {/* Informações do Cliente */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Informações do Cliente</CardTitle>
-            <CardDescription>
-              Preencha os dados do cliente para quem a proposta será enviada
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="clientName">Nome do Cliente *</Label>
-                <Input
-                  id="clientName"
-                  placeholder="João Silva"
-                  value={formData.clientName}
-                  onChange={(e) => handleInputChange('clientName', e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="clientCompany">Empresa (opcional)</Label>
-                <Input
-                  id="clientCompany"
-                  placeholder="Empresa Ltda"
-                  value={formData.clientCompany}
-                  onChange={(e) => handleInputChange('clientCompany', e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="clientEmail">E-mail *</Label>
-                <Input
-                  id="clientEmail"
-                  type="email"
-                  placeholder="joao@empresa.com"
-                  value={formData.clientEmail}
-                  onChange={(e) => handleInputChange('clientEmail', e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="clientPhone">Telefone *</Label>
-                <Input
-                  id="clientPhone"
-                  placeholder="(47) 99999-9999"
-                  value={formData.clientPhone}
-                  onChange={(e) => handleInputChange('clientPhone', e.target.value)}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
 
-        {/* Informações do Projeto */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Informações do Projeto</CardTitle>
-            <CardDescription>
-              Descreva o projeto que será desenvolvido
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="projectTitle">Título do Projeto *</Label>
-              <Input
-                id="projectTitle"
-                placeholder="Ex: Desenvolvimento de Site Institucional"
-                value={formData.projectTitle}
-                onChange={(e) => handleInputChange('projectTitle', e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="projectDescription">Descrição do Projeto *</Label>
-              <Textarea
-                id="projectDescription"
-                placeholder="Descreva os objetivos, funcionalidades e características principais do projeto..."
-                value={formData.projectDescription}
-                onChange={(e) => handleInputChange('projectDescription', e.target.value)}
-                rows={6}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Seleção de Serviços */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Serviços Incluídos</CardTitle>
-            <CardDescription>
-              Selecione os serviços que farão parte desta proposta
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ServiceSelector
-              selectedServices={selectedServices}
-              onServicesChange={setSelectedServices}
-            />
-          </CardContent>
-        </Card>
-
-        {/* Condições Comerciais */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Condições Comerciais</CardTitle>
-            <CardDescription>
-              Defina as condições de pagamento e prazo de entrega
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="paymentTerms">Condições de Pagamento *</Label>
-              <Textarea
-                id="paymentTerms"
-                placeholder="Ex: 50% no início do projeto e 50% na entrega final"
-                value={formData.paymentTerms}
-                onChange={(e) => handleInputChange('paymentTerms', e.target.value)}
-                rows={3}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="deliveryDate">Prazo de Entrega *</Label>
-              <Input
-                id="deliveryDate"
-                placeholder="Ex: 30 dias úteis após aprovação"
-                value={formData.deliveryDate}
-                onChange={(e) => handleInputChange('deliveryDate', e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="observations">Observações Adicionais (opcional)</Label>
-              <Textarea
-                id="observations"
-                placeholder="Informações extras, requisitos especiais, etc..."
-                value={formData.observations}
-                onChange={(e) => handleInputChange('observations', e.target.value)}
-                rows={4}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Botão de Gerar */}
-        <div className="flex justify-center pb-8">
-          <Button
-            size="lg"
-            onClick={handleGeneratePDF}
-            className="text-lg px-8 py-6"
+      <section className="pt-24 sm:pt-32 pb-8 bg-gradient-hero">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Link
+            to="/servicos"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
           >
-            <Download className="h-5 w-5 mr-2" />
-            Gerar Proposta em PDF
-          </Button>
+            <ArrowLeft className="h-4 w-4" />
+            Voltar ao catálogo
+          </Link>
+          <div className="max-w-2xl animate-slide-up">
+            <h1 className="text-3xl sm:text-4xl font-bold font-display mb-4">
+              Solicitar <span className="text-gradient">Proposta</span>
+            </h1>
+            <p className="text-muted-foreground">
+              Preencha o formulário abaixo e receba uma proposta personalizada
+              para o seu projeto.
+            </p>
+          </div>
         </div>
-      </main>
+      </section>
+
+      <section className="py-12 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <form
+            onSubmit={handleSubmit}
+            className="max-w-3xl mx-auto space-y-8"
+          >
+            <div className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50 shadow-card animate-slide-up">
+              <h2 className="text-xl font-bold font-display mb-6">
+                Informações de Contato
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Nome completo *
+                  </label>
+                  <Input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="João Silva"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Empresa (opcional)
+                  </label>
+                  <Input
+                    name="company"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    placeholder="Empresa Ltda"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    E-mail *
+                  </label>
+                  <Input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="joao@empresa.com"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Telefone *
+                  </label>
+                  <Input
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="(47) 99999-9999"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50 shadow-card animate-slide-up"
+              style={{ animationDelay: "100ms" }}
+            >
+              <h2 className="text-xl font-bold font-display mb-6">
+                Informações do Projeto
+              </h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Título do projeto *
+                  </label>
+                  <Input
+                    name="projectTitle"
+                    value={formData.projectTitle}
+                    onChange={handleInputChange}
+                    placeholder="Ex: Dashboard de Vendas"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Descrição do projeto *
+                  </label>
+                  <Textarea
+                    name="projectDescription"
+                    value={formData.projectDescription}
+                    onChange={handleInputChange}
+                    placeholder="Descreva os objetivos e funcionalidades principais..."
+                    rows={4}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50 shadow-card animate-slide-up"
+              style={{ animationDelay: "200ms" }}
+            >
+              <h2 className="text-xl font-bold font-display mb-2">
+                Serviços de Interesse
+              </h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                Selecione os serviços que deseja incluir na proposta
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {services.map((service) => (
+                  <label
+                    key={service.id}
+                    className={cn(
+                      "flex items-start gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-300",
+                      formData.selectedServices.includes(service.id)
+                        ? "border-primary bg-primary/5"
+                        : "border-border/50 hover:border-primary/30"
+                    )}
+                  >
+                    <Checkbox
+                      checked={formData.selectedServices.includes(service.id)}
+                      onCheckedChange={() => handleServiceToggle(service.id)}
+                      className="mt-1"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-medium text-foreground">
+                        {service.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {service.description}
+                      </p>
+                      {service.price && (
+                        <span className="text-xs text-primary mt-2 inline-block">
+                          {service.price}
+                        </span>
+                      )}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                size="lg"
+                disabled={isSubmitting}
+                className="shadow-glow min-w-[200px]"
+              >
+                {isSubmitting ? (
+                  "Enviando..."
+                ) : (
+                  <>
+                    Enviar Proposta
+                    <Send className="h-4 w-4 ml-2" />
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </section>
     </div>
   );
 };
