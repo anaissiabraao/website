@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 const Hero = () => {
   const { t } = useTranslation();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [needsVideoTap, setNeedsVideoTap] = useState(false);
   const videoPlaylist = ["/videos/marlon.mp4", "/videos/murilo.mp4"];
 
   const benefits = [t("hero.benefit1"), t("hero.benefit2"), t("hero.benefit3")];
@@ -116,7 +117,7 @@ const Hero = () => {
           </div>
 
           {/* AI Video/Animation Card */}
-          <div className="hidden md:block">
+          <div>
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-primary opacity-20 blur-3xl rounded-3xl" />
               <div className="relative bg-card/10 backdrop-blur-xl border border-primary/20 rounded-3xl overflow-hidden">
@@ -129,21 +130,48 @@ const Hero = () => {
                     muted
                     playsInline
                     preload="auto"
+                    loop={false}
                     onCanPlay={(e) => {
                       const v = e.currentTarget;
                       // Some browsers ignore playbackRate until metadata is available.
                       v.playbackRate = 2.0;
                       v.muted = true;
-                      v.play().catch(() => {});
+                      v.play()
+                        .then(() => setNeedsVideoTap(false))
+                        .catch(() => setNeedsVideoTap(true));
                     }}
                     onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % videoPlaylist.length)}
+                    onPlay={() => setNeedsVideoTap(false)}
                     onError={() => {
                       // Keeps failures silent in prod, but helps during debugging.
                       // eslint-disable-next-line no-console
                       console.warn("Falha ao carregar vídeo do hero:", videoPlaylist[currentVideoIndex]);
+                      setNeedsVideoTap(true);
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
+
+                  {/* Fallback: alguns navegadores exigem interação do usuário para iniciar */}
+                  {needsVideoTap && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        className="gap-2"
+                        onClick={(e) => {
+                          const video = (e.currentTarget
+                            .closest("div")
+                            ?.parentElement?.querySelector("video") ?? null) as HTMLVideoElement | null;
+                          if (!video) return;
+                          video.muted = true;
+                          video.play().then(() => setNeedsVideoTap(false)).catch(() => setNeedsVideoTap(true));
+                        }}
+                      >
+                        <Play className="h-4 w-4" />
+                        Reproduzir
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Stats below video */}
@@ -172,25 +200,6 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* Mobile Stats Card */}
-          <div className="md:hidden">
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { value: "95%", label: "Redução de Tempo" },
-                { value: "114+", label: "Projetos" },
-                { value: "99%", label: "Precisão" },
-                { value: "24/7", label: "Suporte" },
-              ].map((stat, index) => (
-                <div
-                  key={index}
-                  className="text-center p-4 rounded-xl bg-card/10 backdrop-blur-sm border border-primary/20"
-                >
-                  <div className="text-2xl font-bold text-gradient">{stat.value}</div>
-                  <div className="text-xs text-white/70">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>

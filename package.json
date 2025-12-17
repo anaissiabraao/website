@@ -10,7 +10,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "node scripts/start.mjs"
+    "start": "node server/index.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -64,7 +64,7 @@
     "vaul": "^0.9.9",
     "zod": "^3.25.76",
     "nodemailer": "^6.9.16",
-    "serve": "^14.2.5"
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
