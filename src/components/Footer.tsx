@@ -1,5 +1,6 @@
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -21,23 +22,23 @@ const Footer = () => {
     <footer className="bg-card border-t border-border py-8 md:py-12">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
-          <a href="#home" className="flex items-center gap-3">
+          <Link to="/#home" className="flex items-center gap-3">
             <img
               src={logo}
               alt="Anaissi Data Strategy"
               className="h-10 md:h-12 w-auto"
             />
-          </a>
+          </Link>
 
           <ul className="flex flex-wrap justify-center gap-4 md:gap-6">
             {links.map((link) => (
               <li key={link.href}>
-                <a
-                  href={link.href}
+                <Link
+                  to={link.href.startsWith("#") ? `/${link.href}` : link.href}
                   className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors"
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -74,12 +75,12 @@ const Footer = () => {
             <ul className="flex flex-wrap justify-center gap-4">
               {legalLinks.map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href}
+                <Link
+                  to={link.href}
                     className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     {link.label}
-                  </a>
+                </Link>
                 </li>
               ))}
             </ul>

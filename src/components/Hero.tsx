@@ -22,7 +22,12 @@ const Hero = () => {
       video.currentTime = 0;
       video.playbackRate = 2.0;
       video.muted = true;
-      video.play().catch(() => {});
+      video.playsInline = true;
+      // Ensures the browser picks up the new src before trying to play.
+      video.load();
+      const tryPlay = () => video.play().catch(() => {});
+      video.addEventListener("canplay", tryPlay, { once: true });
+      tryPlay();
     };
 
     const handleVideoEnd = () => {

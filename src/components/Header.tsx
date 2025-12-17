@@ -3,7 +3,7 @@ import { Menu, X, ShoppingBag, Shield, MessageSquare, Moon, Sun } from "lucide-r
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -53,8 +53,13 @@ const Header = () => {
     { href: "#contact", label: t("nav.contact") },
   ];
 
-  const handleLinkClick = () => {
+  const handleNav = (href: string) => {
     setIsMenuOpen(false);
+    if (href.startsWith("#")) {
+      navigate(`/${href}`);
+      return;
+    }
+    navigate(href);
   };
 
   return (
@@ -68,16 +73,13 @@ const Header = () => {
       >
         <nav className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
-            <a
-              href="https://anaissids.com.br/#home"
-              className="flex items-center gap-2 md:gap-3 group"
-            >
+            <Link to="/#home" className="flex items-center gap-2 md:gap-3 group">
               <img
                 src={logo}
                 alt="Anaissi Data Strategy"
                 className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
               />
-            </a>
+            </Link>
 
             {/* Links de Atalho - Desktop */}
             <div className="hidden lg:flex items-center gap-2">
@@ -185,14 +187,14 @@ const Header = () => {
               {/* Links de Navegação */}
               <div className="space-y-2">
                 {navLinks.map((link) => (
-                  <a
+                  <button
                     key={link.href}
-                    href={link.href}
-                    onClick={handleLinkClick}
+                    type="button"
+                    onClick={() => handleNav(link.href)}
                     className="block py-3 px-4 text-foreground hover:bg-primary/10 hover:text-primary rounded-lg font-medium transition-all duration-200"
                   >
                     {link.label}
-                  </a>
+                  </button>
                 ))}
               </div>
 

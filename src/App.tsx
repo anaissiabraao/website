@@ -13,6 +13,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Confidentiality from "./pages/Confidentiality";
 import WhatsAppButton from "./components/WhatsAppButton";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/servicos" element={<ServicesPage />} />
