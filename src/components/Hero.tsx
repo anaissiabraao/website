@@ -3,51 +3,23 @@ import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
   const { t } = useTranslation();
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const videoPlaylist = ["/videos/marlon.mp4", "/videos/murilo.mp4"];
 
   const benefits = [t("hero.benefit1"), t("hero.benefit2"), t("hero.benefit3")];
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const playCurrentVideo = () => {
-      video.src = videoPlaylist[currentVideoIndex];
-      video.currentTime = 0;
-      video.playbackRate = 2.0;
-      video.muted = true;
-      video.playsInline = true;
-      // Ensures the browser picks up the new src before trying to play.
-      video.load();
-      const tryPlay = () => video.play().catch(() => {});
-      video.addEventListener("canplay", tryPlay, { once: true });
-      tryPlay();
-    };
-
-    const handleVideoEnd = () => {
-      setCurrentVideoIndex((prev) => (prev + 1) % videoPlaylist.length);
-    };
-
     const handleVisibilityChange = () => {
-      if (!document.hidden && video) {
-        video.playbackRate = 2.0;
-        video.muted = true;
-        video.play().catch(() => {});
-      }
+      // The <video> element handles playback; we just ensure the page stays responsive.
     };
 
-    video.addEventListener("ended", handleVideoEnd);
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    playCurrentVideo();
 
     return () => {
-      video.removeEventListener("ended", handleVideoEnd);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [currentVideoIndex]);
@@ -151,12 +123,25 @@ const Hero = () => {
                 {/* Video Carousel */}
                 <div className="relative aspect-video bg-gradient-hero overflow-hidden">
                   <video
-                    ref={videoRef}
                     className="w-full h-full object-cover"
+                    src={videoPlaylist[currentVideoIndex]}
                     autoPlay
                     muted
                     playsInline
                     preload="auto"
+                    onCanPlay={(e) => {
+                      const v = e.currentTarget;
+                      // Some browsers ignore playbackRate until metadata is available.
+                      v.playbackRate = 2.0;
+                      v.muted = true;
+                      v.play().catch(() => {});
+                    }}
+                    onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % videoPlaylist.length)}
+                    onError={() => {
+                      // Keeps failures silent in prod, but helps during debugging.
+                      // eslint-disable-next-line no-console
+                      console.warn("Falha ao carregar vídeo do hero:", videoPlaylist[currentVideoIndex]);
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
                 </div>
