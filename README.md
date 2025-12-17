@@ -1,4 +1,4 @@
-# ANAISSI DATA STRATEGY — App (Vite + React + TS + shadcn-ui)
+# ANAISSI DATA STRATEGY
 
 Código atualizado do site com i18n (pt/en/es/de) e modal de vídeo de RPA.
 
