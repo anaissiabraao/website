@@ -1,7 +1,7 @@
-import slaAnalyticsImg from "@/assets/sla-analytics.png";
-import continuousImprovementImg from "@/assets/continuous-improvement.png";
-import dataAutomationImg from "@/assets/data-automation.png";
-import businessIntelligenceImg from "@/assets/business-intelligence.png";
+import slaAnalyticsImg from "@/assets/Gemini_Generated_Image_puni8spuni8spuni.png";
+import continuousImprovementImg from "@/assets/Gemini_Generated_Image_bws48ubws48ubws4.png";
+import dataAutomationImg from "@/assets/Gemini_Generated_Image_gafz0vgafz0vgafz.png";
+import businessIntelligenceImg from "@/assets/Gemini_Generated_Image_cfgnm9cfgnm9cfgn.png";
 
 export interface Service {
   id: string;

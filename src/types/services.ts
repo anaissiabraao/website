@@ -1,5 +1,28 @@
 import { services as catalogServices } from "@/data/services";
 
+// Imagens (cards + detalhes)
+import imgSiteInstitucional from "@/assets/Gemini_Generated_Image_7wqsqz7wqsqz7wqs (1).png";
+import imgSiteComercial from "@/assets/Gemini_Generated_Image_gw2saogw2saogw2s.png";
+import imgLandingPage from "@/assets/Gemini_Generated_Image_9qtwl89qtwl89qtw.png";
+import imgBlogIntegrado from "@/assets/Gemini_Generated_Image_ybp8v2ybp8v2ybp8.png";
+import imgPagamentos from "@/assets/Gemini_Generated_Image_poemt4poemt4poem.png";
+import imgWhatsappApi from "@/assets/Gemini_Generated_Image_qzk8uoqzk8uoqzk8.png";
+import imgCrm from "@/assets/Gemini_Generated_Image_y6ixupy6ixupy6ix.png";
+import imgHospedagem from "@/assets/Gemini_Generated_Image_40bh7t40bh7t40bh.png";
+import imgManutencao from "@/assets/Gemini_Generated_Image_db7tpkdb7tpkdb7t.png";
+import imgIdentidadeVisual from "@/assets/Gemini_Generated_Image_82ec2382ec2382ec.png";
+import imgBanners from "@/assets/Gemini_Generated_Image_y6vi2by6vi2by6vi.png";
+import imgRedesign from "@/assets/Gemini_Generated_Image_geti8pgeti8pgeti.png";
+import imgSeoInicial from "@/assets/Gemini_Generated_Image_tlaki5tlaki5tlak.png";
+import imgSeoMensal from "@/assets/Gemini_Generated_Image_f55iwuf55iwuf55i.png";
+import imgRedesSociais from "@/assets/Gemini_Generated_Image_vbysfmvbysfmvbys.png";
+import imgAnuncios from "@/assets/Gemini_Generated_Image_skjn9zskjn9zskjn.png";
+import imgCopywriting from "@/assets/Gemini_Generated_Image_256e2j256e2j256e.png";
+import imgRedacao from "@/assets/Gemini_Generated_Image_7jkcqc7jkcqc7jkc.png";
+import imgLgpd from "@/assets/Gemini_Generated_Image_fwitzffwitzffwit.png";
+import imgChatbotBasico from "@/assets/Gemini_Generated_Image_wvlc1ywvlc1ywvlc.png";
+import imgChatbotIa from "@/assets/Gemini_Generated_Image_7s5mda7s5mda7s5m.png";
+
 export interface Service {
   id: string;
   name: string;
@@ -12,6 +35,11 @@ export interface Service {
     min: number;
     max: number;
   };
+  image?: string;
+  icon?: "chart" | "trending" | "automation" | "bi";
+  longDescription?: string;
+  features?: string[];
+  benefits?: string[];
 }
 
 export interface SelectedService extends Service {
@@ -65,6 +93,91 @@ const parseDeliveryRange = (delivery?: string): { min: number; max: number } => 
   if (matches.length >= 2) return { min: matches[0], max: matches[1] };
   if (matches.length === 1) return { min: matches[0], max: matches[0] };
   return { min: 0, max: 0 };
+};
+
+const defaultLongDescription = (service: Service): string =>
+  `${service.description} Ideal para empresas que buscam qualidade, agilidade e resultados, com um processo claro do início ao fim.`;
+
+const defaultFeatures = (category: Service["category"]): string[] => {
+  switch (category) {
+    case "web":
+      return [
+        "Design responsivo (mobile/desktop)",
+        "Performance e boas práticas",
+        "Integração com ferramentas (WhatsApp/CRM)",
+        "Publicação e orientações finais",
+      ];
+    case "design":
+      return [
+        "Criação alinhada à sua marca",
+        "Arquivos prontos para uso",
+        "Revisões combinadas",
+        "Entrega organizada e editável (quando aplicável)",
+      ];
+    case "marketing":
+      return [
+        "Estratégia e planejamento",
+        "Configuração e otimizações",
+        "Acompanhamento e relatórios",
+        "Melhorias contínuas orientadas a resultado",
+      ];
+    case "content":
+      return [
+        "Texto profissional e claro",
+        "Adequação ao tom da marca",
+        "Estrutura pensada para conversão",
+        "Revisões e ajustes finais",
+      ];
+    case "ai":
+    default:
+      return [
+        "Configuração e parametrização",
+        "Integrações (quando aplicável)",
+        "Treinamento/ajustes iniciais",
+        "Suporte de implantação",
+      ];
+  }
+};
+
+const defaultBenefits = (category: Service["category"]): string[] => {
+  switch (category) {
+    case "web":
+      return [
+        "Mais credibilidade online",
+        "Melhor experiência para o cliente",
+        "Aumento de leads e conversões",
+        "Base pronta para crescer com o negócio",
+      ];
+    case "design":
+      return [
+        "Identidade visual consistente",
+        "Comunicação mais profissional",
+        "Melhor reconhecimento de marca",
+        "Materiais prontos para campanhas e ações",
+      ];
+    case "marketing":
+      return [
+        "Mais alcance e visibilidade",
+        "Tráfego qualificado",
+        "Otimização de investimento",
+        "Decisões orientadas a dados",
+      ];
+    case "content":
+      return [
+        "Mensagem mais clara e persuasiva",
+        "Melhor posicionamento e confiança",
+        "Aumento de engajamento",
+        "Suporte a SEO e conversão",
+      ];
+    case "ai":
+    default:
+      return [
+        "Mais agilidade no atendimento",
+        "Padronização de processos",
+        "Escalabilidade com menor custo",
+        "Melhoria contínua com base em dados",
+      ];
+  }
 };
 
 const LEGACY_SERVICES: Service[] = [
@@ -285,10 +398,54 @@ const CATALOG_SERVICES_MAPPED: Service[] = catalogServices.map((service) => {
       min: delivery.min || 7,
       max: delivery.max || 14,
     },
+    image: service.image,
+    icon: service.icon,
+    longDescription: service.longDescription,
+    features: service.features,
+    benefits: service.benefits,
   };
 });
 
-export const SERVICES: Service[] = [...LEGACY_SERVICES, ...CATALOG_SERVICES_MAPPED];
+const LEGACY_SERVICE_MEDIA: Record<
+  string,
+  { image: string; icon?: Service["icon"] }
+> = {
+  "site-institucional": { image: imgSiteInstitucional, icon: "trending" },
+  "site-comercial": { image: imgSiteComercial, icon: "trending" },
+  "landing-page": { image: imgLandingPage, icon: "trending" },
+  blog: { image: imgBlogIntegrado, icon: "trending" },
+  pagamentos: { image: imgPagamentos, icon: "automation" },
+  "whatsapp-api": { image: imgWhatsappApi, icon: "automation" },
+  crm: { image: imgCrm, icon: "automation" },
+  hospedagem: { image: imgHospedagem, icon: "automation" },
+  manutencao: { image: imgManutencao, icon: "automation" },
+  "identidade-visual": { image: imgIdentidadeVisual, icon: "trending" },
+  banners: { image: imgBanners, icon: "trending" },
+  redesign: { image: imgRedesign, icon: "trending" },
+  "seo-inicial": { image: imgSeoInicial, icon: "chart" },
+  "seo-mensal": { image: imgSeoMensal, icon: "chart" },
+  "redes-sociais": { image: imgRedesSociais, icon: "trending" },
+  anuncios: { image: imgAnuncios, icon: "trending" },
+  copywriting: { image: imgCopywriting, icon: "trending" },
+  redacao: { image: imgRedacao, icon: "trending" },
+  lgpd: { image: imgLgpd, icon: "chart" },
+  "chatbot-basico": { image: imgChatbotBasico, icon: "automation" },
+  "chatbot-ia": { image: imgChatbotIa, icon: "bi" },
+};
+
+const enrichService = (service: Service): Service => {
+  const media = LEGACY_SERVICE_MEDIA[service.id];
+  return {
+    ...service,
+    image: service.image || media?.image,
+    icon: service.icon || media?.icon || "trending",
+    longDescription: service.longDescription || defaultLongDescription(service),
+    features: service.features || defaultFeatures(service.category),
+    benefits: service.benefits || defaultBenefits(service.category),
+  };
+};
+
+export const SERVICES: Service[] = [...LEGACY_SERVICES, ...CATALOG_SERVICES_MAPPED].map(enrichService);
 
 export const CATEGORY_LABELS = {
   web: 'Desenvolvimento Web',

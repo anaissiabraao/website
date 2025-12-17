@@ -32,8 +32,8 @@ const Services = () => {
     title: service.name,
     description: service.description,
     features: [] as string[],
-    image: (service as any).image || placeholderImage,
-    icon: iconMap[(service as any).icon] || <TrendingUp className="h-6 w-6" />,
+    image: service.image || placeholderImage,
+    icon: iconMap[service.icon || "trending"] || <TrendingUp className="h-6 w-6" />,
     price: formatPriceRange(service.priceMin, service.priceMax, service.unit),
     delay: index * 100,
   })).slice(0, 6);
