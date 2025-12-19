@@ -5,14 +5,20 @@ import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+type HeroVideo = { key: string; mp4: string; webm: string };
+
 const Hero = () => {
   const { t } = useTranslation();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [needsVideoTap, setNeedsVideoTap] = useState(false);
+  const [videoHardError, setVideoHardError] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   // Use BASE_URL so this works both on root domains and sub-path deployments (e.g. /site/).
   const baseUrl = import.meta.env.BASE_URL || "/";
-  const videoPlaylist = [`${baseUrl}videos/marlon.mp4`, `${baseUrl}videos/murilo.mp4`];
+  const videoPlaylist: HeroVideo[] = [
+    { key: "marlon", mp4: `${baseUrl}videos/marlon.mp4`, webm: `${baseUrl}videos/marlon.webm` },
+    { key: "murilo", mp4: `${baseUrl}videos/murilo.mp4`, webm: `${baseUrl}videos/murilo.webm` },
+  ];
 
   const benefits = [t("hero.benefit1"), t("hero.benefit2"), t("hero.benefit3")];
 
@@ -28,13 +34,23 @@ const Hero = () => {
       v.setAttribute("playsinline", "");
       v.playsInline = true;
 
-      // Some browsers ignore playbackRate until metadata is available.
-      v.playbackRate = 2.0;
-
       await v.play();
+      // Some browsers ignore playbackRate until playback starts.
+      v.playbackRate = 2.0;
       setNeedsVideoTap(false);
+      setVideoHardError(false);
       return true;
-    } catch (_err) {
+    } catch (err) {
+      // Distinguish autoplay policy from real decode/network errors.
+      const name = err instanceof Error ? err.name : String(err);
+      if (name === "NotSupportedError") {
+        // eslint-disable-next-line no-console
+        console.warn("Vídeo não suportado (codec/formato) ao tentar play():", reason, err);
+        setVideoHardError(true);
+        setNeedsVideoTap(false);
+        return false;
+      }
+
       // Autoplay may be blocked until user gesture; show fallback button.
       // eslint-disable-next-line no-console
       console.warn("Autoplay bloqueado/adiado:", reason);
@@ -42,6 +58,18 @@ const Hero = () => {
       return false;
     }
   }, []);
+
+  useEffect(() => {
+    // When swapping sources, force reload on the element for more consistent behavior across browsers.
+    const v = videoRef.current;
+    if (v) {
+      try {
+        v.load();
+      } catch {
+        // ignore
+      }
+    }
+  }, [currentVideoIndex]);
 
   useEffect(() => {
     // Try a few times after source swap (Railway/proxies sometimes delay readiness events).
@@ -191,7 +219,7 @@ const Hero = () => {
                 {/* Video Carousel */}
                 <div className="relative aspect-video bg-gradient-hero overflow-hidden">
                   <video
-                    key={videoPlaylist[currentVideoIndex]}
+                    key={videoPlaylist[currentVideoIndex].key}
                     ref={videoRef}
                     className="w-full h-full object-cover"
                     autoPlay
@@ -208,20 +236,33 @@ const Hero = () => {
                     }}
                     onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % videoPlaylist.length)}
                     onPlay={() => setNeedsVideoTap(false)}
-                    onError={() => {
+                    onError={(e) => {
                       // Keeps failures silent in prod, but helps during debugging.
                       // eslint-disable-next-line no-console
-                      console.warn("Falha ao carregar vídeo do hero:", videoPlaylist[currentVideoIndex]);
-                      setNeedsVideoTap(true);
+                      console.warn("Falha ao carregar vídeo do hero:", {
+                        playlist: videoPlaylist[currentVideoIndex],
+                        currentSrc: videoRef.current?.currentSrc,
+                        networkState: videoRef.current?.networkState,
+                        readyState: videoRef.current?.readyState,
+                        mediaErrorCode: videoRef.current?.error?.code,
+                        mediaErrorMessage: (videoRef.current?.error as any)?.message,
+                      });
+
+                      // If this is a real decode/load error, try the next video so we don't get stuck.
+                      setVideoHardError(true);
+                      setNeedsVideoTap(false);
+                      setCurrentVideoIndex((prev) => (prev + 1) % videoPlaylist.length);
                     }}
                   >
-                    <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />
+                    {/* Prefer WebM when available (better compatibility in some Windows setups without H.264 decoders). */}
+                    <source src={videoPlaylist[currentVideoIndex].webm} type="video/webm" />
+                    <source src={videoPlaylist[currentVideoIndex].mp4} type="video/mp4" />
                     {t("video.unsupported")}
                   </video>
                   <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
 
                   {/* Fallback: alguns navegadores exigem interação do usuário para iniciar */}
-                  {needsVideoTap && (
+                  {needsVideoTap && !videoHardError && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <Button
                         type="button"
@@ -235,6 +276,15 @@ const Hero = () => {
                         <Play className="h-4 w-4" />
                         {t("video.play")}
                       </Button>
+                    </div>
+                  )}
+
+                  {/* Hard error fallback (codec/network): don't pretend it's autoplay. */}
+                  {videoHardError && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-white text-sm backdrop-blur">
+                        {t("video.unsupported")}
+                      </div>
                     </div>
                   )}
                 </div>
