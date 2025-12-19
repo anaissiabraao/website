@@ -4,6 +4,7 @@ import ServiceCard from "@/components/ServiceCard";
 import Header from "@/components/Header";
 import { SERVICES } from "@/types/services";
 import { useTranslation } from "@/i18n/LanguageProvider";
+import { useCurrency } from "@/currency/CurrencyProvider";
 
 const iconMap: Record<string, ReactNode> = {
   chart: <BarChart3 className="h-6 w-6" />,
@@ -19,17 +20,15 @@ const formatPriceRange = (
   max: number,
   unit?: string
 ): string | undefined => {
+  // Deprecated: moved to CurrencyProvider (kept for backwards compatibility if needed)
   if (!min && !max) return undefined;
-  const formattedMin = `R$ ${min.toLocaleString("pt-BR")}`;
-  const formattedMax = `R$ ${max.toLocaleString("pt-BR")}`;
   const unitText = unit ? ` ${unit}` : "";
-  return min === max
-    ? `${formattedMax}${unitText}`
-    : `${formattedMin} - ${formattedMax}${unitText}`;
+  return min === max ? `${max}${unitText}` : `${min} - ${max}${unitText}`;
 };
 
 const ServicesPage = () => {
   const { t } = useTranslation();
+  const { formatMoneyRange } = useCurrency();
   const allCards = SERVICES.map((service, index) => ({
     id: service.id,
     title: service.name,
@@ -37,7 +36,7 @@ const ServicesPage = () => {
     features: [] as string[],
     image: service.image || placeholderImage,
     icon: iconMap[service.icon || "trending"] || <TrendingUp className="h-6 w-6" />,
-    price: formatPriceRange(service.priceMin, service.priceMax, service.unit),
+    price: formatMoneyRange(service.priceMin, service.priceMax, service.unit),
     delay: index * 100,
   }));
 

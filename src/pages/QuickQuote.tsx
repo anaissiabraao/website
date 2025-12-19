@@ -7,11 +7,13 @@ import { FileDown, MessageSquare, ArrowLeft, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useTranslation } from '@/i18n/LanguageProvider';
+import { useCurrency } from '@/currency/CurrencyProvider';
 import { jsPDF } from 'jspdf';
 
 const QuickQuote = () => {
   const navigate = useNavigate();
   const { t, lang } = useTranslation();
+  const { formatMoney } = useCurrency();
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -21,15 +23,8 @@ const QuickQuote = () => {
     setCopied(false);
   };
 
-  const formatCurrency = (value: number) => {
-    if (lang === 'en') return `$${value.toLocaleString('en-US')}`;
-    if (lang === 'es') return `$${value.toLocaleString('es-ES')}`;
-    if (lang === 'de') return `€${value.toLocaleString('de-DE')}`;
-    return `R$ ${value.toLocaleString('pt-BR')}`;
-  };
-
   const generateWhatsAppMessage = (service: Service): string => {
-    const priceRange = `${formatCurrency(service.priceMin)} ${t('quote.to')} ${formatCurrency(service.priceMax)}`;
+    const priceRange = `${formatMoney(service.priceMin)} ${t('quote.to')} ${formatMoney(service.priceMax)}`;
     const deliveryTime = service.deliveryDays.min === service.deliveryDays.max 
       ? `${service.deliveryDays.min} ${t('quote.days')}`
       : `${service.deliveryDays.min}-${service.deliveryDays.max} ${t('quote.days')}`;
@@ -89,7 +84,7 @@ ${COMPANY_INFO.phone}`;
     yPos += 10;
 
     doc.setFontSize(20);
-    const priceText = `${formatCurrency(service.priceMin)} ${t('quote.to')} ${formatCurrency(service.priceMax)}${service.unit || ''}`;
+    const priceText = `${formatMoney(service.priceMin)} ${t('quote.to')} ${formatMoney(service.priceMax)}${service.unit || ''}`;
     doc.text(priceText, 20, yPos);
     yPos += 20;
 
@@ -224,8 +219,8 @@ ${COMPANY_INFO.phone}`;
                     {t('quote.priceRange')}
                   </h3>
                   <p className="text-3xl font-bold text-primary">
-                    {formatCurrency(selectedService.priceMin)} {t('quote.to')}{' '}
-                    {formatCurrency(selectedService.priceMax)}
+                    {formatMoney(selectedService.priceMin)} {t('quote.to')}{' '}
+                    {formatMoney(selectedService.priceMax)}
                     {selectedService.unit && (
                       <span className="text-lg text-muted-foreground">{selectedService.unit}</span>
                     )}

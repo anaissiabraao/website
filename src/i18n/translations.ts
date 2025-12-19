@@ -11,6 +11,8 @@ type TranslationMap = Record<string, string>;
 
 export const translations: Record<LanguageCode, TranslationMap> = {
   pt: {
+    "currency.label": "Moeda",
+    "currency.auto": "Auto (por idioma)",
     "servicesPage.heroTitlePrefix": "Nossos",
     "servicesPage.heroTitleHighlight": "Serviços",
     "servicesPage.heroSubtitle": "Soluções completas para automação e otimização de processos. Transforme dados em decisões estratégicas.",
@@ -283,6 +285,8 @@ export const translations: Record<LanguageCode, TranslationMap> = {
     "whatsapp.online": "Estamos online",
   },
   en: {
+    "currency.label": "Currency",
+    "currency.auto": "Auto (by language)",
     "servicesPage.heroTitlePrefix": "Our",
     "servicesPage.heroTitleHighlight": "Services",
     "servicesPage.heroSubtitle": "Complete solutions for automation and process optimization. Turn data into strategic decisions.",
@@ -555,6 +559,8 @@ export const translations: Record<LanguageCode, TranslationMap> = {
     "whatsapp.online": "We're online",
   },
   es: {
+    "currency.label": "Moneda",
+    "currency.auto": "Auto (por idioma)",
     "servicesPage.heroTitlePrefix": "Nuestros",
     "servicesPage.heroTitleHighlight": "Servicios",
     "servicesPage.heroSubtitle": "Soluciones completas para automatización y optimización de procesos. Convierte datos en decisiones estratégicas.",
@@ -830,6 +836,8 @@ export const translations: Record<LanguageCode, TranslationMap> = {
     "whatsapp.online": "Estamos en línea",
   },
   de: {
+    "currency.label": "Währung",
+    "currency.auto": "Auto (nach Sprache)",
     "servicesPage.heroTitlePrefix": "Unsere",
     "servicesPage.heroTitleHighlight": "Dienstleistungen",
     "servicesPage.heroSubtitle": "Komplette Lösungen für Automatisierung und Prozessoptimierung. Machen Sie Daten zu strategischen Entscheidungen.",

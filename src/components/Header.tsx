@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ShoppingBag, Shield, MessageSquare, Moon, Sun, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
+import { useCurrency } from "@/currency/CurrencyProvider";
 import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -10,6 +12,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(true);
   const { t, lang, setLang, languages } = useTranslation();
+  const { currency, mode, setCurrency, setMode } = useCurrency();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -139,6 +142,28 @@ const Header = () => {
                 )}
               </Button>
 
+              {/* Seletor de Moeda (Desktop) */}
+              <div className="min-w-[140px]">
+                <Select
+                  value={mode === "auto" ? "AUTO" : currency}
+                  onValueChange={(v) => {
+                    if (v === "AUTO") setMode("auto");
+                    else setCurrency(v as any);
+                  }}
+                >
+                  <SelectTrigger className="h-9">
+                    <SelectValue placeholder={t("currency.label")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="AUTO">{t("currency.auto")}</SelectItem>
+                    <SelectItem value="BRL">BRL</SelectItem>
+                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="MXN">MXN</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
               {/* Menu Hamburguer Button */}
               <Button
                 variant="ghost"
@@ -155,18 +180,60 @@ const Header = () => {
             </div>
 
             {/* Menu Hamburguer Button - Mobile */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden h-10 w-10 rounded-full menu-container"
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6 text-foreground" />
-              ) : (
-                <Menu className="h-6 w-6 text-foreground" />
-              )}
-            </Button>
+            <div className="lg:hidden flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="h-10 w-10 rounded-full menu-container"
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6 text-foreground" />
+                ) : (
+                  <Menu className="h-6 w-6 text-foreground" />
+                )}
+              </Button>
+            </div>
+          </div>
+
+          {/* Barra Mobile: Idioma + Moeda (sempre visível no mobile) */}
+          <div className="lg:hidden pb-3">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 overflow-x-auto">
+                {languages.map((language) => (
+                  <Button
+                    key={language.code}
+                    variant={language.code === lang ? "default" : "outline"}
+                    size="sm"
+                    className="font-semibold h-8 px-3"
+                    onClick={() => setLang(language.code)}
+                  >
+                    {language.label}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="min-w-[130px]">
+                <Select
+                  value={mode === "auto" ? "AUTO" : currency}
+                  onValueChange={(v) => {
+                    if (v === "AUTO") setMode("auto");
+                    else setCurrency(v as any);
+                  }}
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue placeholder={t("currency.label")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="AUTO">{t("currency.auto")}</SelectItem>
+                    <SelectItem value="BRL">BRL</SelectItem>
+                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="MXN">MXN</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </div>
         </nav>
       </header>

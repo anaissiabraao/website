@@ -9,10 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslation } from '@/i18n/LanguageProvider';
+import { useCurrency } from '@/currency/CurrencyProvider';
 
 const QuoteGenerator = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { formatMoney } = useCurrency();
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [copiedFull, setCopiedFull] = useState(false);
   const [copiedShort, setCopiedShort] = useState(false);
@@ -25,10 +27,10 @@ const QuoteGenerator = () => {
   };
 
   const generateFullMessage = (service: Service): string => {
-    const priceRange = `R$ ${service.priceMin.toLocaleString('pt-BR')} até R$ ${service.priceMax.toLocaleString('pt-BR')}`;
+    const priceRange = `${formatMoney(service.priceMin)} ${t('quote.to')} ${formatMoney(service.priceMax)}`;
     const deliveryTime = service.deliveryDays.min === service.deliveryDays.max 
-      ? `${service.deliveryDays.min} dias úteis`
-      : `${service.deliveryDays.min} a ${service.deliveryDays.max} dias úteis`;
+      ? `${service.deliveryDays.min} ${t('quote.days')}`
+      : `${service.deliveryDays.min} ${t('quote.to')} ${service.deliveryDays.max} ${t('quote.days')}`;
 
     return `Olá! Tudo bem? 👋 Segue o orçamento da *Anaissi Data Strategy* para o serviço solicitado:
 
@@ -52,7 +54,7 @@ Estou à disposição! 😊`;
   };
 
   const generateShortMessage = (service: Service): string => {
-    const priceRange = `R$ ${service.priceMin.toLocaleString('pt-BR')}–${service.priceMax.toLocaleString('pt-BR')}`;
+    const priceRange = `${formatMoney(service.priceMin)}–${formatMoney(service.priceMax)}`;
     const deliveryTime = service.deliveryDays.min === service.deliveryDays.max 
       ? `${service.deliveryDays.min}d`
       : `${service.deliveryDays.min}-${service.deliveryDays.max}d`;

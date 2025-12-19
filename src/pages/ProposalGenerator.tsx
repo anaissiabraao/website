@@ -10,22 +10,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/i18n/LanguageProvider";
-
-const formatPriceRange = (min: number, max: number, unit?: string) => {
-  if (!min && !max) return undefined;
-  const formattedMin = `R$ ${min.toLocaleString("pt-BR")}`;
-  const formattedMax = `R$ ${max.toLocaleString("pt-BR")}`;
-  const unitText = unit ? ` ${unit}` : "";
-  return min === max
-    ? `${formattedMax}${unitText}`
-    : `${formattedMin} - ${formattedMax}${unitText}`;
-};
+import { useCurrency } from "@/currency/CurrencyProvider";
 
 const ProposalGenerator = () => {
   const [searchParams] = useSearchParams();
   const preSelectedService = searchParams.get("servico");
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { formatMoneyRange } = useCurrency();
 
   const serviceOptions = useMemo(
     () =>
@@ -33,9 +25,9 @@ const ProposalGenerator = () => {
         id: service.id,
         title: service.name,
         description: service.description,
-        price: formatPriceRange(service.priceMin, service.priceMax, service.unit),
+        price: formatMoneyRange(service.priceMin, service.priceMax, service.unit),
       })),
-    []
+    [formatMoneyRange]
   );
 
   const [formData, setFormData] = useState({

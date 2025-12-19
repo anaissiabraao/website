@@ -26,6 +26,66 @@ app.disable("x-powered-by");
 
 app.use(express.json({ limit: "2mb" }));
 
+// --- FX rates (BRL -> USD/EUR/MXN) ---
+// Uses a public endpoint and caches in-memory to avoid rate limits and speed up responses.
+// NOTE: This is NOT financial-grade; it's intended for indicative website pricing.
+let fxCache = {
+  fetchedAt: 0,
+  ttlMs: 60 * 60 * 1000, // 1h
+  base: "BRL",
+  rates: /** @type {Record<string, number>} */ ({ BRL: 1 }),
+};
+
+async function fetchFxRatesBRL() {
+  // Open ER API: https://open.er-api.com/v6/latest/BRL
+  const res = await fetch("https://open.er-api.com/v6/latest/BRL", {
+    headers: { "User-Agent": "anaissi-website/1.0" },
+  });
+  if (!res.ok) throw new Error(`fx fetch failed: ${res.status}`);
+  const json = await res.json();
+  const rates = json?.rates || {};
+  const pick = (k) => (typeof rates[k] === "number" ? rates[k] : undefined);
+
+  const USD = pick("USD");
+  const EUR = pick("EUR");
+  const MXN = pick("MXN");
+  if (!USD || !EUR || !MXN) throw new Error("fx missing required rates");
+
+  return { base: "BRL", rates: { BRL: 1, USD, EUR, MXN }, fetchedAt: Date.now() };
+}
+
+app.get("/api/rates", async (_req, res) => {
+  try {
+    const now = Date.now();
+    const expired = now - fxCache.fetchedAt > fxCache.ttlMs;
+    if (expired) {
+      const fresh = await fetchFxRatesBRL();
+      fxCache = { ...fxCache, ...fresh };
+    }
+
+    return res.status(200).json({
+      base: fxCache.base,
+      fetchedAt: fxCache.fetchedAt,
+      ttlMs: fxCache.ttlMs,
+      rates: fxCache.rates,
+    });
+  } catch (err) {
+    // Fallback: serve last cached if available (better UX than hard failing).
+    if (fxCache.fetchedAt && fxCache.rates?.USD && fxCache.rates?.EUR && fxCache.rates?.MXN) {
+      return res.status(200).json({
+        base: fxCache.base,
+        fetchedAt: fxCache.fetchedAt,
+        ttlMs: fxCache.ttlMs,
+        rates: fxCache.rates,
+        warning: "fx_fetch_failed_served_cached",
+      });
+    }
+    // eslint-disable-next-line no-console
+    console.error("fx rates error:", err);
+    return res.status(502).json({ error: "Failed to fetch FX rates" });
+  }
+});
+
 app.post("/api/send-proposal", async (req, res) => {
   if (!hasEnv()) {
     return res.status(500).json({ error: "Email not configured (env missing)" });

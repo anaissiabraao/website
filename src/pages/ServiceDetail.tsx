@@ -10,9 +10,11 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_LABELS, SERVICES } from "@/types/services";
 import { useTranslation } from "@/i18n/LanguageProvider";
+import { useCurrency } from "@/currency/CurrencyProvider";
 
 const ServiceDetail = () => {
   const { t } = useTranslation();
+  const { formatMoneyRange } = useCurrency();
   const { id } = useParams<{ id: string }>();
   const service = SERVICES.find((s) => s.id === (id || ""));
 
@@ -31,15 +33,7 @@ const ServiceDetail = () => {
 
   const otherServices = SERVICES.filter((item) => item.id !== service.id).slice(0, 2);
 
-  const formatPriceRange = (): string | undefined => {
-    if (!service.priceMin && !service.priceMax) return undefined;
-    const min = `R$ ${service.priceMin.toLocaleString("pt-BR")}`;
-    const max = `R$ ${service.priceMax.toLocaleString("pt-BR")}`;
-    const unit = service.unit ? ` ${service.unit}` : "";
-    return service.priceMin === service.priceMax ? `${max}${unit}` : `${min} - ${max}${unit}`;
-  };
-
-  const priceLabel = formatPriceRange();
+  const priceLabel = formatMoneyRange(service.priceMin, service.priceMax, service.unit);
   const deliveryLabel =
     service.deliveryDays.min === service.deliveryDays.max
       ? `${service.deliveryDays.min} ${t("quote.days")}`
@@ -62,7 +56,7 @@ const ServiceDetail = () => {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="animate-slide-up">
               <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                {CATEGORY_LABELS[service.category]}
+                {t(`services.${service.category}`)}
               </span>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display mb-4 sm:mb-6">
                 {service.name}
