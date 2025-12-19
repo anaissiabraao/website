@@ -9,7 +9,9 @@ const Hero = () => {
   const { t } = useTranslation();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [needsVideoTap, setNeedsVideoTap] = useState(false);
-  const videoPlaylist = ["/videos/marlon.mp4", "/videos/murilo.mp4"];
+  // Use BASE_URL so this works both on root domains and sub-path deployments (e.g. /site/).
+  const baseUrl = import.meta.env.BASE_URL || "/";
+  const videoPlaylist = [`${baseUrl}videos/marlon.mp4`, `${baseUrl}videos/murilo.mp4`];
 
   const benefits = [t("hero.benefit1"), t("hero.benefit2"), t("hero.benefit3")];
 
@@ -124,12 +126,13 @@ const Hero = () => {
                 {/* Video Carousel */}
                 <div className="relative aspect-video bg-gradient-hero overflow-hidden">
                   <video
+                    key={videoPlaylist[currentVideoIndex]}
                     className="w-full h-full object-cover"
-                    src={videoPlaylist[currentVideoIndex]}
                     autoPlay
                     muted
                     playsInline
-                    preload="auto"
+                    preload="metadata"
+                    poster={heroBg}
                     loop={false}
                     onCanPlay={(e) => {
                       const v = e.currentTarget;
@@ -148,7 +151,10 @@ const Hero = () => {
                       console.warn("Falha ao carregar vídeo do hero:", videoPlaylist[currentVideoIndex]);
                       setNeedsVideoTap(true);
                     }}
-                  />
+                  >
+                    <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />
+                    Seu navegador não suporta reprodução de vídeo.
+                  </video>
                   <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
 
                   {/* Fallback: alguns navegadores exigem interação do usuário para iniciar */}

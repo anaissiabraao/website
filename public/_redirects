@@ -1,2 +1,8 @@
-/*    /index.html   200
+/videos/*    /videos/:splat    200
+/assets/*    /assets/:splat    200
+/favicon.ico /favicon.ico      200
+/favicon.png /favicon.png      200
+/robots.txt  /robots.txt       200
+/logo-marca.png /logo-marca.png 200
+/*           /index.html       200
 
