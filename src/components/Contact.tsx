@@ -78,8 +78,8 @@ const Contact = () => {
 
       if (response.status === 200) {
         toast({
-          title: "✅ Mensagem enviada com sucesso!",
-          description: "Entraremos em contato em até 2 horas úteis.",
+          title: t("contact.toast.successTitle"),
+          description: t("contact.toast.successDescription"),
         });
 
         setFormData({
@@ -97,8 +97,8 @@ const Contact = () => {
     } catch (error) {
       console.error('Erro ao enviar email:', error);
       toast({
-        title: "❌ Erro ao enviar formulário",
-        description: "Tente novamente ou entre em contato diretamente pelo e-mail.",
+        title: t("contact.toast.errorTitle"),
+        description: t("contact.toast.errorDescription"),
         variant: "destructive",
       });
     } finally {
@@ -143,7 +143,7 @@ const Contact = () => {
 
             {/* Social Links */}
             <div className="p-4 md:p-6 rounded-xl bg-card card-shadow border border-border">
-              <h4 className="font-semibold mb-3 md:mb-4 text-foreground">Siga-nos</h4>
+              <h4 className="font-semibold mb-3 md:mb-4 text-foreground">{t("contact.followUs")}</h4>
               <div className="flex gap-3 md:gap-4">
                 <a
                   href="https://www.linkedin.com/in/abra%C3%A3o-anaissi-928735179/"
@@ -184,7 +184,7 @@ const Contact = () => {
             <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
               <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
                 <Input
-                  placeholder="Seu Nome Completo"
+                  placeholder={t("contact.form.namePlaceholder")}
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
@@ -194,7 +194,7 @@ const Contact = () => {
                 />
                 <Input
                   type="email"
-                  placeholder="Seu Email Corporativo"
+                  placeholder={t("contact.form.emailPlaceholder")}
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
@@ -206,7 +206,7 @@ const Contact = () => {
 
               <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
                 <Input
-                  placeholder="WhatsApp (47) 99999-9999"
+                  placeholder={t("contact.form.phonePlaceholder")}
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
@@ -215,7 +215,7 @@ const Contact = () => {
                   className="h-10 md:h-11 text-sm md:text-base"
                 />
                 <Input
-                  placeholder="Nome da Empresa"
+                  placeholder={t("contact.form.companyPlaceholder")}
                   value={formData.company}
                   onChange={(e) =>
                     setFormData({ ...formData, company: e.target.value })
@@ -262,7 +262,7 @@ const Contact = () => {
               </div>
 
               <Textarea
-                placeholder="Descreva brevemente seus principais desafios operacionais..."
+                placeholder={t("contact.form.messagePlaceholder")}
                 rows={3}
                 value={formData.message}
                 onChange={(e) =>
@@ -300,7 +300,7 @@ const Contact = () => {
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    Enviando...
+                    {t("common.sending")}
                   </>
                 ) : (
                   <>

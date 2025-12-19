@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ShoppingBag, Shield, MessageSquare, Moon, Sun } from "lucide-react";
+import { Menu, X, ShoppingBag, Shield, MessageSquare, Moon, Sun, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
@@ -92,6 +92,16 @@ const Header = () => {
                 <ShoppingBag className="h-4 w-4" />
                 {t("nav.catalog")}
               </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/instrucoes')}
+                className="gap-2 text-foreground hover:text-primary"
+              >
+                <Play className="h-4 w-4" />
+                {t("nav.instructions")}
+              </Button>
               
               <Button
                 variant="ghost"
@@ -120,7 +130,7 @@ const Header = () => {
                 size="icon"
                 onClick={() => setIsDark(!isDark)}
                 className="h-10 w-10 rounded-full"
-                title={isDark ? "Modo Claro" : "Modo Escuro"}
+                title={isDark ? t("theme.light") : t("theme.dark")}
               >
                 {isDark ? (
                   <Sun className="h-5 w-5 text-foreground" />
@@ -170,7 +180,7 @@ const Header = () => {
         <div className="flex flex-col h-full">
           {/* Header do Menu */}
           <div className="flex items-center justify-between p-6 border-b border-border">
-            <h2 className="text-xl font-bold text-foreground">Menu</h2>
+            <h2 className="text-xl font-bold text-foreground">{t("nav.menu")}</h2>
             <Button
               variant="ghost"
               size="icon"
@@ -196,6 +206,13 @@ const Header = () => {
                     {link.label}
                   </button>
                 ))}
+                <button
+                  type="button"
+                  onClick={() => handleNav("/instrucoes")}
+                  className="block py-3 px-4 text-foreground hover:bg-primary/10 hover:text-primary rounded-lg font-medium transition-all duration-200"
+                >
+                  {t("nav.instructions")}
+                </button>
               </div>
 
               {/* Divisor */}
@@ -204,7 +221,7 @@ const Header = () => {
               {/* Seletor de Idioma */}
               <div>
                 <h3 className="text-sm font-semibold text-muted-foreground mb-3">
-                  {t("nav.services")}
+                  {t("nav.language")}
                 </h3>
                 <div className="grid grid-cols-4 gap-2">
                   {languages.map((language) => (

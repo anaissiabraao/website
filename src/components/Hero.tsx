@@ -3,21 +3,86 @@ import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const Hero = () => {
   const { t } = useTranslation();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [needsVideoTap, setNeedsVideoTap] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   // Use BASE_URL so this works both on root domains and sub-path deployments (e.g. /site/).
   const baseUrl = import.meta.env.BASE_URL || "/";
   const videoPlaylist = [`${baseUrl}videos/marlon.mp4`, `${baseUrl}videos/murilo.mp4`];
 
   const benefits = [t("hero.benefit1"), t("hero.benefit2"), t("hero.benefit3")];
 
+  const attemptPlay = useCallback(async (reason: string) => {
+    const v = videoRef.current;
+    if (!v) return false;
+
+    try {
+      // iOS/Safari can be picky: ensure muted is set *before* play()
+      v.muted = true;
+      v.defaultMuted = true;
+      v.setAttribute("muted", "");
+      v.setAttribute("playsinline", "");
+      v.playsInline = true;
+
+      // Some browsers ignore playbackRate until metadata is available.
+      v.playbackRate = 2.0;
+
+      await v.play();
+      setNeedsVideoTap(false);
+      return true;
+    } catch (_err) {
+      // Autoplay may be blocked until user gesture; show fallback button.
+      // eslint-disable-next-line no-console
+      console.warn("Autoplay bloqueado/adiado:", reason);
+      setNeedsVideoTap(true);
+      return false;
+    }
+  }, []);
+
+  useEffect(() => {
+    // Try a few times after source swap (Railway/proxies sometimes delay readiness events).
+    let cancelled = false;
+    const delays = [0, 250, 1000, 2000];
+
+    (async () => {
+      for (const d of delays) {
+        if (cancelled) return;
+        if (d) await new Promise((r) => setTimeout(r, d));
+        const ok = await attemptPlay(`index=${currentVideoIndex} delay=${d}`);
+        if (ok) return;
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [attemptPlay, currentVideoIndex]);
+
+  useEffect(() => {
+    // One-time user gesture hook: the first tap/click can unlock playback on mobile.
+    const onFirstGesture = () => {
+      void attemptPlay("first-gesture");
+      window.removeEventListener("pointerdown", onFirstGesture);
+      window.removeEventListener("touchstart", onFirstGesture);
+    };
+    window.addEventListener("pointerdown", onFirstGesture, { passive: true });
+    window.addEventListener("touchstart", onFirstGesture, { passive: true });
+    return () => {
+      window.removeEventListener("pointerdown", onFirstGesture);
+      window.removeEventListener("touchstart", onFirstGesture);
+    };
+  }, [attemptPlay]);
+
   useEffect(() => {
     const handleVisibilityChange = () => {
-      // The <video> element handles playback; we just ensure the page stays responsive.
+      // Resume playback when coming back to the tab (some browsers pause on background).
+      if (document.visibilityState === "visible") {
+        void attemptPlay("visibilitychange");
+      }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -25,7 +90,7 @@ const Hero = () => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [currentVideoIndex]);
+  }, [attemptPlay]);
 
   return (
     <section
@@ -127,6 +192,7 @@ const Hero = () => {
                 <div className="relative aspect-video bg-gradient-hero overflow-hidden">
                   <video
                     key={videoPlaylist[currentVideoIndex]}
+                    ref={videoRef}
                     className="w-full h-full object-cover"
                     autoPlay
                     muted
@@ -134,14 +200,11 @@ const Hero = () => {
                     preload="metadata"
                     poster={heroBg}
                     loop={false}
+                    onLoadedMetadata={() => {
+                      void attemptPlay("loadedmetadata");
+                    }}
                     onCanPlay={(e) => {
-                      const v = e.currentTarget;
-                      // Some browsers ignore playbackRate until metadata is available.
-                      v.playbackRate = 2.0;
-                      v.muted = true;
-                      v.play()
-                        .then(() => setNeedsVideoTap(false))
-                        .catch(() => setNeedsVideoTap(true));
+                      void attemptPlay("canplay");
                     }}
                     onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % videoPlaylist.length)}
                     onPlay={() => setNeedsVideoTap(false)}
@@ -153,7 +216,7 @@ const Hero = () => {
                     }}
                   >
                     <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />
-                    Seu navegador não suporta reprodução de vídeo.
+                    {t("video.unsupported")}
                   </video>
                   <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
 
@@ -165,16 +228,12 @@ const Hero = () => {
                         variant="secondary"
                         className="gap-2"
                         onClick={(e) => {
-                          const video = (e.currentTarget
-                            .closest("div")
-                            ?.parentElement?.querySelector("video") ?? null) as HTMLVideoElement | null;
-                          if (!video) return;
-                          video.muted = true;
-                          video.play().then(() => setNeedsVideoTap(false)).catch(() => setNeedsVideoTap(true));
+                          e.preventDefault();
+                          void attemptPlay("fallback-button");
                         }}
                       >
                         <Play className="h-4 w-4" />
-                        Reproduzir
+                        {t("video.play")}
                       </Button>
                     </div>
                   )}

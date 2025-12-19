@@ -12,6 +12,7 @@ import ServicesPage from "./pages/ServicesPage";
 import ServiceDetail from "./pages/ServiceDetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Confidentiality from "./pages/Confidentiality";
+import Instructions from "./pages/Instructions";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/servicos" element={<ServicesPage />} />
             <Route path="/servicos/:id" element={<ServiceDetail />} />
+            <Route path="/instrucoes" element={<Instructions />} />
             <Route path="/propostas" element={<ProposalGenerator />} />
             <Route path="/orcamento" element={<QuickQuote />} />
             <Route path="/privacidade" element={<PrivacyPolicy />} />

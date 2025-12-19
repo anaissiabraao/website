@@ -82,7 +82,29 @@ app.post("/api/send-proposal", async (req, res) => {
 });
 
 // Static assets + SPA fallback
-app.use(express.static(distDir));
+app.use(
+  express.static(distDir, {
+    setHeaders: (res, filePath) => {
+      // Ensure correct playback/streaming for video assets on Railway/proxies.
+      if (filePath.endsWith(".mp4")) {
+        res.setHeader("Content-Type", "video/mp4");
+        res.setHeader("Accept-Ranges", "bytes");
+        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      } else if (filePath.endsWith(".webm")) {
+        res.setHeader("Content-Type", "video/webm");
+        res.setHeader("Accept-Ranges", "bytes");
+        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      } else if (filePath.endsWith(".ogv")) {
+        res.setHeader("Content-Type", "video/ogg");
+        res.setHeader("Accept-Ranges", "bytes");
+        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      } else if (filePath.endsWith("index.html")) {
+        // Avoid caching HTML aggressively in SPA deploys.
+        res.setHeader("Cache-Control", "no-cache");
+      }
+    },
+  }),
+);
 app.get("*", (_req, res) => res.sendFile(indexHtml));
 
 const port = Number(process.env.PORT || 10000);

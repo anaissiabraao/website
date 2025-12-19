@@ -66,7 +66,7 @@ const About = () => {
             <div className="relative rounded-2xl overflow-hidden mb-6 card-shadow">
               <img
                 src={teamImage}
-                alt="Nossa equipe trabalhando"
+                alt={t("about.teamAlt")}
                 className="w-full h-48 sm:h-56 md:h-64 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
@@ -86,7 +86,7 @@ const About = () => {
                     <img src={logo} alt="Anaissi" className="w-24 md:w-32 h-auto animate-float" />
                     <div className="flex items-center gap-2 text-foreground">
                       <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-                      <span className="text-sm md:text-base font-medium">IA em Ação</span>
+                      <span className="text-sm md:text-base font-medium">{t("about.aiInAction")}</span>
                       <Sparkles className="h-5 w-5 text-primary animate-pulse" />
                     </div>
                   </div>
@@ -122,7 +122,7 @@ const About = () => {
                 <div>
                   <h3 className="text-xl md:text-2xl font-bold mb-2 text-foreground">Data Strategy</h3>
                   <p className="text-sm md:text-base text-muted-foreground">
-                    Transformando dados em decisões inteligentes
+                    {t("about.tagline")}
                   </p>
                 </div>
                 <div className="grid grid-cols-3 gap-4 md:gap-8 pt-4 md:pt-6 border-t border-border w-full">

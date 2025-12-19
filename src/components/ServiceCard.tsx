@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/i18n/LanguageProvider";
 
 interface ServiceCardProps {
   id: string;
@@ -24,6 +25,7 @@ const ServiceCard = ({
   price,
   delay = 0,
 }: ServiceCardProps) => {
+  const { t } = useTranslation();
   return (
     <Link
       to={`/servicos/${id}`}
@@ -78,7 +80,7 @@ const ServiceCard = ({
         </ul>
 
         <div className="flex items-center gap-2 text-primary font-medium group-hover:gap-4 transition-all duration-300 text-sm sm:text-base mt-auto">
-          Saiba mais
+          {t("services.learnMore")}
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </div>
       </div>
