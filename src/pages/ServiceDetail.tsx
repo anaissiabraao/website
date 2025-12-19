@@ -9,8 +9,10 @@ import {
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_LABELS, SERVICES } from "@/types/services";
+import { useTranslation } from "@/i18n/LanguageProvider";
 
 const ServiceDetail = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const service = SERVICES.find((s) => s.id === (id || ""));
 
@@ -18,9 +20,9 @@ const ServiceDetail = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Serviço não encontrado</h1>
+          <h1 className="text-2xl font-bold mb-4">{t("serviceDetail.notFoundTitle")}</h1>
           <Link to="/servicos" className="text-primary hover:underline">
-            Voltar ao catálogo
+            {t("serviceDetail.backToCatalog")}
           </Link>
         </div>
       </div>
@@ -40,8 +42,8 @@ const ServiceDetail = () => {
   const priceLabel = formatPriceRange();
   const deliveryLabel =
     service.deliveryDays.min === service.deliveryDays.max
-      ? `${service.deliveryDays.min} dias úteis`
-      : `${service.deliveryDays.min}-${service.deliveryDays.max} dias úteis`;
+      ? `${service.deliveryDays.min} ${t("quote.days")}`
+      : `${service.deliveryDays.min}-${service.deliveryDays.max} ${t("quote.days")}`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -54,7 +56,7 @@ const ServiceDetail = () => {
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
           >
             <ArrowLeft className="h-4 w-4" />
-            Voltar ao catálogo
+            {t("serviceDetail.backToCatalog")}
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -86,7 +88,7 @@ const ServiceDetail = () => {
 
               <Button asChild size="lg" className="shadow-glow">
                 <Link to="/propostas">
-                  Solicitar este serviço
+                  {t("serviceDetail.requestThisService")}
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Link>
               </Button>
@@ -111,7 +113,7 @@ const ServiceDetail = () => {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
             <div className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50 shadow-card animate-slide-up">
               <h2 className="text-xl sm:text-2xl font-bold font-display mb-6 text-foreground">
-                O que está incluído
+                {t("serviceDetail.includedTitle")}
               </h2>
               <ul className="space-y-4">
                 {(service.features || []).map((feature, index) => (
@@ -131,7 +133,7 @@ const ServiceDetail = () => {
               style={{ animationDelay: "100ms" }}
             >
               <h2 className="text-xl sm:text-2xl font-bold font-display mb-6 text-foreground">
-                Benefícios
+                {t("serviceDetail.benefitsTitle")}
               </h2>
               <ul className="space-y-4">
                 {(service.benefits || []).map((benefit, index) => (
@@ -153,7 +155,7 @@ const ServiceDetail = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold font-display mb-8 text-center">
-              Outros serviços
+              {t("serviceDetail.otherServicesTitle")}
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {otherServices.map((item) => (
@@ -187,13 +189,13 @@ const ServiceDetail = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold font-display mb-4">
-              Interessado neste serviço?
+              {t("serviceDetail.ctaTitle")}
             </h2>
             <p className="text-muted-foreground mb-8">
-              Solicite uma proposta personalizada e transforme seus dados em resultados.
+              {t("serviceDetail.ctaSubtitle")}
             </p>
             <Button asChild size="lg" className="shadow-glow">
-              <Link to="/propostas">Solicitar Proposta</Link>
+              <Link to="/propostas">{t("serviceDetail.ctaButton")}</Link>
             </Button>
           </div>
         </div>

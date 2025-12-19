@@ -8,9 +8,11 @@ import { MessageSquare, Copy, Check, ArrowLeft, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslation } from '@/i18n/LanguageProvider';
 
 const QuoteGenerator = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [copiedFull, setCopiedFull] = useState(false);
   const [copiedShort, setCopiedShort] = useState(false);
@@ -67,7 +69,7 @@ Estou à disposição! 😊`;
         setCopiedFull(true);
         setTimeout(() => setCopiedFull(false), 2000);
       }
-      toast.success('Copiado para a área de transferência! ✓');
+      toast.success(t('quoteGen.toast.copied'));
     });
   };
 
@@ -94,7 +96,7 @@ Estou à disposição! 😊`;
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-gradient">Orçamentos para WhatsApp</h1>
+                <h1 className="text-2xl font-bold text-gradient">{t('quoteGen.title')}</h1>
                 <p className="text-sm text-muted-foreground">Anaissi Data Strategy</p>
               </div>
             </div>
@@ -108,17 +110,17 @@ Estou à disposição! 😊`;
         {/* Seleção de Serviço */}
         <Card>
           <CardHeader>
-            <CardTitle>Selecione o Serviço</CardTitle>
+            <CardTitle>{t('quoteGen.selectServiceTitle')}</CardTitle>
             <CardDescription>
-              Escolha o serviço para gerar um orçamento rápido para WhatsApp
+              {t('quoteGen.selectServiceSubtitle')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <Label htmlFor="service">Serviço</Label>
+              <Label htmlFor="service">{t('quoteGen.serviceLabel')}</Label>
               <Select onValueChange={handleServiceSelect}>
                 <SelectTrigger id="service">
-                  <SelectValue placeholder="Selecione um serviço..." />
+                  <SelectValue placeholder={t('quoteGen.selectPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {Object.entries(groupedServices).map(([category, services]) => (
@@ -149,10 +151,10 @@ Estou à disposição! 😊`;
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <MessageSquare className="h-5 w-5 text-primary" />
-                      Mensagem Principal
+                      {t('quoteGen.mainMessageTitle')}
                     </CardTitle>
                     <CardDescription>
-                      Versão completa e profissional para enviar no WhatsApp
+                      {t('quoteGen.mainMessageSubtitle')}
                     </CardDescription>
                   </div>
                   <Button
@@ -162,12 +164,12 @@ Estou à disposição! 😊`;
                     {copiedFull ? (
                       <>
                         <Check className="h-4 w-4 mr-2" />
-                        Copiado!
+                        {t('quoteGen.copied')}
                       </>
                     ) : (
                       <>
                         <Copy className="h-4 w-4 mr-2" />
-                        Copiar
+                        {t('quoteGen.copy')}
                       </>
                     )}
                   </Button>
@@ -189,10 +191,10 @@ Estou à disposição! 😊`;
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <Sparkles className="h-5 w-5 text-accent" />
-                      Versão Ultra Curta
+                      {t('quoteGen.shortMessageTitle')}
                     </CardTitle>
                     <CardDescription>
-                      Resposta rápida e direta para clientes apressados
+                      {t('quoteGen.shortMessageSubtitle')}
                     </CardDescription>
                   </div>
                   <Button
@@ -202,12 +204,12 @@ Estou à disposição! 😊`;
                     {copiedShort ? (
                       <>
                         <Check className="h-4 w-4 mr-2" />
-                        Copiado!
+                        {t('quoteGen.copied')}
                       </>
                     ) : (
                       <>
                         <Copy className="h-4 w-4 mr-2" />
-                        Copiar
+                        {t('quoteGen.copy')}
                       </>
                     )}
                   </Button>
@@ -225,13 +227,13 @@ Estou à disposição! 😊`;
             {/* Dicas */}
             <Card className="bg-primary/5 border-primary/20">
               <CardHeader>
-                <CardTitle className="text-lg">💡 Dicas de Uso</CardTitle>
+                <CardTitle className="text-lg">💡 {t('quoteGen.tipsTitle')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
-                <p>• <strong>Mensagem Principal:</strong> Use quando o cliente pedir um orçamento detalhado</p>
-                <p>• <strong>Versão Curta:</strong> Use para respostas rápidas ou quando o cliente já conhece o serviço</p>
-                <p>• <strong>Personalização:</strong> Sinta-se livre para adaptar o texto conforme a conversa</p>
-                <p>• <strong>Próximo passo:</strong> Se o cliente demonstrar interesse, use o Gerador de Propostas para criar um PDF completo</p>
+                <p>• <strong>{t('quoteGen.tips.mainLabel')}:</strong> {t('quoteGen.tips.mainText')}</p>
+                <p>• <strong>{t('quoteGen.tips.shortLabel')}:</strong> {t('quoteGen.tips.shortText')}</p>
+                <p>• <strong>{t('quoteGen.tips.customLabel')}:</strong> {t('quoteGen.tips.customText')}</p>
+                <p>• <strong>{t('quoteGen.tips.nextLabel')}:</strong> {t('quoteGen.tips.nextText')}</p>
               </CardContent>
             </Card>
           </>
@@ -242,9 +244,9 @@ Estou à disposição! 😊`;
           <Card className="border-dashed">
             <CardContent className="flex flex-col items-center justify-center py-16 text-center">
               <MessageSquare className="h-16 w-16 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Selecione um serviço</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('quoteGen.emptyTitle')}</h3>
               <p className="text-muted-foreground max-w-md">
-                Escolha um serviço acima para gerar automaticamente mensagens prontas para enviar no WhatsApp
+                {t('quoteGen.emptySubtitle')}
               </p>
             </CardContent>
           </Card>

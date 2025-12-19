@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/i18n/LanguageProvider";
 
 const formatPriceRange = (min: number, max: number, unit?: string) => {
   if (!min && !max) return undefined;
@@ -24,6 +25,7 @@ const ProposalGenerator = () => {
   const [searchParams] = useSearchParams();
   const preSelectedService = searchParams.get("servico");
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const serviceOptions = useMemo(
     () =>
@@ -91,13 +93,13 @@ const ProposalGenerator = () => {
 
       setIsSubmitted(true);
       toast({
-        title: "Proposta enviada!",
-        description: "Entraremos em contato em breve.",
+        title: t("proposal.toast.successTitle"),
+        description: t("proposal.toast.successDescription"),
       });
     } catch (error) {
       toast({
-        title: "Erro ao enviar",
-        description: "Não foi possível enviar a proposta. Tente novamente.",
+        title: t("proposal.toast.errorTitle"),
+        description: t("proposal.toast.errorDescription"),
         variant: "destructive",
       });
     } finally {
@@ -116,18 +118,17 @@ const ProposalGenerator = () => {
                 <CheckCircle2 className="h-10 w-10 text-accent" />
               </div>
               <h1 className="text-3xl font-bold font-display mb-4">
-                Proposta Enviada!
+                {t("proposal.success.title")}
               </h1>
               <p className="text-muted-foreground mb-8">
-                Obrigado pelo interesse! Nossa equipe analisará seu projeto e
-                entrará em contato em até 24 horas úteis.
+                {t("proposal.success.description")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild variant="outline">
-                  <Link to="/servicos">Ver mais serviços</Link>
+                  <Link to="/servicos">{t("proposal.success.moreServices")}</Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/">Voltar ao início</Link>
+                  <Link to="/">{t("proposal.success.backHome")}</Link>
                 </Button>
               </div>
             </div>
@@ -148,15 +149,14 @@ const ProposalGenerator = () => {
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
           >
             <ArrowLeft className="h-4 w-4" />
-            Voltar ao catálogo
+            {t("proposal.backToCatalog")}
           </Link>
           <div className="max-w-2xl animate-slide-up">
             <h1 className="text-3xl sm:text-4xl font-bold font-display mb-4">
-              Solicitar <span className="text-gradient">Proposta</span>
+              {t("proposal.titlePrefix")} <span className="text-gradient">{t("proposal.titleHighlight")}</span>
             </h1>
             <p className="text-muted-foreground">
-              Preencha o formulário abaixo e receba uma proposta personalizada
-              para o seu projeto.
+              {t("proposal.subtitle")}
             </p>
           </div>
         </div>
@@ -170,54 +170,54 @@ const ProposalGenerator = () => {
           >
             <div className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50 shadow-card animate-slide-up">
               <h2 className="text-xl font-bold font-display mb-6">
-                Informações de Contato
+                {t("proposal.contactInfoTitle")}
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Nome completo *
+                    {t("proposal.fields.fullName")} *
                   </label>
                   <Input
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="João Silva"
+                    placeholder={t("proposal.placeholders.fullName")}
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Empresa (opcional)
+                    {t("proposal.fields.companyOptional")}
                   </label>
                   <Input
                     name="company"
                     value={formData.company}
                     onChange={handleInputChange}
-                    placeholder="Empresa Ltda"
+                    placeholder={t("proposal.placeholders.company")}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    E-mail *
+                    {t("proposal.fields.email")} *
                   </label>
                   <Input
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="joao@empresa.com"
+                    placeholder={t("proposal.placeholders.email")}
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Telefone *
+                    {t("proposal.fields.phone")} *
                   </label>
                   <Input
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="(47) 99999-9999"
+                    placeholder={t("proposal.placeholders.phone")}
                     required
                   />
                 </div>
@@ -229,30 +229,30 @@ const ProposalGenerator = () => {
               style={{ animationDelay: "100ms" }}
             >
               <h2 className="text-xl font-bold font-display mb-6">
-                Informações do Projeto
+                {t("proposal.projectInfoTitle")}
               </h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Título do projeto *
+                    {t("proposal.fields.projectTitle")} *
                   </label>
                   <Input
                     name="projectTitle"
                     value={formData.projectTitle}
                     onChange={handleInputChange}
-                    placeholder="Ex: Dashboard de Vendas"
+                    placeholder={t("proposal.placeholders.projectTitle")}
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Descrição do projeto *
+                    {t("proposal.fields.projectDescription")} *
                   </label>
                   <Textarea
                     name="projectDescription"
                     value={formData.projectDescription}
                     onChange={handleInputChange}
-                    placeholder="Descreva os objetivos e funcionalidades principais..."
+                    placeholder={t("proposal.placeholders.projectDescription")}
                     rows={4}
                     required
                   />
@@ -265,10 +265,10 @@ const ProposalGenerator = () => {
               style={{ animationDelay: "200ms" }}
             >
               <h2 className="text-xl font-bold font-display mb-2">
-                Serviços de Interesse
+                {t("proposal.servicesInterestTitle")}
               </h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Selecione os serviços que deseja incluir na proposta
+                {t("proposal.servicesInterestSubtitle")}
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
                 {serviceOptions.map((service) => (
@@ -310,10 +310,10 @@ const ProposalGenerator = () => {
                 className="shadow-glow min-w-[200px]"
               >
                 {isSubmitting ? (
-                  "Enviando..."
+                  t("common.sending")
                 ) : (
                   <>
-                    Enviar Proposta
+                    {t("proposal.submit")}
                     <Send className="h-4 w-4 ml-2" />
                   </>
                 )}
