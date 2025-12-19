@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/i18n/LanguageProvider";
 import { useCurrency } from "@/currency/CurrencyProvider";
+import { getServiceText } from "@/i18n/serviceText";
 
 const ProposalGenerator = () => {
   const [searchParams] = useSearchParams();
@@ -23,8 +24,8 @@ const ProposalGenerator = () => {
     () =>
       SERVICES.map((service) => ({
         id: service.id,
-        title: service.name,
-        description: service.description,
+        title: getServiceText(t, service).name,
+        description: getServiceText(t, service).description,
         price: formatMoneyRange(service.priceMin, service.priceMax, service.unit),
       })),
     [formatMoneyRange]

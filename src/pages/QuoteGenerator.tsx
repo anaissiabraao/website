@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslation } from '@/i18n/LanguageProvider';
 import { useCurrency } from '@/currency/CurrencyProvider';
+import { getServiceText } from '@/i18n/serviceText';
 
 const QuoteGenerator = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const QuoteGenerator = () => {
   };
 
   const generateFullMessage = (service: Service): string => {
+    const st = getServiceText(t, service);
     const priceRange = `${formatMoney(service.priceMin)} ${t('quote.to')} ${formatMoney(service.priceMax)}`;
     const deliveryTime = service.deliveryDays.min === service.deliveryDays.max 
       ? `${service.deliveryDays.min} ${t('quote.days')}`
@@ -34,8 +36,8 @@ const QuoteGenerator = () => {
 
     return `Olá! Tudo bem? 👋 Segue o orçamento da *Anaissi Data Strategy* para o serviço solicitado:
 
-📋 *${service.name}*
-${service.description}
+📋 *${st.name}*
+${st.description}
 
 💰 *Valor estimado:*
 A partir de ${priceRange}${service.unit || ''}
@@ -54,12 +56,13 @@ Estou à disposição! 😊`;
   };
 
   const generateShortMessage = (service: Service): string => {
+    const st = getServiceText(t, service);
     const priceRange = `${formatMoney(service.priceMin)}–${formatMoney(service.priceMax)}`;
     const deliveryTime = service.deliveryDays.min === service.deliveryDays.max 
       ? `${service.deliveryDays.min}d`
       : `${service.deliveryDays.min}-${service.deliveryDays.max}d`;
 
-    return `*${service.name}*: ${priceRange}${service.unit || ''} • Prazo: ${deliveryTime} • Quer proposta completa? 📄`;
+    return `*${st.name}*: ${priceRange}${service.unit || ''} • Prazo: ${deliveryTime} • Quer proposta completa? 📄`;
   };
 
   const copyToClipboard = (text: string, isShort: boolean) => {

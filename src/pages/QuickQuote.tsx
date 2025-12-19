@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useTranslation } from '@/i18n/LanguageProvider';
 import { useCurrency } from '@/currency/CurrencyProvider';
+import { getServiceText } from '@/i18n/serviceText';
 import { jsPDF } from 'jspdf';
 
 const QuickQuote = () => {
@@ -24,14 +25,15 @@ const QuickQuote = () => {
   };
 
   const generateWhatsAppMessage = (service: Service): string => {
+    const st = getServiceText(t, service);
     const priceRange = `${formatMoney(service.priceMin)} ${t('quote.to')} ${formatMoney(service.priceMax)}`;
     const deliveryTime = service.deliveryDays.min === service.deliveryDays.max 
       ? `${service.deliveryDays.min} ${t('quote.days')}`
       : `${service.deliveryDays.min}-${service.deliveryDays.max} ${t('quote.days')}`;
 
-    return `${t('quote.whatsappMessage')} *${service.name}*
+    return `${t('quote.whatsappMessage')} *${st.name}*
 
-📋 ${service.description}
+📋 ${st.description}
 
 💰 ${t('quote.priceRange')}: ${priceRange}${service.unit || ''}
 

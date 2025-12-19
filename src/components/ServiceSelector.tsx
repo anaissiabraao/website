@@ -9,6 +9,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, Plus, Trash2, Edit2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useTranslation } from '@/i18n/LanguageProvider';
+import { useCurrency } from '@/currency/CurrencyProvider';
+import { getServiceText } from '@/i18n/serviceText';
 
 interface ServiceSelectorProps {
   selectedServices: SelectedService[];
@@ -16,6 +19,8 @@ interface ServiceSelectorProps {
 }
 
 export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceSelectorProps) => {
+  const { t } = useTranslation();
+  const { formatMoneyRange, formatMoney } = useCurrency();
   const [editingService, setEditingService] = useState<SelectedService | null>(null);
   const [customPrice, setCustomPrice] = useState('');
   const [quantity, setQuantity] = useState('1');
@@ -64,10 +69,6 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
     }
   };
 
-  const formatPrice = (min: number, max: number) => {
-    return `R$ ${min.toLocaleString('pt-BR')} - R$ ${max.toLocaleString('pt-BR')}`;
-  };
-
   const calculateTotal = () => {
     return selectedServices.reduce((total, service) => {
       const price = service.customPrice || service.priceMax;
@@ -82,7 +83,7 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
         <TabsList className="grid w-full grid-cols-5">
           {categories.map(category => (
             <TabsTrigger key={category} value={category}>
-              {CATEGORY_LABELS[category]}
+              {t(`services.${category}`)}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -92,6 +93,7 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {SERVICES.filter(s => s.category === category).map(service => {
                 const selected = isServiceSelected(service.id);
+                const st = getServiceText(t, service);
                 return (
                   <Card 
                     key={service.id} 
@@ -101,22 +103,22 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
                       <div className="absolute top-3 right-3">
                         <Badge className="bg-primary">
                           <Check className="h-3 w-3 mr-1" />
-                          Selecionado
+                          {t("serviceSelector.selected")}
                         </Badge>
                       </div>
                     )}
                     <CardHeader>
-                      <CardTitle className="text-lg">{service.name}</CardTitle>
-                      <CardDescription>{service.description}</CardDescription>
+                      <CardTitle className="text-lg">{st.name}</CardTitle>
+                      <CardDescription>{st.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <div className="space-y-1">
                         <p className="text-sm font-semibold text-primary">
-                          {formatPrice(service.priceMin, service.priceMax)}
+                          {formatMoneyRange(service.priceMin, service.priceMax, service.unit)}
                           {service.unit && <span className="text-muted-foreground">{service.unit}</span>}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          Prazo: {service.deliveryDays.min}-{service.deliveryDays.max} dias úteis
+                          {t("serviceSelector.deadline")}: {service.deliveryDays.min}-{service.deliveryDays.max} {t("quote.days")}
                         </p>
                       </div>
                       <Button
@@ -128,12 +130,12 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
                         {selected ? (
                           <>
                             <Trash2 className="h-4 w-4 mr-2" />
-                            Remover
+                            {t("serviceSelector.remove")}
                           </>
                         ) : (
                           <>
                             <Plus className="h-4 w-4 mr-2" />
-                            Adicionar
+                            {t("serviceSelector.add")}
                           </>
                         )}
                       </Button>
@@ -149,9 +151,9 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
       {selectedServices.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Serviços Selecionados ({selectedServices.length})</CardTitle>
+            <CardTitle>{t("serviceSelector.selectedServicesTitle")} ({selectedServices.length})</CardTitle>
             <CardDescription>
-              Clique em um serviço para personalizar preço, quantidade e observações
+              {t("serviceSelector.selectedServicesSubtitle")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -159,6 +161,7 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
               const price = service.customPrice || service.priceMax;
               const qty = service.quantity || 1;
               const subtotal = price * qty;
+              const st = getServiceText(t, service);
 
               return (
                 <Dialog key={service.id}>
@@ -168,18 +171,18 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
                       onClick={() => openEditDialog(service)}
                     >
                       <div className="flex-1">
-                        <p className="font-medium">{service.name}</p>
+                        <p className="font-medium">{st.name}</p>
                         {service.notes && (
                           <p className="text-xs text-muted-foreground mt-1">{service.notes}</p>
                         )}
                       </div>
                       <div className="text-right mr-4">
                         <p className="font-semibold text-primary">
-                          R$ {subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          {formatMoney(subtotal, { includeCode: false })}
                         </p>
                         {qty > 1 && (
                           <p className="text-xs text-muted-foreground">
-                            {qty}x R$ {price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            {qty}x {formatMoney(price, { includeCode: false })}
                           </p>
                         )}
                       </div>
@@ -197,27 +200,27 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Personalizar Serviço</DialogTitle>
-                      <DialogDescription>{service.name}</DialogDescription>
+                      <DialogTitle>{t("serviceSelector.customizeTitle")}</DialogTitle>
+                      <DialogDescription>{st.name}</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
                       <div className="space-y-2">
                         <Label htmlFor="customPrice">
-                          Preço Personalizado (opcional)
+                          {t("serviceSelector.customPrice")}
                         </Label>
                         <Input
                           id="customPrice"
                           type="number"
-                          placeholder={`Padrão: R$ ${service.priceMax}`}
+                          placeholder={`${t("serviceSelector.defaultPrice")}: ${formatMoney(service.priceMax)}`}
                           value={customPrice}
                           onChange={(e) => setCustomPrice(e.target.value)}
                         />
                         <p className="text-xs text-muted-foreground">
-                          Faixa sugerida: {formatPrice(service.priceMin, service.priceMax)}
+                          {t("serviceSelector.suggestedRange")}: {formatMoneyRange(service.priceMin, service.priceMax, service.unit)}
                         </p>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="quantity">Quantidade</Label>
+                        <Label htmlFor="quantity">{t("serviceSelector.quantity")}</Label>
                         <Input
                           id="quantity"
                           type="number"
@@ -227,10 +230,10 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="notes">Observações</Label>
+                        <Label htmlFor="notes">{t("serviceSelector.notes")}</Label>
                         <Textarea
                           id="notes"
-                          placeholder="Detalhes adicionais sobre este serviço..."
+                          placeholder={t("serviceSelector.notesPlaceholder")}
                           value={notes}
                           onChange={(e) => setNotes(e.target.value)}
                           rows={3}
@@ -238,7 +241,7 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
                       </div>
                       <Button onClick={saveServiceEdit} className="w-full">
                         <Edit2 className="h-4 w-4 mr-2" />
-                        Salvar Alterações
+                        {t("serviceSelector.save")}
                       </Button>
                     </div>
                   </DialogContent>
@@ -248,9 +251,9 @@ export const ServiceSelector = ({ selectedServices, onServicesChange }: ServiceS
 
             <div className="pt-4 border-t">
               <div className="flex items-center justify-between text-lg font-bold">
-                <span>Total Estimado:</span>
+                <span>{t("serviceSelector.total")}:</span>
                 <span className="text-primary">
-                  R$ {calculateTotal().toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  {formatMoney(calculateTotal(), { includeCode: false })}
                 </span>
               </div>
             </div>

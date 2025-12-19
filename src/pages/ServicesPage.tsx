@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { SERVICES } from "@/types/services";
 import { useTranslation } from "@/i18n/LanguageProvider";
 import { useCurrency } from "@/currency/CurrencyProvider";
+import { getServiceText } from "@/i18n/serviceText";
 
 const iconMap: Record<string, ReactNode> = {
   chart: <BarChart3 className="h-6 w-6" />,
@@ -31,8 +32,8 @@ const ServicesPage = () => {
   const { formatMoneyRange } = useCurrency();
   const allCards = SERVICES.map((service, index) => ({
     id: service.id,
-    title: service.name,
-    description: service.description,
+    title: getServiceText(t, service).name,
+    description: getServiceText(t, service).description,
     features: [] as string[],
     image: service.image || placeholderImage,
     icon: iconMap[service.icon || "trending"] || <TrendingUp className="h-6 w-6" />,

@@ -26,6 +26,41 @@ app.disable("x-powered-by");
 
 app.use(express.json({ limit: "2mb" }));
 
+// Health/debug endpoints (helps validate Railway build/runtime has dist/videos).
+app.get("/api/health", (_req, res) => {
+  const safeStat = (p) => {
+    try {
+      const st = fs.statSync(p);
+      return { exists: true, size: st.size, mtimeMs: st.mtimeMs, isFile: st.isFile(), isDir: st.isDirectory() };
+    } catch {
+      return { exists: false };
+    }
+  };
+
+  const videosDir = path.join(distDir, "videos");
+  let videos = [];
+  try {
+    if (fs.existsSync(videosDir)) {
+      videos = fs
+        .readdirSync(videosDir)
+        .filter((f) => f.toLowerCase().endsWith(".mp4"))
+        .map((f) => ({ file: f, ...safeStat(path.join(videosDir, f)) }));
+    }
+  } catch {
+    videos = [];
+  }
+
+  return res.status(200).json({
+    ok: true,
+    cwd: process.cwd(),
+    distDir,
+    dist: safeStat(distDir),
+    indexHtml: safeStat(indexHtml),
+    videosDir: safeStat(videosDir),
+    videos,
+  });
+});
+
 // --- FX rates (BRL -> USD/EUR/MXN) ---
 // Uses a public endpoint and caches in-memory to avoid rate limits and speed up responses.
 // NOTE: This is NOT financial-grade; it's intended for indicative website pricing.

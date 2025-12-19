@@ -164,6 +164,21 @@ const Header = () => {
                 </Select>
               </div>
 
+              {/* Idiomas (Desktop - sempre visível no header) */}
+              <div className="flex items-center gap-1">
+                {languages.map((language) => (
+                  <Button
+                    key={language.code}
+                    variant={language.code === lang ? "default" : "outline"}
+                    size="sm"
+                    className="font-semibold h-9 px-3"
+                    onClick={() => setLang(language.code)}
+                  >
+                    {language.label}
+                  </Button>
+                ))}
+              </div>
+
               {/* Menu Hamburguer Button */}
               <Button
                 variant="ghost"

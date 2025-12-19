@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { CATEGORY_LABELS, SERVICES } from "@/types/services";
 import { useTranslation } from "@/i18n/LanguageProvider";
 import { useCurrency } from "@/currency/CurrencyProvider";
+import { getServiceText } from "@/i18n/serviceText";
 
 const ServiceDetail = () => {
   const { t } = useTranslation();
@@ -33,6 +34,7 @@ const ServiceDetail = () => {
 
   const otherServices = SERVICES.filter((item) => item.id !== service.id).slice(0, 2);
 
+  const st = getServiceText(t, service);
   const priceLabel = formatMoneyRange(service.priceMin, service.priceMax, service.unit);
   const deliveryLabel =
     service.deliveryDays.min === service.deliveryDays.max
@@ -59,10 +61,10 @@ const ServiceDetail = () => {
                 {t(`services.${service.category}`)}
               </span>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display mb-4 sm:mb-6">
-                {service.name}
+                {st.name}
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground mb-6 leading-relaxed">
-                {service.longDescription || service.description}
+                {st.longDescription}
               </p>
 
               <div className="flex flex-wrap gap-4 mb-8">
