@@ -13,6 +13,12 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/LanguageProvider";
 
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
+
 const Contact = () => {
   const { toast } = useToast();
   const { t } = useTranslation();
@@ -56,6 +62,21 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const reportConversion = () => {
+      try {
+        if (typeof window !== "undefined" && typeof window.gtag === "function") {
+          window.gtag("event", "conversion", {
+            send_to: "AW-17955970841/hWF-CIa1nPkbEJm-ifJC",
+            value: 1.0,
+            currency: "BRL",
+            transaction_id: "",
+          });
+        }
+      } catch {
+        // ignore
+      }
+    };
+
     try {
       // Enviar e-mail usando EmailJS
       const templateParams = {
@@ -77,6 +98,7 @@ const Contact = () => {
       );
 
       if (response.status === 200) {
+        reportConversion();
         toast({
           title: "✅ Mensagem enviada com sucesso!",
           description: "Entraremos em contato em até 2 horas úteis.",
