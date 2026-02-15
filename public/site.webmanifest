@@ -1,0 +1,15 @@
+{
+  "name": "Anaissi Data Strategy",
+  "short_name": "Anaissi DS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00AEEF",
+  "icons": [
+    {
+      "src": "/favicon.png?v=2",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
