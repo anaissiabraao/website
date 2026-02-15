@@ -42,7 +42,15 @@ const About = () => {
           <div className="relative">
             <div className="absolute -inset-8 bg-gradient-primary opacity-10 blur-3xl rounded-full" />
             <div className="relative bg-card rounded-2xl p-8 md:p-12 card-shadow border border-border text-center">
-              <img src={logo} alt="Anaissi Data Strategy" className="w-40 md:w-48 h-auto mx-auto mb-6 animate-float" />
+              <img
+                src={logo}
+                alt="Anaissi Data Strategy"
+                className="w-40 md:w-48 h-auto mx-auto mb-6 animate-float"
+                width={512}
+                height={512}
+                loading="lazy"
+                decoding="async"
+              />
               <h3 className="text-xl md:text-2xl font-bold mb-2 text-foreground">Data Strategy</h3>
               <p className="text-sm text-muted-foreground mb-6">Transformando dados em decisões inteligentes</p>
               <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border">

@@ -50,7 +50,14 @@ const Header = () => {
         <nav className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             <Link to="/" className="flex items-center gap-2 group">
-              <img src={logo} alt="Anaissi Data Strategy" className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
+              <img
+                src={logo}
+                alt="Anaissi Data Strategy"
+                className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
+                width={512}
+                height={512}
+                decoding="async"
+              />
             </Link>
 
             {/* Desktop nav */}

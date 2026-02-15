@@ -12,7 +12,15 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img src={logo} alt="Anaissi Data Strategy" className="h-10 w-auto" />
+              <img
+                src={logo}
+                alt="Anaissi Data Strategy"
+                className="h-10 w-auto"
+                width={512}
+                height={512}
+                loading="lazy"
+                decoding="async"
+              />
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
               Especialistas em automação de processos com RPA e IA para empresas que querem crescer.

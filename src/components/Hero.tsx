@@ -36,7 +36,16 @@ const Hero = () => {
     <section id="home" className="relative min-h-screen flex items-center pt-16 md:pt-20 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
-        <img src={heroBg} alt="" className="w-full h-full object-cover" loading="eager" />
+        <img
+          src={heroBg}
+          alt=""
+          className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          width={1024}
+          height={576}
+        />
         <div className="absolute inset-0 bg-gradient-hero opacity-90" />
       </div>
 
