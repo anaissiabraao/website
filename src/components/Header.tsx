@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ShoppingBag, Shield, MessageSquare, Moon, Sun } from "lucide-react";
+import { Menu, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import { useTranslation } from "@/i18n/LanguageProvider";
@@ -9,228 +9,119 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(true);
-  const { t, lang, setLang, languages } = useTranslation();
+  const { lang, setLang, languages, t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
   useEffect(() => {
-    // Inicializa dark mode como padrão
-    document.documentElement.classList.add("dark");
-  }, []);
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", isDark);
   }, [isDark]);
-
-  useEffect(() => {
-    // Fecha o menu ao clicar fora
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (isMenuOpen && !target.closest('.menu-container')) {
-        setIsMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMenuOpen]);
 
   const navLinks = [
     { href: "#home", label: t("nav.home") },
     { href: "#services", label: t("nav.services") },
+    { href: "/servicos", label: t("nav.catalog") },
     { href: "#about", label: t("nav.about") },
-    { href: "#testimonials", label: t("testimonials.title") },
+    { href: "#testimonials", label: t("nav.testimonials") },
     { href: "#contact", label: t("nav.contact") },
   ];
 
   const handleNav = (href: string) => {
     setIsMenuOpen(false);
     if (href.startsWith("#")) {
-      navigate(`/${href}`);
-      return;
+      if (window.location.pathname !== "/") navigate("/");
+      setTimeout(() => {
+        document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      navigate(href);
     }
-    navigate(href);
   };
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-background/95 backdrop-blur-md shadow-md"
-            : "bg-transparent"
-        }`}
-      >
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-background/95 backdrop-blur-md shadow-md" : "bg-transparent"}`}>
         <nav className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
-            <Link to="/#home" className="flex items-center gap-2 md:gap-3 group">
-              <img
-                src={logo}
-                alt="Anaissi Data Strategy"
-                className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
-              />
+            <Link to="/" className="flex items-center gap-2 group">
+              <img src={logo} alt="Anaissi Data Strategy" className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
             </Link>
 
-            {/* Links de Atalho - Desktop */}
-            <div className="hidden lg:flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/servicos')}
-                className="gap-2 text-foreground hover:text-primary"
-              >
-                <ShoppingBag className="h-4 w-4" />
-                {t("nav.catalog")}
-              </Button>
-              
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/privacidade')}
-                className="gap-2 text-foreground hover:text-primary"
-              >
-                <Shield className="h-4 w-4" />
-                {t("nav.privacy")}
-              </Button>
-              
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.open('https://chatgpt.com/', '_blank', 'width=800,height=600')}
-                className="gap-2 text-foreground hover:text-primary"
-                title={t("nav.chatgptTooltip")}
-              >
-                <MessageSquare className="h-4 w-4" />
-                {t("nav.chatgpt")}
-              </Button>
-
-              {/* Botão Dark/Light Mode */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsDark(!isDark)}
-                className="h-10 w-10 rounded-full"
-                title={isDark ? "Modo Claro" : "Modo Escuro"}
-              >
-                {isDark ? (
-                  <Sun className="h-5 w-5 text-foreground" />
-                ) : (
-                  <Moon className="h-5 w-5 text-foreground" />
-                )}
-              </Button>
-
-              {/* Menu Hamburguer Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="h-10 w-10 rounded-full menu-container"
-              >
-                {isMenuOpen ? (
-                  <X className="h-6 w-6 text-foreground" />
-                ) : (
-                  <Menu className="h-6 w-6 text-foreground" />
-                )}
-              </Button>
+            {/* Desktop nav */}
+            <div className="hidden lg:flex items-center gap-1">
+              {navLinks.map((link) => (
+                <button key={link.href} onClick={() => handleNav(link.href)} className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-primary/5">
+                  {link.label}
+                </button>
+              ))}
             </div>
 
-            {/* Menu Hamburguer Button - Mobile */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden h-10 w-10 rounded-full menu-container"
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6 text-foreground" />
-              ) : (
-                <Menu className="h-6 w-6 text-foreground" />
-              )}
-            </Button>
-          </div>
-        </nav>
-      </header>
-
-      {/* Menu Lateral */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 md:w-96 bg-background border-l border-border shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out menu-container ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex flex-col h-full">
-          {/* Header do Menu */}
-          <div className="flex items-center justify-between p-6 border-b border-border">
-            <h2 className="text-xl font-bold text-foreground">Menu</h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(false)}
-              className="rounded-full"
-            >
-              <X className="h-5 w-5 text-foreground" />
-            </Button>
-          </div>
-
-          {/* Conteúdo do Menu */}
-          <div className="flex-1 overflow-y-auto p-6">
-            <nav className="space-y-6">
-              {/* Links de Navegação */}
-              <div className="space-y-2">
-                {navLinks.map((link) => (
+            <div className="hidden lg:flex items-center gap-2">
+              {/* Language selector */}
+              <div className="flex gap-1 mr-2">
+                {languages.map((l) => (
                   <button
-                    key={link.href}
-                    type="button"
-                    onClick={() => handleNav(link.href)}
-                    className="block py-3 px-4 text-foreground hover:bg-primary/10 hover:text-primary rounded-lg font-medium transition-all duration-200"
+                    key={l.code}
+                    onClick={() => setLang(l.code)}
+                    className={`px-2 py-1 text-xs font-medium rounded transition-colors ${l.code === lang ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
                   >
-                    {link.label}
+                    {l.label}
                   </button>
                 ))}
               </div>
 
-              {/* Divisor */}
-              <div className="border-t border-border" />
+              <Button variant="ghost" size="icon" onClick={() => setIsDark(!isDark)} className="h-9 w-9 rounded-full">
+                {isDark ? <Sun className="h-4 w-4 text-foreground" /> : <Moon className="h-4 w-4 text-foreground" />}
+              </Button>
 
-              {/* Seletor de Idioma */}
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-3">
-                  {t("nav.services")}
-                </h3>
-                <div className="grid grid-cols-4 gap-2">
-                  {languages.map((language) => (
-                    <Button
-                      key={language.code}
-                      variant={language.code === lang ? "default" : "outline"}
-                      size="sm"
-                      className="font-semibold"
-                      onClick={() => setLang(language.code)}
-                    >
-                      {language.label}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </nav>
+              <Button size="sm" asChild>
+                <a href="#contact">{t("nav.cta")}</a>
+              </Button>
+            </div>
+
+            {/* Mobile toggle */}
+            <div className="flex lg:hidden items-center gap-2">
+              <Button variant="ghost" size="icon" onClick={() => setIsDark(!isDark)} className="h-9 w-9 rounded-full">
+                {isDark ? <Sun className="h-4 w-4 text-foreground" /> : <Moon className="h-4 w-4 text-foreground" />}
+              </Button>
+              <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="h-10 w-10">
+                {isMenuOpen ? <X className="h-6 w-6 text-foreground" /> : <Menu className="h-6 w-6 text-foreground" />}
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </nav>
+      </header>
 
-      {/* Overlay */}
+      {/* Mobile menu */}
       {isMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-[55] transition-opacity duration-300"
-          onClick={() => setIsMenuOpen(false)}
-        />
+        <>
+          <div className="fixed inset-0 bg-background/50 backdrop-blur-sm z-[55]" onClick={() => setIsMenuOpen(false)} />
+          <div className="fixed top-16 left-0 right-0 bg-background border-b border-border shadow-lg z-[60] p-4 space-y-1">
+            {navLinks.map((link) => (
+              <button key={link.href} onClick={() => handleNav(link.href)} className="block w-full text-left px-4 py-3 text-foreground hover:bg-primary/10 hover:text-primary rounded-lg font-medium transition-colors">
+                {link.label}
+              </button>
+            ))}
+            <div className="pt-3 border-t border-border mt-3">
+              <div className="flex gap-2 px-4 mb-3">
+                {languages.map((l) => (
+                  <button key={l.code} onClick={() => setLang(l.code)} className={`px-3 py-1.5 text-xs font-medium rounded transition-colors ${l.code === lang ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                    {l.label}
+                  </button>
+                ))}
+              </div>
+              <Button size="sm" className="w-full" asChild>
+                <a href="#contact" onClick={() => setIsMenuOpen(false)}>{t("nav.cta")}</a>
+              </Button>
+            </div>
+          </div>
+        </>
       )}
     </>
   );

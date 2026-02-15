@@ -9,9 +9,9 @@ export const generateProposalPDF = (data: ProposalData): void => {
   let yPos = margin;
 
   // Cores da marca
-  const primaryColor = [0, 168, 214]; // #00a8d6
-  const darkColor = [31, 41, 55];
-  const lightGray = [156, 163, 175];
+  const primaryColor: [number, number, number] = [0, 168, 214]; // #00a8d6
+  const darkColor: [number, number, number] = [31, 41, 55];
+  const lightGray: [number, number, number] = [156, 163, 175];
 
   // Função auxiliar para adicionar nova página se necessário
   const checkPageBreak = (neededSpace: number) => {

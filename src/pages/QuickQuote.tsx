@@ -51,8 +51,8 @@ ${COMPANY_INFO.phone}`;
     let yPos = 20;
 
     // Cores
-    const primaryColor = [0, 168, 214];
-    const darkColor = [31, 41, 55];
+    const primaryColor: [number, number, number] = [0, 168, 214];
+    const darkColor: [number, number, number] = [31, 41, 55];
 
     // Cabeçalho
     doc.setFillColor(...primaryColor);
