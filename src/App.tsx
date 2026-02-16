@@ -12,6 +12,7 @@ import ServicesPage from "./pages/ServicesPage";
 import ServiceDetail from "./pages/ServiceDetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Confidentiality from "./pages/Confidentiality";
+import AcademyPage from "./pages/AcademyPage";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/orcamento" element={<QuickQuote />} />
             <Route path="/privacidade" element={<PrivacyPolicy />} />
             <Route path="/confidencialidade" element={<Confidentiality />} />
+            <Route path="/academy" element={<AcademyPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
