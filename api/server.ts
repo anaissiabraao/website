@@ -655,11 +655,7 @@ app.get("/api/activity-logs", requireAdmin, async (_req, res) => {
 });
 
 app.use(express.static(distDir));
-app.get("*", (req, res, next) => {
-  if (req.path.startsWith("/api")) {
-    next();
-    return;
-  }
+app.get(/^(?!\/api).*/, (_req, res) => {
   res.sendFile(path.join(distDir, "index.html"));
 });
 
