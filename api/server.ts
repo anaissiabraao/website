@@ -29,7 +29,22 @@ app.use(
     credentials: true,
   }),
 );
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://challenges.cloudflare.com", "https://static.cloudflareinsights.com"],
+        scriptSrcAttr: ["'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'", "https://challenges.cloudflare.com"],
+        fontSrc: ["'self'", "data:"],
+        frameSrc: ["'self'", "https://challenges.cloudflare.com"],
+      },
+    },
+  }),
+);
 app.use(cookieParser());
 
 app.get("/api/health", (_req, res) => {
