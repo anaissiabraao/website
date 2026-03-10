@@ -4,6 +4,8 @@ import { Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const crmUrl = import.meta.env.VITE_CRM_URL ?? "/admin-login";
+  const isExternalCrm = crmUrl.startsWith("http://") || crmUrl.startsWith("https://");
 
   return (
     <footer className="bg-card border-t border-border py-12 md:py-16">
@@ -85,6 +87,22 @@ const Footer = () => {
           <p className="text-xs text-muted-foreground text-center">
             © {currentYear} ANAISSI DATA STRATEGY. Todos os direitos reservados.
           </p>
+          <div className="text-center mt-2">
+            {isExternalCrm ? (
+              <a
+                href={crmUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-muted-foreground hover:text-primary transition-colors"
+              >
+                Acessar CRM
+              </a>
+            ) : (
+              <Link to={crmUrl} className="text-[11px] text-muted-foreground hover:text-primary transition-colors">
+                Acessar CRM
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </footer>

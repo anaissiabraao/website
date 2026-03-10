@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String        @id @default(uuid())
+  email       String        @unique
+  password    String
+  role        String        @default("admin")
+  createdAt   DateTime      @default(now())
+  activityLog ActivityLog[]
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  origin    String?
+  createdAt DateTime @default(now())
+  quotes    Quote[]
+  leads     Lead[]
+}
+
+model Service {
+  id            String         @id @default(uuid())
+  name          String
+  category      String
+  price         Float
+  quoteServices QuoteService[]
+}
+
+model Quote {
+  id           String         @id @default(uuid())
+  clientId     String
+  total        Float
+  status       String
+  createdAt    DateTime       @default(now())
+  client       Client         @relation(fields: [clientId], references: [id])
+  quoteService QuoteService[]
+  payments     Payment[]
+}
+
+model QuoteService {
+  id        String  @id @default(uuid())
+  quoteId   String
+  serviceId String
+  price     Float
+  quote     Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id])
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  quoteId   String
+  stripeId  String   @unique
+  amount    Float
+  status    String
+  createdAt DateTime @default(now())
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+}
+
+model SiteVisit {
+  id         String     @id @default(uuid())
+  ip         String
+  userAgent  String
+  page       String
+  referrer   String?
+  country    String?
+  city       String?
+  createdAt  DateTime   @default(now())
+  pageViews  PageView[]
+  events     Event[]
+  heatClicks HeatmapClick[]
+}
+
+model PageView {
+  id          String    @id @default(uuid())
+  siteVisitId String?
+  page        String
+  durationMs  Int?
+  referrer    String?
+  createdAt   DateTime  @default(now())
+  visit       SiteVisit? @relation(fields: [siteVisitId], references: [id], onDelete: SetNull)
+}
+
+model Event {
+  id          String    @id @default(uuid())
+  siteVisitId String?
+  name        String
+  page        String
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  visit       SiteVisit? @relation(fields: [siteVisitId], references: [id], onDelete: SetNull)
+}
+
+model HeatmapClick {
+  id          String    @id @default(uuid())
+  siteVisitId String?
+  page        String
+  x           Float
+  y           Float
+  createdAt   DateTime  @default(now())
+  visit       SiteVisit? @relation(fields: [siteVisitId], references: [id], onDelete: SetNull)
+}
+
+model Lead {
+  id        String    @id @default(uuid())
+  name      String
+  email     String
+  phone     String
+  company   String?
+  source    String?
+  message   String?
+  clientId  String?
+  createdAt DateTime  @default(now())
+  client    Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+}
+
+model Conversion {
+  id        String   @id @default(uuid())
+  stage     String
+  refId     String?
+  amount    Float?
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  action    String
+  userId    String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+}

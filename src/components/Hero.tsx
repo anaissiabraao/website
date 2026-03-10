@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/lib/api";
 import heroBg from "@/assets/hero-tech-bg.jpg";
 
 const Hero = () => {
@@ -14,14 +15,13 @@ const Hero = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // @ts-ignore
-      await emailjs.send("service_us0gycu", "template_fddaqoi", {
-        from_name: form.name,
-        company: form.company,
-        from_email: form.contact,
+      await api.post("/api/leads", {
+        name: form.name,
+        email: form.contact.includes("@") ? form.contact : `${form.name.replace(/\s+/g, ".").toLowerCase()}@sem-email.local`,
         phone: form.contact,
+        company: form.company,
+        source: "hero-diagnostico",
         message: "Solicitação de diagnóstico gratuito via formulário rápido do Hero",
-        to_email: "anaissiabraao@gmail.com",
       });
       toast({ title: "✅ Solicitação enviada!", description: "Entraremos em contato em até 2 horas úteis." });
       setForm({ name: "", company: "", contact: "" });

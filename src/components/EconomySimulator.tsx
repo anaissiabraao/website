@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/lib/api";
 
 const EconomySimulator = () => {
   const { toast } = useToast();
@@ -21,12 +22,12 @@ const EconomySimulator = () => {
     e.preventDefault();
     setSending(true);
     try {
-      // @ts-ignore
-      await emailjs.send("service_us0gycu", "template_fddaqoi", {
-        from_name: "Simulador de Economia",
-        from_email: email,
+      await api.post("/api/leads", {
+        name: "Lead Simulador de Economia",
+        email,
+        phone: "não informado",
+        source: "simulador-economia",
         message: `Simulação: ${employees} funcionários, ${hoursPerDay}h/dia em tarefas manuais. Economia estimada: R$ ${monthlySaving.toLocaleString("pt-BR")}/mês (R$ ${annualSaving.toLocaleString("pt-BR")}/ano).`,
-        to_email: "anaissiabraao@gmail.com",
       });
       toast({ title: "✅ Relatório enviado!", description: "Confira seu email com o diagnóstico completo." });
       setEmail("");

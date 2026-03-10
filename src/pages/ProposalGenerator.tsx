@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { api } from "@/lib/api";
 
 const formatPriceRange = (min: number, max: number, unit?: string) => {
   if (!min && !max) return undefined;
@@ -79,15 +80,14 @@ const ProposalGenerator = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/send-proposal", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      await api.post("/api/leads", {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        source: "proposal-generator",
+        message: `Projeto: ${formData.projectTitle}\nDescrição: ${formData.projectDescription}\nServiços: ${formData.selectedServicesDetail.join(", ")}`,
       });
-
-      if (!response.ok) {
-        throw new Error("Falha no envio");
-      }
 
       setIsSubmitted(true);
       toast({

@@ -12,12 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/LanguageProvider";
-
-declare global {
-  interface Window {
-    gtag?: (...args: any[]) => void;
-  }
-}
+import { api } from "@/lib/api";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -62,62 +57,32 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const reportConversion = () => {
-      try {
-        if (typeof window !== "undefined" && typeof window.gtag === "function") {
-          window.gtag("event", "conversion", {
-            send_to: "AW-17955970841/hWF-CIa1nPkbEJm-ifJC",
-            value: 1.0,
-            currency: "BRL",
-            transaction_id: "",
-          });
-        }
-      } catch {
-        // ignore
-      }
-    };
-
     try {
-      // Enviar e-mail usando EmailJS
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
+      await api.post("/api/leads", {
+        name: formData.name,
+        email: formData.email,
         phone: formData.phone,
         company: formData.company,
-        employees: formData.employees,
-        interest: formData.interest,
-        message: formData.message,
-        to_email: 'anaissiabraao@gmail.com'
-      };
+        source: formData.interest || "site-contato",
+        message: `${formData.message}\nFuncionários: ${formData.employees || "não informado"}`,
+      });
 
-      // @ts-ignore - EmailJS is loaded via CDN
-      const response = await emailjs.send(
-        'service_us0gycu',
-        'template_fddaqoi',
-        templateParams
-      );
+      toast({
+        title: "✅ Mensagem enviada com sucesso!",
+        description: "Entraremos em contato em até 2 horas úteis.",
+      });
 
-      if (response.status === 200) {
-        reportConversion();
-        toast({
-          title: "✅ Mensagem enviada com sucesso!",
-          description: "Entraremos em contato em até 2 horas úteis.",
-        });
-
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          company: "",
-          employees: "",
-          interest: "",
-          message: "",
-        });
-      } else {
-        throw new Error('Erro no envio');
-      }
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        employees: "",
+        interest: "",
+        message: "",
+      });
     } catch (error) {
-      console.error('Erro ao enviar email:', error);
+      console.error("Erro ao enviar lead:", error);
       toast({
         title: "❌ Erro ao enviar formulário",
         description: "Tente novamente ou entre em contato diretamente pelo e-mail.",
